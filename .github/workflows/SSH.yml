@@ -20,7 +20,7 @@ jobs:
       
     - name: 运行       
       run: | 
-          wget -P ./sqlite3 https://gethub.com/rendie-com/rendie/archive/refs/tags/1.zip
+          wget -P ./sqlite3 https://github.com/rendie-com/rendie/archive/refs/tags/1.zip
           #git clone https://github.com/rendie-com/rendie -b main rendie
           # mkdir ../images/
           # cp image.tar ../images/image.tar
