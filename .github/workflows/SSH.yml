@@ -20,7 +20,7 @@ jobs:
       
     - name: 运行       
       run: | 
-          
+          git clone https://github.com/rendie-com/rendie -b master sqlite
           # mkdir ../images/
           # cp image.tar ../images/image.tar
           # tar -czvf ../images/image.tar.gz image.tar
