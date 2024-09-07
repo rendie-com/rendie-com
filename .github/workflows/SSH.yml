@@ -1,0 +1,42 @@
+name: SSH
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: 'false'
+jobs:
+  build:
+    runs-on: ubuntu-latest   
+    permissions:
+      actions: write
+      contents: write
+    steps:
+    - name: 准备完成
+      uses: actions/checkout@main
+      
+    - name: 运行       
+      run: | 
+          
+          # mkdir ../images/
+          # cp image.tar ../images/image.tar
+          # tar -czvf ../images/image.tar.gz image.tar
+          
+    - name: SSH connection to Actions
+      uses: P3TERX/ssh2actions@v1.0.0
+      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      env:
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        
+    - name: 自动发布固件到 Releases
+      uses: softprops/action-gh-release@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        name: docker 镜像下载
+        tag_name: 3
+        files: ./sqlite3/* 
