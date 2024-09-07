@@ -20,10 +20,11 @@ jobs:
       
     - name: 运行       
       run: | 
-          git clone https://github.com/rendie-com/rendie -b main rendie
+          wget -P ./sqlite3 https://gethub.com/rendie-com/rendie/archive/refs/tags/1.zip
+          #git clone https://github.com/rendie-com/rendie -b main rendie
           # mkdir ../images/
           # cp image.tar ../images/image.tar
-          tar -czvf ./sqlite3/rendie.gz rendie
+          #tar -czvf ./sqlite3/rendie.gz rendie
           
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
