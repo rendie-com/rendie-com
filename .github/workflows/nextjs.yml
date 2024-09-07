@@ -1,0 +1,57 @@
+name: 运行next.js和node.js
+on: 
+  # 手动触发
+  workflow_dispatch:
+  # 定时器
+  # schedule:
+  #  - cron: "*/15 * * * *"
+env:  
+  TZ: Asia/Shanghai
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+    steps:
+    - name: 下载当前项目
+      uses: actions/checkout@v4     
+           
+    - name: 安装Node.js     
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+    
+    - name: 更新时区
+      id: date
+      run: |
+          sudo timedatectl set-timezone "$TZ"
+
+    - name: 运行next.js和node.js       
+      run: | 
+              cd ./next.js/
+              cp common/self_config_sqlite.js common/self_config.js
+              npm install pg
+              npm install sqlite3
+              npm install formidable
+              npm i --save-dev @types/formidable
+              npm run dev & 
+              cd ../node.js/
+              npm install puppeteer --save         
+              node ./index.js   
+              cd ../
+
+    - name: 部署next.js
+      uses: JamesIves/github-pages-deploy-action@v4
+      with: 
+          branch: main
+          folder: next.js/src/app/img/
+          target-folder: next.js/src/app/img/
+          
+    - name: 删除运行记录
+      uses: Mattraks/delete-workflow-runs@v2
+      with:
+        token: ${{ github.token }}
+        retain_days: 1
+        keep_minimum_runs: 1
