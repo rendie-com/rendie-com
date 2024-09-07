@@ -1,0 +1,45 @@
+name: 运行next和cpolar
+
+on:
+  # 手动触发
+  workflow_dispatch:
+  # 定时器
+  #schedule:
+  #- cron: "*/10 * * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+    - name: Install Dependency       
+      run: |                 
+          cd ./next.js/
+          cp common/self_config_sqlite.js common/self_config.js
+          npm install pg
+          npm install sqlite3
+          npm install formidable
+          npm i --save-dev @types/formidable         
+          npm run dev & 
+          cd ../cpolar/
+          unzip cpolar-stable-linux-amd64.zip
+          echo "已解压"
+          ./cpolar authtoken ZmQ0MjM4YTYtNThkYS00ODQxLWJiMDUtYmI1ZDY4ODRmMTM4
+          echo "已授权"
+          ./cpolar http 3000  &          
+          cd ../node.js/
+          npm install puppeteer --save         
+          node ./index.js   
+          cd ../
+
+    - name: 部署next.js
+      uses: JamesIves/github-pages-deploy-action@v4
+      with: 
+          branch: main
+          folder: next.js/src/app/img/
+          target-folder: next.js/src/app/img/
