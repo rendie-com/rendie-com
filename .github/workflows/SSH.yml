@@ -20,7 +20,7 @@ jobs:
       
     - name: 运行       
       run: | 
-        mv -r ./nextjs/plugins/ ./nextjs/public/
+        mv -r ./nextjs/plugins/ ./nextjs/public/plugins/
         # unzip ./nextjs.zip
         # unzip ./plugins.zip ./nextjs/
         
