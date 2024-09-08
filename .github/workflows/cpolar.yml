@@ -21,6 +21,7 @@ jobs:
           
     - name: 运行cpolar       
       run: |
+          cd ./cpolar/
           ./cpolar authtoken ZmQ0MjM4YTYtNThkYS00ODQxLWJiMDUtYmI1ZDY4ODRmMTM4
           echo "已授权"
           ./cpolar http 3000  &   
