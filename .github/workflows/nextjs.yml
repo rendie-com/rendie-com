@@ -32,6 +32,7 @@ jobs:
       - name: 运行node       
         run: |
           cd ./node-shopee/
+          npm install  
           node ./index.js   
               
       - name: 部署next.js
