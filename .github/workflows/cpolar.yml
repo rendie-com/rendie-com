@@ -1,4 +1,4 @@
-name: 运行next和cpolar
+name: 运行nextjs和cpolar
 
 on:
   # 手动触发
