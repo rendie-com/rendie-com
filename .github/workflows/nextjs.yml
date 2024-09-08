@@ -24,7 +24,7 @@ jobs:
   
       - name: 运行nextjs     
         run: | 
-          cd ./next.js/
+          cd ./nextjs/
           # cp common/self_config_sqlite.js common/self_config.js
           npm install                
           npm run dev &
