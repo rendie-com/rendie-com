@@ -14,8 +14,7 @@ jobs:
       
     - name: 运行nextjs       
       run: |                 
-          cd ./next.js/
-          cp common/self_config_sqlite.js common/self_config.js
+          cd ./nextjs/         
           npm install
           npm run dev & 
           
@@ -23,7 +22,7 @@ jobs:
       run: |          
           ./cpolar authtoken ZmQ0MjM4YTYtNThkYS00ODQxLWJiMDUtYmI1ZDY4ODRmMTM4
           echo "已授权"
-          ./cpolar http 3000  &
+          ./cpolar http 3000
              
     - name: 部署next.js
       uses: JamesIves/github-pages-deploy-action@v4
