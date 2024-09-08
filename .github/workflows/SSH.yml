@@ -20,7 +20,7 @@ jobs:
       
     - name: 运行       
       run: | 
-        mv ./aaaa ./cpolar
+        # mv ./aaaa ./cpolar
         # 7z x nextjs.7z
         # mv ./nextjs/plugins/ ./nextjs/public/plugins/
         # unzip ./nextjs.zip
@@ -39,8 +39,8 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@v4
       with: 
           branch: main
-          folder: ./cpolar/
-          target-folder: ./cpolar/
+          folder: ./cpssssssssssolar/
+          target-folder: ./cposssssssssssssssssssslar/
           
     - name: 自动发布固件到 Releases
       uses: softprops/action-gh-release@v2
