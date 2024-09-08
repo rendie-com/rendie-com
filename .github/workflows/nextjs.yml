@@ -24,13 +24,15 @@ jobs:
   
       - name: 运行next.js和node.js       
         run: | 
-              cd ./next.js/
-              # cp common/self_config_sqlite.js common/self_config.js
-              npm install                
-              npm run dev & 
+          cd ./next.js/
+          # cp common/self_config_sqlite.js common/self_config.js
+          npm install                
+          npm run dev &
                 
       - name: 运行next.js和node.js       
-        run: node ./index.js   
+        run: |
+          cd ./node-shopee/
+          node ./index.js   
               
       - name: 部署next.js
         uses: JamesIves/github-pages-deploy-action@v4
