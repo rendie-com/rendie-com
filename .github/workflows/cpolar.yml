@@ -27,7 +27,7 @@ jobs:
         echo "运行 node"
         node ./index.js 
     
-    - name: 部署next.js
+    - name: 部署 sqlite3
       uses: JamesIves/github-pages-deploy-action@v4
       with: 
           branch: main
