@@ -7,7 +7,7 @@ on:
       ssh:
         description: 'SSH connection to Actions'
         required: false
-        default: 'false'
+        default: true
 jobs:
   build:
     runs-on: ubuntu-latest   
@@ -20,11 +20,10 @@ jobs:
       
     - name: 运行       
       run: | 
-          wget -P ./sqlite3 https://github.com/rendie-com/rendie/archive/refs/tags/1.zip
-          #git clone https://github.com/rendie-com/rendie -b main rendie
+          
           # mkdir ../images/
           # cp image.tar ../images/image.tar
-          #tar -czvf ./sqlite3/rendie.gz rendie
+          # tar -czvf ../images/image.tar.gz image.tar
           
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
@@ -33,6 +32,13 @@ jobs:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         
+    - name: 部署next.js
+      uses: JamesIves/github-pages-deploy-action@v4
+      with: 
+          branch: main
+          folder: ./sqlite3/
+          target-folder: ./sqlite3/
+          
     - name: 自动发布固件到 Releases
       uses: softprops/action-gh-release@v2
       env:
@@ -40,4 +46,11 @@ jobs:
       with:
         name: sqlite3 文件发布
         tag_name: 1
-        files: ./sqlite3/* 
+        files: ./releases/* 
+        
+    - name: 删除运行记录
+      uses: Mattraks/delete-workflow-runs@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        retain_days: 1
+        keep_minimum_runs: 1
