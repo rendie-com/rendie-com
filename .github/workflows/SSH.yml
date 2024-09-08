@@ -39,8 +39,8 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@v4
       with: 
           branch: main
-          folder: ./node-shopee/
-          target-folder: ./node-shopee/
+          folder: ./nextjs/
+          target-folder: ./nextjs/
           
     - name: 自动发布固件到 Releases
       uses: softprops/action-gh-release@v2
