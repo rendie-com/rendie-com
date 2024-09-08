@@ -1,0 +1,156 @@
+  <load admin/html/头部.html/>
+  <table class="tb">
+  <tr align="center">
+    <td align="left">ID.分类名称(图片数量)</td>
+    <td width="100">中文名</td>
+    <td width="100">英文名</td>
+    <td width="100">频道模板</td>
+    <td width="100">内容模板</td>
+    <td width="100">关键词</td>
+    <td width="100">描述</td>
+    <td width="100">图片/URL/变量</td>
+    <td width="25">排序</td>
+    <td width="120">操作</td>
+  </tr>
+      <r:type where=" where @.from='photo' and @.upid='0' order by @.sort asc" size=200>
+      <tr>
+      <td class="Mo">
+          <input type="checkbox" value="<:id/>" name="pre_id"  class="checkbox" id="check-<:id/>"/>
+          <label for="check-<:id/>"><:id/>.</label>
+          <a href="<:id/>" target="_blank"><:name/></a>
+          <r:photo where=" where @.type=<:id/>">
+          (<font color="red">[photo:count(:id)]</font>)
+          </r:photo>
+        </td>
+        <td><input type="text" size="13" id="pre_name<:id/>" value="<:name/>"></td>
+        <td><input type="text" size="13" id="pre_enname<:id/>" value="<:enname/>"></td>
+        <td><input type="text" size="13" id="pre_template<:id/>" value="<:template/>"></td>
+        <td><input type="text" size="13" id="pre_subtemplate<:id/>" value="<:subtemplate/>"></td>
+        <td><input type="text" size="13" id="pre_keyword<:id/>" value="<:keyword/>"></td>
+        <td><input type="text" size="13" id="pre_des<:id/>" value="<:des/>"></td>
+        <td><input type="text" size="13" id="pre_pic<:id/>" value="<:pic/>"></td>
+        <td><input type="text" size="1" id="pre_sort<:id/>" value="<:sort/>" style="text-align:center"></td>
+        <td>
+          &nbsp;
+          <a href="ajax/admin_content.aspx?TemplateDel/<:id/>.html">删除</a>
+        &nbsp;|&nbsp;  <if "<:hide/>"=="True"}
+          <a href="ajax/admin_content.aspx?TemplateNohide/<:id/>.html">取消隐藏</a>
+          <else/>
+          <a href="ajax/admin_content.aspx?TemplateHide/<:id/>.html">隐藏</a>
+          </if>
+        </td>
+      </tr>
+      </r:type>
+    <tr>
+      <td colspan="10">
+        <input type="button" class="pn" value="反选" onClick="checkOthers('input','pre_id')" />  
+        <input type="button" value="批量修改选中分类" class="pn" id="TemplateTypeEdit" />
+        <input type="submit" value="批量隐藏" id="TemplateHide" class="pn" />
+        <input type="submit" value="批量取消隐藏" id="TemplateNoHide" class="pn"/>
+        <input type="submit" value="批量删除" onClick="if(confirm('确定要删除吗')){return true}else{return false}" id="TemplateDelall" class="pn"  />
+        &nbsp;&nbsp;&nbsp;移动到
+        <select name="pre_upid_to" ><option value="0">顶级分类</option></select>
+        <input type="submit" value="批量移动分类" id="TemplateMove" class="pn"/>
+      </td>
+    </tr>
+  </table>
+  <table class="tb">
+    <tr class="thead"><th colspan="10">添加分类(<font color='red'>＊</font>为必填,其它选填)</th></tr>	
+    <form method="post" action="ajax/admin_content.aspx?TemplateAdd.html"  name="addform">
+    <tr align="center">
+        <td align="left">选择层级<font color='red'>＊</font><br/><select name="pre_upid" ><option value="0">顶级分类</option></select></td>
+        <td width="100">中文名<font color='red'>＊</font><br /><input type="text"name="pre_name" size="13"></td>
+        <td width="100">英文名<font color='red'>＊</font><br /><input type="text"name="pre_enname" size="13"></td>
+        <td width="100">频道模板<br/><input type="text"name="pre_template" size="13"></td>
+        <td width="100">内容模板<br/><input type="text"name="pre_subtemplate" size="13"></td>
+        <td width="100">关键词<br/><input type="text"maxlength="255"name="pre_keyword" size="13"></td>
+        <td width="100">描述<br/><input type="text"maxlength="255"name="pre_description" size="13"></td>
+        <td width="100">图片<br/><input type="text"maxlength="255"name="pre_pic" size="13"></td>
+        <td width="25">排序<br/><input type="text"name="pre_sort" size="1" style="text-align:center"></td>
+        <td width="120"><br/><input type="submit" value="添 加" name="Submit" class="pn" style="width:90%;"/></td>
+    </tr>
+    </form>
+  </table>
+  <table class="tb">
+    <tr class="thead"><th>合并分类</th></tr>
+    <form method="post" action="ajax/admin_content.aspx?TemplateMerge.html">
+    <tr>
+      <td>
+      将分类：<select name='leftSelect' >
+      <option value=''>请选择图片分类</option></select>
+      的数据合并到：<select name='rightSelect' >
+      <option value=''>请选择图片分类</option></select>
+      <input type="submit" value="确认合并" class="pn"/><br />
+      <font color=#FF0000>注意，程序将前面的分类数据合并到后面分类后会删除之前分类生成的HTML,但不会删除该分类。</font>
+      </td>
+    </tr>
+    </form>
+  </table>
+	<script type="text/javascript">
+	$(function(){
+		$('[Modified]').live('click',function(){
+		if ($(this).attr("Class")=="Modified ModifiedB")
+		{
+			$(this).attr("Class","Modified ModifiedA");
+			let id=$(this).attr("Modified")
+			$(".Mo"+id).parent().hide()
+		}
+		else
+		{
+			$(this).attr("Class","Modified ModifiedB")
+			let id=$(this).attr("Modified")
+			if($(".Mo"+id).css("padding-left"))
+			{
+			 $(".Mo"+id).parent().show() 
+			}
+			else
+			{
+			let html=$.ajax({url:'?Modified/5//'+id+'/photo.html',async:false}).responseText;
+			$(this).parent().parent().after(html)
+			let pl=20+parseInt($(this).parent().css("padding-left"))
+			$(".Mo"+id).css("padding-left",pl+"px")
+			}
+		}
+		});
+		$('#TemplateTypeEdit').live('click',function(){	  
+			let pre_id,pre_name,pre_enname,pre_template,pre_subtemplate,pre_keyword,pre_des,pre_pic,pre_sort,id
+			$("input[type='checkbox'][name='pre_id']:checked").each(function()
+		{
+			id=$(this).val();
+			pre_id=pre_id+","+id;
+			pre_name=pre_name+"⒜"+$("#pre_name"+id).val()
+			pre_enname=pre_enname+"⒜"+$("#pre_enname"+id).val()
+			pre_template=pre_template+"⒜"+$("#pre_template"+id).val()
+			pre_subtemplate=pre_subtemplate+"⒜"+$("#pre_subtemplate"+id).val()
+			pre_keyword=pre_keyword+"⒜"+$("#pre_keyword"+id).val()
+			pre_des=pre_des+"⒜"+$("#pre_des"+id).val()
+			pre_pic=pre_pic+"⒜"+$("#pre_pic"+id).val()
+			pre_sort=pre_sort+"⒜"+$("#pre_sort"+id).val()
+		 });
+		$.post("ajax/admin_content.aspx?TemplateTypeEdit.html",{pre_id:pre_id,pre_name:pre_name,pre_enname:pre_enname,pre_template:pre_template,pre_subtemplate:pre_subtemplate,pre_keyword:pre_keyword,pre_des:pre_des,pre_pic:pre_pic,pre_sort:pre_sort},function(result){
+		
+			location.reload();
+		});
+		});
+		$('#TemplateMove').live('click',function(){
+		let pre_upid_to=$("[name='pre_upid_to']").val()
+		let pre_id=returnID()
+		$.post("ajax/admin_content.aspx?TemplateMove.html",{pre_upid_to:pre_upid_to,pre_id:pre_id},function(result){
+				location.reload();
+		});	
+		});
+		$('#TemplateDelall').live('click',function(){
+		let pre_id=returnID()
+		$.post("ajax/admin_content.aspx?TemplateDelall.html",{pre_id:pre_id},function(result){
+				location.reload();
+		});
+		});
+		$('#TemplateHide').live('click',function(){
+		let pre_id=returnID();$.post("ajax/admin_content.aspx?TemplateHide.html",{pre_id:pre_id},function(result){location.reload();});
+		});
+		$('#TemplateNoHide').live('click',function(){
+		let pre_id=returnID();$.post("ajax/admin_content.aspx?TemplateNoHide.html",{pre_id:pre_id},function(result){location.reload();});
+		});
+	})
+	</script>	
+	

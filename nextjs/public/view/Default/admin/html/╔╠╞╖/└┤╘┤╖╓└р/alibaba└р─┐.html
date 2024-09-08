@@ -1,0 +1,17 @@
+<div class="m-2 shadow p-2 bg-white rounded">
+  <load admin/html/头部.html/>
+  <ul class="Tul center">
+    <li class="w200">来源ID</li>
+    <li>分类名称</li>
+  </ul>
+  <r:type where=" where @.from='alibaba' and @.upid='0' order by @.sort asc" size=200>
+    <ul class="Tul tr">
+      <li class="w200"><a href="javascript:" class="Mo MoA" onclick="ModifiedAB($(this),'<:fromID/>')"></a>&nbsp;<:fromID/></li>
+      <li><:name/></li>
+    </ul>
+  </r:type>
+</div>
+
+ 
+ 
+<script type="text/javascript" src="/<.Path/>admin/js/数据/来源分类/alibaba类目.js"></script> <template admin/html/通用模板.html/>

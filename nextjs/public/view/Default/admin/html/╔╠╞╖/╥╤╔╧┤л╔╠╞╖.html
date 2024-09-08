@@ -1,0 +1,88 @@
+<.LoadScript(admin/html/商品/已上传商品.js)/>
+<r:type where=" where @.from='admin' and @.upid='Fun(arr(3))' order by @.sort asc" size=15> <:id Fun="Fun(AddAttr(type$i,$1))"/><:name Fun="Fun(AddAttr(name$i,$1))"/></r:type>
+<div class="m-2 shadow p-2 bg-white rounded">
+  <load admin/html/头部.html/>
+  <table class="tb">
+    <tr>
+      <td align="left" colspan="5" ><input type="text"  size="50" id="searchword" value="<.unarr(5)/>" onKeyDown="javascript:if(event.keyCode==13) productSearch();">
+        <input type="button" id="selectBtn" value="搜索" class="pn"/>
+        <input type="button" value="查看分类数据" class="pn"/>
+        <span id="AliproductType"></span>
+        <if "Fun(arr(6))"=="">
+          <input type="button" value="查看速卖通分类数据" class="pn"  onClick="AliproductType()" id="AliproductType"/>
+          <else/>
+          <input type="button" value="
+				<r:type where=" where @.from='aliexpress' and @.fromid='<.arr(6)/>'" size=1>
+          <r:type where=" where @.from='aliexpress' and @.fromid='<:upid/>'" size=1>
+            <r:type where=" where @.from='aliexpress' and @.fromid='<:upid/>'" size=1>
+              <r:type where=" where @.from='aliexpress' and @.fromid='<:upid/>'" size=1> <:name/> ></r:type>
+              <:name/> ></r:type>
+            <:name/> ></r:type>
+          <:name/>
+          </r:type>
+          " class="pn" onClick="AliproductType()" id="AliproductType"/></if>
+        <input type="button" value="查看敦煌网分类数据" class="pn"/></td>
+    </tr>
+      <if ""!="<.arr(5)/>"&&"0"!="<.arr(5)/>"
+    
+  
+    <tr>
+      <td colspan="5">关键字 <font color=red><.unarr(5)/></font> 的记录如下</td>
+    </tr>
+      </if>
+    
+    <tr align="center">
+      <td nowrap="nowrap" > ID
+        <if "Fun(arr(7))"=="id_20desc"><a href="{Fun(GetUrl(Fun(arr(2))/Fun(arr(3))/Fun(arr(4))/Fun(arr(5))/Fun(arr(6))/id_20asc.html))}"><img src="/<.Path/>admin/img/minus2.gif" title="按ID小到大排序" /></a>
+          <else/>
+          <a href="{Fun(GetUrl(Fun(arr(2))/Fun(arr(3))/Fun(arr(4))/Fun(arr(5))/Fun(arr(6))/id_20desc.html))}"><img src="/<.Path/>admin/img/minus.gif" title="按ID大到小排序" /></a></if></td>
+      <td align="left">产品信息</td>
+      <td nowrap="nowrap">上传用户</td>
+      <td nowrap="nowrap">上传时间</td>
+      <td nowrap="nowrap">价格倍数</td>
+    </tr>
+    <r:uploadproduct size=10 page=4 where=" order by @.id desc">
+      <tr align="center">
+        <td align="left" nowrap="nowrap"><input type="checkbox" value="[uploadproduct:id]" name="pre_id"  class="checkbox" id="check-[uploadproduct:id]"/>
+          <label for="check-[uploadproduct:id]">[uploadproduct:id]</label></td>
+        <td align="left"><r:product where=" where @.proid='[uploadproduct:proid]'" size=1>
+            <table class="tb2">
+              <tr>
+                <th rowspan="2"><a target="_blank" href="<:pic1/>"><img style="margin:2px;padding:1px;border:1px solid #ccc" src="<:pic1/>_50x50.jpg" title="点击预览" border="0" width="50" height="50" align="left"></a> </th>
+                <th style="text-align:left;"><a href="en/product/article/<:id/>.html" target="_blank"> <:name/> </a>（<a href="https://www.dhgate.com/product/-/[uploadproduct:fromID].html" target="_blank">查看上传结果</a>） </th>
+              </tr>
+              <tr>
+                <td><strong>分类：</strong>
+                  <if "<:from/>"=="aliexpress"> 【
+                    <r:type where=" where @.from='aliexpress' and @.fromid='<:type/>'" size=1>
+                      <r:type where=" where @.from='aliexpress' and @.fromid='<:upid/>'" size=1>
+                        <r:type where=" where @.from='aliexpress' and @.fromid='<:upid/>'" size=1>
+                          <r:type where=" where @.from='aliexpress' and @.fromid='<:upid/>'" size=1> <:name/>&nbsp;&nbsp;&raquo;&nbsp;&nbsp; </r:type>
+                          <:name/>&nbsp;&nbsp;&raquo;&nbsp;&nbsp; </r:type>
+                        <:name/>&nbsp;&nbsp;&raquo;&nbsp;&nbsp; </r:type>
+                      <:name/></r:type>
+                    】
+                    <else/>
+                    <:type/> </if>
+                  &nbsp;&nbsp; <strong>编码:</strong><:proid/>
+                  &nbsp;&nbsp; <strong>价格：</strong>$
+                  <if <:minprice/>==<:maxprice/>> <:minprice f=2/>
+                    <else/>
+                    <:minprice f=2/>-<:maxprice f=2/> </if>
+                  <if "<:lotNum/>"!="1"}（<:lotNum/> <:unit/>/lot）
+                  <else/>
+                  （<:unit/>）
+                  </if></td>
+              </tr>
+            </table>
+          </r:product></td>
+        <td>[uploadproduct:upuser]</td>
+        <td>[uploadproduct:addtime]</td>
+        <td>[uploadproduct:ratio]</td>
+      </tr>
+    </r:uploadproduct>
+  </table><.load(admin/html/分页通用.html)/>
+</div>
+
+<script type="text/javascript">let obj={isrun:false/></script> 
+ <template admin/html/通用模板.html/>

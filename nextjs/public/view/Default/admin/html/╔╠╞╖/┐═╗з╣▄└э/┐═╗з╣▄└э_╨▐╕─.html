@@ -1,0 +1,40 @@
+<load admin/html/头部.html/>
+ <table class="tb">
+ <form action="ajax/admin_user.aspx?ClientSave/edit/<.arr(3)/>" method=post name="myform" id="myform">
+ <r:client size=1 where=" where @.id=<.arr(3)/>"
+ <tr>
+   <td align="right" width="100">联系人：</td>
+   <td><INPUT  TYPE="text" value="[client:contact]" name="contact" size="20"></td>
+ </tr>
+ <tr>
+   <td align="right">邮箱：</td>
+   <td><INPUT  TYPE="text" value="[client:email]" name="email" size="20"></td>
+ </tr>
+ <tr>
+   <td align="right">移动电话：</td>
+   <td><input  type="text"  value="[client:Fixed]" name="Fixed" size="20"></td>
+ </tr>
+ <tr>
+   <td align="right">固定电话：</td>
+   <td><input  type="text"  value="[client:mobile]" name="mobile" size="20"></td>
+ </tr>
+ <tr>
+   <td align="right">公司网址：</td>
+   <td><input  type="text"  value="[client:CompanyWeb]" name="CompanyWeb" size="80"></td>
+ </tr>
+ <tr>
+   <td align="right">来源网址：</td>
+   <td><input  type="text"  value="[client:fromurl]" name="fromurl" size="80"></td>
+ </tr>
+ <tr>
+   <td align="right">详细地址：</td>
+   <td><input  type="text"  value="[client:address]" name="address" size="80"></td>
+ </tr>
+ <tr>
+   <td></td>
+   <td><input type="submit" name="Submit" value="确认保存" class='pn'></td>
+  </tr>
+  </r:client>
+  </form>
+  </table>
+

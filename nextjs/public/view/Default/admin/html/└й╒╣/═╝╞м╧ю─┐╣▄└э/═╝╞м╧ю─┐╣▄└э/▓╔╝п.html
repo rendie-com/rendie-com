@@ -1,0 +1,310 @@
+
+	<script type="text/javascript" src="/<.Path/>admin/js/gatherProduct.js"></script>
+	<style type="text/css">
+	.tb2 td{padding:2px 5px 2px 5px;height:25px}
+	.tb2 .thc{text-align:center;line-height:30px; background-color: #F5F7F8;font-size:18px;font-weight:bold;color:#000}
+	.tb2 .thr{text-align:center;height:20px}
+	.label{padding:0;text-align:right;border-right:1px solid #DEEFFA;}
+	</style>
+	<script type="text/javascript">
+	//setTimeout("location.reload();",1000*60*3);//30分钟刷新一次
+	let html,items,t,sql=Object(),R=Object()
+	let url="<.Path/>images/cache/collect/{r:unarr(4)/>.txt"
+	<r:gatherURL size=1 where=" where @.id=Fun(arr(4))">
+	let obj=[gatherURL:code]
+	</r:gatherURL>
+	$(function(){pagelist();});
+	function pagelist(){
+		$.ajax(url,{
+            type:'get',
+            success: function(str){eval("let cacheobj="+str);gatherUrl(cacheobj);},
+            error: function(){gatherUrl(returnURL(obj));}
+       });
+	}
+	function gatherUrl(cacheobj){
+		let listUrl
+		if(cacheobj.article[0])//如果列表页的内容页采完就采下一个列表页的内容页
+		{
+			returnArticleHtml(cacheobj,obj)
+			if(retlen==0)
+			{
+				if(!sql.des){sql.des=""};
+				html=html.replace("{id=des}",sql.des);
+				insertTempproduct();
+			}
+		}
+		else
+		{
+			cacheobj.list.shift();listUrl=cacheobj.list[0]
+			if(listUrl)
+			{
+				html=$.ajax({type:"POST",url:"exe.html?"+Math.random(),data:{data:escape("{"+"Fun(WebRequestGet("+listUrl+"))}")},async:false}).responseText;
+				html=StrSlice(html,obj.listA,obj.listB);
+				if(html===""){if(!confirm("截取 列表开始~数据列表结束 失败\n\n点[确定]忽略这错误提示，[取消]返回修改")){return;}}
+				cacheobj.article=StrSplits(html,obj.mlinkA,obj.mlinkB);
+				gatherUrl(cacheobj);
+			}
+			else
+			{
+				html='{ren'+'die:area tag="file" file="'+url+'"}'+JSON.stringify(cacheobj)+'{/ren'+'die:area}'
+				html+=$.ajax({type:"POST",url:"exe.html?"+Math.random(),data:{data:escape(html)},async:false}).responseText;
+				html+="<tr><td colspan=\"2\">全部采集完成</td></tr>";
+				$("#gather").html(html);
+			}
+			
+		}
+		if(obj.desmodeR=="0"){insertTempproduct()}//是否【只要正文中的图片且高度大于200px且宽大于450px】
+	}
+	function returnArticleHtml(obj,obj2){
+		let listUrl=obj.list[0],articlecode
+		sql.fromurl=obj.article[0]
+		articlecode=$.ajax({type:"POST",url:"exe.html?"+Math.random(),data:{data:escape("{"+"Fun(WebRequestGet("+sql.fromurl+"))}")},async:false}).responseText;
+		articlecode=articlecode.replace(/\<\/textarea\>/ig,"&lt;/textarea&gt;");
+		if(articlecode===""){
+			html='\
+			<tr class="thead"><th colspan="2">正在采集商品数据...</th></tr>\
+			<tr><td class="label">内容页址：</td><td><a href="'+sql.fromurl+'" target="_blank">'+sql.fromurl+'</a></td></tr>\
+			<tr><td class="label">错误信息：</td><td>截取 内容页开始~内容页结束 失败</td></tr>\
+			<tr><td class="label">操作：</td><td>不采集</td></tr>\
+			<tr><td class="label">内容：</td><td>'+articlecode+'</td></tr>'
+		}
+		else
+		{
+			sql.name=StrSlice(articlecode,obj2.nameA,obj2.nameB)
+			if(sql.name)
+			{
+				sql.des=returnDES(obj2,articlecode)
+				let pichtml=MagnifyingChart(obj2,articlecode)//放大镜图
+				sql.isImageDynamic=pichtml[0]
+				sql.pic=pichtml[1].replace(/'/ig,"''")
+				sql.price=StrSlice(articlecode,obj2.priceA,obj2.priceB)
+				sql.fromID=StrSlice(articlecode,obj2.productIDA,obj2.productIDB)
+				if(obj2.typemode=="0"){sql.type=StrSlice(articlecode,obj2.typeA,obj2.typeB);}//获取分类ID方式
+				let attrStr=ProductAttributes(obj2,articlecode,sql.type)//产品属性
+				let Propertys=CustomAttributeGroup(obj2,articlecode)//自定义属性组
+				sql.aeopAeProductPropertys=Propertys[1].replace(/'/ig,"''")
+				let skuhtml=CommodityAttribute(obj2,articlecode,attrStr)//商品属性
+				sql.aeopAeProductSKUs=skuhtml[1];
+				sql.unit=regSlice(articlecode,obj2.unitA,obj2.unitB)
+				sql.keys=regSlice(articlecode,obj2.keysA,obj2.keysB);
+				if(!sql.keys){sql.keys=""}else{sql.keys=(sql.keys).replace(/'/ig,"''")}
+				sql.keys1=regSlice(articlecode,obj2.keys1A,obj2.keys1B);if(!sql.keys1)sql.keys1=""
+				sql.keys2=regSlice(articlecode,obj2.keys2A,obj2.keys2B);if(!sql.keys2)sql.keys2=""
+				sql.weight=regSlice(articlecode,obj2.weightA,obj2.weightB)
+				sql.length=regSlice(articlecode,obj2.lengthA,obj2.lengthB)
+				sql.width=regSlice(articlecode,obj2.widthA,obj2.widthB)
+				sql.height=regSlice(articlecode,obj2.widthA,obj2.widthB)
+				sql.deliveryTime=regSlice(articlecode,obj2.deliveryTimeA,obj2.deliveryTimeB)
+				sql.lotNum=regSlice(articlecode,obj2.lotNumA,obj2.lotNumB)//每包件数
+				R.id=StrSlice(articlecode,obj2.review.IA,obj2.review.IB);R.obj=obj2
+				R.arr=Review(R.id,R.obj,1)
+				if(!sql.lotNum)sql.lotNum=1
+				if(obj.pageset!="3"&&listUrl!="0"){listUrl='<tr><td class="label">列表页地址：</td><td><a href="'+listUrl+'" target="_blank">'+listUrl+'</a></td></tr>';}else{listUrl=""}
+				html='\
+				<tr class="thead"><th colspan="2">正在采集商品数据...</th></tr>\
+				<tr><td class="label">来源：</td><td>'+obj2.siteurl+'</td></tr>\
+				<tr><td class="label">项目：</td><td>'+obj2.itemname+'</td></tr>'+Statistics(obj)+'\
+				'+listUrl+'\
+				<tr><td class="label">内容页址：</td><td><a href="'+sql.fromurl+'" target="_blank">'+sql.fromurl+'</a></td></tr>\
+				<tr><td class="label">商品ID：</td><td>'+sql.fromID+'</td></tr>\
+				<tr><td class="label">标题：</td><td>'+sql.name+'</td></tr>\
+				<tr><td class="label">价格：</td><td>'+sql.price+'</td></tr>\
+				<tr><td class="label">分类：</td><td>'+sql.type+'</td></tr>\
+				<tr><td class="label">单位：</td><td>'+sql.unit+'</td></tr>\
+				<tr><td class="label">单重量：</td><td>'+sql.weight+'</td></tr>\
+				<tr><td class="label">每包件数：</td><td>'+sql.lotNum+'</td></tr>\
+				<tr><td class="label">关键词：</td><td>'+sql.keys+'</td></tr>\
+				<tr><td class="label">更多关键词一：</td><td>'+sql.keys1+'</td></tr>\
+				<tr><td class="label">更多关键词二：</td><td>'+sql.keys2+'</td></tr>\
+				<tr><td class="label">长：</td><td>'+sql.length+'</td></tr>\
+				<tr><td class="label">宽：</td><td>'+sql.width+'</td></tr>\
+				<tr><td class="label">高：</td><td>'+sql.height+'</td></tr>\
+				<tr><td class="label">备货期：</td><td>'+sql.deliveryTime+'</td></tr>\
+				<tr><td class="label">放大镜图：</td><td>'+pichtml[2]+'</td></tr>\
+				<tr><td class="label">商品SKU属性：</td><td>'+skuhtml[0]+'</td></tr>\
+				<tr><td class="label">自定义属性：</td><td>'+Propertys[0]+'</td></tr>\
+				'+attrStr+'\
+				<tr><td class="label">商品属性：</td><td>'+StrSlice(articlecode,obj2.attributeA,obj2.attributeB)+'</td></tr>\
+				<tr><td class="label">正文：</td><td>{id=des}</td></tr>\
+				'
+			}
+			else
+			{
+				html='\
+				<tr class="thead"><th colspan="2">正在采集商品数据...</th></tr>\
+				<tr><td class="label">内容页址：</td><td><a href="'+sql.fromurl+'" target="_blank">'+sql.fromurl+'</a></td></tr>\
+				<tr><td class="label">错误信息：</td><td>截取 标题开始~标题结束 失败</td></tr>\
+				<tr><td class="label">操作：</td><td>不采集</td></tr>\
+				<tr><td class="label">内容：</td><td>'+articlecode+'</td></tr>'
+			}
+		}
+		obj.article.shift();
+		obj.time=(new Date()).getTime()
+		html+='{ren'+'die:area tag="file" file="'+url+'"}'+JSON.stringify(obj)+'{/ren'+'die:area}'
+	}
+	function Statistics(obj){
+		let Percentage,leave1,hours,days,stime,rpcount,listLength,articleLength,str,jTime
+		jTime=new Date().getTime()-obj.time
+		listLength=obj.list.length-1;articleLength=obj.article.length
+		rpcount=(listLength*obj.pagecount)+articleLength//剩下的总条数
+		Percentage=parseInt((1-(rpcount/obj.recordcount))*100)//百分比
+		Percentage=Percentage==0?1:Percentage
+		stime=parseInt(rpcount*jTime)//剩下的总条数*间隔时时间=剩下时间
+		days=Math.floor(stime/(24*3600*1000))
+		leave1=stime%(24*3600*1000)//计算天数后剩余的毫秒数
+		hours=Math.floor(leave1/(3600*1000))
+		//计算相差分钟数
+		let leave2=leave1%(3600*1000)//计算小时数后剩余的毫秒数
+		let minutes=Math.floor(leave2/(60*1000))
+		//计算相差秒数
+		let leave3=leave2%(60*1000)//计算分钟数后剩余的毫秒数
+		let seconds=Math.round(leave3/1000)
+		jTime=jTime/1000
+		str='<tr>\
+					<td class="label">进度：</td><td>\
+					<table width="95%"><tr><td width=\''+Percentage+'%\' style=\'background-color:#0000FF;color:#fff;\' align="center"><strong>'+Percentage+'%</strong></td><td style=\'background-color:red\'></td></tr></table>\
+					</td>\
+				</tr>\
+				<tr><td class="label">统计：</td><td>待采列表:'+listLength+'页，待采内容:'+articleLength+'个，上次与这次间隔:'+jTime+'秒，剩余时间：'+days+'天'+hours+'小时'+minutes+'分钟'+seconds+'秒</td></tr>'
+		return str
+	}
+	function returnURL(obj){
+		let URL,pageset,list=[],htmlcode,obj2=Object()
+		URL=obj.pageurl1;pageset=obj.pageset//分页设置：	不分页	 批量分页	 手动分页	 直接采集内容页(分页)	 提交分页(post)
+		if(pageset=="1")
+		{
+			if(obj.reverse=="0"){
+				for(let i=parseInt(obj.istart);i<=parseInt(obj.iend);i+=parseInt(obj.step))
+				{
+					list[list.length]=URL.replace(/\{\$ID\}/,i);
+				}
+				obj2.list=list
+				URL=URL.replace(/\{\$ID\}/,obj.istart)
+			}
+			else
+			{
+				for(let i=parseInt(obj.iend);i>=parseInt(obj.istart);i-=parseInt(obj.step))
+				{
+					list[list.length]=URL.replace(/\{\$ID\}/,i);
+				}
+				URL=URL.replace(/\{\$ID\}/,obj.iend)
+			}
+			htmlcode=$.ajax({type:"POST",url:"exe.html?"+Math.random(),data:{data:escape("{"+"Fun(WebRequestGet("+URL+"))}")},async:false}).responseText;
+			htmlcode=StrSlice(htmlcode,obj.listA,obj.listB);
+			if(htmlcode===false){if(!confirm("截取 列表开始~数据列表结束 失败\n\n点[确定]忽略这错误提示，[取消]返回修改")){return;}}
+			obj2.article=StrSplits(htmlcode,obj.mlinkA,obj.mlinkB);
+			obj2.time=(new Date).getTime()
+			obj2.pagecount=obj2.article.length
+			obj2.recordcount=obj2.list.length*obj2.article.length
+		}
+		else if(pageset=="3")
+		{
+			obj2.list=[0]
+			obj2.article=(obj.pageurlarticle).split("\n")
+			obj2.time=(new Date).getTime()
+			obj2.pagecount=obj2.article.length
+			obj2.recordcount=obj2.list.length*obj2.article.length
+		}
+		return obj2
+	}
+	function returnDES(obj,htmlcode){
+		let DesLink,str,des,ret=[],patt1
+		des=StrSlice(htmlcode,obj.desA,obj.desB)
+		patt1=/<img[\s\S]+?src=[\"']?([^\"']{4,}?)[\"'][\S\s]*?[\/]?>/ig
+		if(obj.desmode=="1")
+		{
+			DesLink=(obj.DesLink).replace(/\{\$ID\}/,des);
+			str=$.ajax({type:"POST",url:"exe.html?"+Math.random(),data:{data:escape("{"+"Fun(WebRequestGet("+DesLink+"))}")},async:false}).responseText;
+			str=str.replace(/\<\/textarea\>/ig,"&lt;/textarea&gt;");
+			des=StrSlice(str,obj.des2A,obj.des2B)
+			if(obj.desmodeR=="1")
+			{
+				des=des.replace(/(<a [\S\s]*?<\/a>)/ig,"")
+				do
+				{
+					result=patt1.exec(des);
+					if(result){
+						if(ret.join("|").indexOf("<img src=\""+result[1]+"\"/>")==-1)//去重复
+						{
+							ret[ret.length]="<img src=\""+result[1]+"\"/>";
+							ImageWH(result[1])
+						}
+					}
+				}while(result!=null)
+				des=ret.join("<br/>")
+				retlen=ret.length
+			}
+			else
+			{
+				html=html.replace("{id=des}",sql.des);sql.des=sql.des.replace(/'/ig,"''");
+			}
+		}
+		if(!des) des="";
+		return des;
+	}
+	let retlen=0,Hlen=0,IH=[]
+	function ImageWH(src){
+		let obj=new Image();obj.src=src
+		obj.onerror=function(){
+			Hlen++;
+			if(Hlen==retlen){html=html.replace("{id=des}",sql.des);insertTempproduct();}
+		};
+		obj.onload=function(){
+			Hlen++;
+			//document.write(retlen+"----"+Hlen+"-----"+src+"---------<br/>")
+			if(obj.height>200&&obj.width>450){IH[IH.length]="<img src=\""+obj.src+"\" style=\"max-width:900px;\"/>"}
+			if(Hlen==retlen)
+			{sql.des=IH.join("<br/>");html=html.replace("{id=des}",sql.des);sql.des=sql.des.replace(/'/ig,"''");insertTempproduct();}
+		}
+	}
+	function insertTempproduct(){
+		if(R.arr[2]<=R.arr[3])
+		{
+			html+=R.arr[1]
+			$("#gather").html(R.arr[0]);
+			R.arr=Review(R.id,R.obj,(R.arr[2]+1))
+			t=setTimeout("insertTempproduct();",500);
+		}
+		else
+		{
+			if(retlen) html+=insertAll()
+			html=$.ajax({type:"POST",url:"exe.html?"+Math.random(),data:{data:escape(html)},async:false}).responseText;
+			if(html.indexOf("sql语句错误")!=-1)
+			{
+				clearTimeout(t);alert("采集出错，请与管理员联系。")
+				$("#gather").text(html);
+			}
+			else
+			{
+				html+="<script>t=setTimeout(\"location.reload();\",500);</"+"script>"
+				html+="<tr><td colspan=\"2\">暂停1秒后，即将采集下一页</td></tr>";
+				$("#gather").html(html);
+			}
+		}
+	}
+	function insertAll(){ 
+		let props1="",props2="",insert,select1,str; 
+		sql.from='aliexpress'
+		for (let p in sql){
+			props1+=",:"+p;
+			if("|price|type|isImageDynamic|weight|length|width|height|deliveryTime|fromID|".indexOf("|"+p+"|")>0)
+			{props2+=","+sql[p];}
+			else
+			{
+				props2+=",'"+(sql[p].toString()).replace(/\'/g,"''")+"'";
+			}
+		}
+		select1="select top 1 * from @.tempproduct where @.fromID="+sql.fromID+" and @.from='aliexpress'"
+		insert="insert into @.tempproduct("+props1.substr(1)+")values("+props2.substr(1)+")"
+		str="<pres>\
+				{if \"Fun(Db("+select1+",count))\"==\"\"}\
+					<tr><td nowrap=\"nowrap\" class=\"label\">采集状态：</td><td>采集成功<r: tag=\"sql\">"+insert+"</r:></td></tr>\
+				<else/>\
+					<tr><td nowrap=\"nowrap\" class=\"label\">采集状态：</td><td>已存在，不采集----"+select1+"</td></tr>\
+				</if>\
+				</pres>"
+		return str
+	}
+	</script>
+<table class="tb" id="gather"><tr align="center"><td><img src='<.Path/>admin/img/loading.gif' align='absmiddle'/><td></tr></table>
+

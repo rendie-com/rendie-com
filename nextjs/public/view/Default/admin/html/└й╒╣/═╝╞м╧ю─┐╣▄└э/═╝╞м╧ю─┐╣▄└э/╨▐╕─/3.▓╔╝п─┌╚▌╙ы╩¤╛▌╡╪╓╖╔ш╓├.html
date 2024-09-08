@@ -1,0 +1,517 @@
+
+	<r:type where=" where @.from='rendie' and @.id=<.arr(3)/> order by @.sort asc" size=1>
+		<r:type where=" where @.from='rendie' and @.upid='<:upid/>' order by @.sort asc" size=10>
+		<:id Fun="Fun(AddAttr(type$i,$1))"/>
+		</r:type>
+	</r:type>
+	<script type="text/javascript">
+		<r:gatherURL size=1 where=" where @.id=Fun(arr(4))">
+		let obj=[gatherURL:code]
+		</r:gatherURL>
+	let Gtype
+
+	$(function(){
+		let URL,htmlcode,html,clsAB="",clsABD="",pic2AB="",pic2ABD="",noteAB="",noteABD="",attributeAB="",attributeABD="",keysAB="",keysABD="",priceAB="",priceABD="",desAB="",desABD="",desmode1="",desmode0="",attributemode0="",attributemode1="",attributemode2="",attributemode3="",typemode0d="",attributeSTR="",desmodeR
+		URL=returnURL(obj)
+		htmlcode=$.ajax({type:"POST",url:"exe.html?"+Math.random(),data:{data:escape("{"+"Fun(WebRequestGet("+URL+"))}")},async:false}).responseText;
+		htmlcode=htmlcode.replace(/\<\/textarea\>/ig,"&lt;/textarea&gt;");
+		if(obj.typemode=="1"){typemode0d='style="display:none"'}
+		if(obj.clsA+obj.clsB){clsAB='checked="checked"'}else{clsABD='style="display:none"'}
+		if(obj.pic2A+obj.pic2B){pic2AB='checked="checked"'}else{pic2ABD='style="display:none"'}
+		if(obj.noteA+obj.noteB){noteAB='checked="checked"'}else{noteABD='style="display:none"'}
+		if(obj.attributeA+obj.attributeB){attributeAB='checked="checked"'}else{attributeABD='style="display:none"'}
+		if(obj.keysA+obj.keysB){keysAB='checked="checked"'}else{keysABD='style="display:none"'}
+		if(obj.priceA+obj.priceB){priceAB='checked="checked"'}else{priceABD='style="display:none"'}
+		if(obj.desA+obj.desB){desAB='checked="checked"'}else{desABD='style="display:none"'}
+		if(obj.desmode=="1"){desmode1='checked="checked"'}else{desmode0='checked="checked"'}
+		if(obj.desmodeR=="1")desmodeR='checked="checked"'
+		switch(obj.attributemode)
+		{
+			case "0":attributemode0='checked="checked"';break;
+			case "1":attributemode1='checked="checked"';break;
+			case "2":
+				let reg
+				attributemode2='checked="checked"';
+				Gtype=StrSlice(htmlcode,obj.typeA,obj.typeB);
+				attributeSTR=typestr();
+				if(attributeSTR.indexOf("sql语句错误")>-1){alert("采集出错，请与管理员联系。");document.write(attributeSTR);}
+				attributeSTR='\
+					<tr id="namebody">\
+						<td class="label" nowrap="nowrap">商品SKU属性：</td>\
+						<td>\
+							<table class="tb2">\
+								<tr>\
+									<th colspan="3" style="text-align:left">获取商品属性方式：\
+										<input type="radio" name="attributemode" value="0" '+attributemode0+' id="attributemode-0"><label for="attributemode-0">不采集分类属性</label>\
+										<input type="radio" name="attributemode" value="1" '+attributemode1+' id="attributemode-1"><label for="attributemode-1">以【内部分类属性】为标准</label>\
+										<input type="radio" name="attributemode" value="2" '+attributemode2+' id="attributemode-2"><label for="attributemode-2">以【速卖通分类属性】为标准</label>\
+										<input type="radio" name="attributemode" value="3" '+attributemode3+' id="attributemode-3"><label for="attributemode-3">以【敦煌网分类属性】为标准</label>\
+									</th>\
+								</tr>\
+								<tr align="center"><td>说明</td><td>截取开始位置</td><td>截取结束位置</td></tr>\
+								<tr align="center"><td>价格组</td><td><textarea id="skuPriceA" rows="3" cols="50">'+obj.skuPriceA+'</textarea></td><td><textarea id="skuPriceB" rows="3" cols="50">'+obj.skuPriceB+'</textarea></td></tr>\
+								<tr align="center"><td>库存组</td><td><textarea id="skuInventoryA" rows="3" cols="50">'+obj.skuInventoryA+'</textarea></td><td><textarea id="skuInventoryB" rows="3" cols="50">'+obj.skuInventoryB+'</textarea></td></tr>\
+								<tr align="center"><td>图片组对应的名称</td><td><textarea id="skuImgNameA" rows="3" cols="50">'+obj.skuImgNameA+'</textarea></td><td><textarea id="skuImgNameB" rows="3" cols="50">'+obj.skuImgNameB+'</textarea></td></tr>\
+								<tr align="center"><td>图片组</td><td><textarea id="skuImgA" rows="3" cols="50">'+obj.skuImgA+'</textarea></td><td><textarea id="skuImgB" rows="3" cols="50">'+obj.skuImgB+'</textarea></td></tr>\
+								<tr align="center"><td>二次截取图片组</td><td><textarea id="skuImg2A" rows="3" cols="50">'+obj.skuImg2A+'</textarea></td><td><textarea id="skuImg2B" rows="3" cols="50">'+obj.skuImg2B+'</textarea></td></tr>\
+							</table>\
+						</td>\
+					</tr>\
+					<tr>\
+					<td class="label">商品系统属性：</td>\
+					<td>\
+						<table class="tb2"><tr><th nowrap="nowrap">ID/属性名/英文</th><th>SKU</th><th>截取属性开始</th><th>截取属性结束</th><th>显示方式</th><th>取值范围</th></tr>'+attributeSTR+'</table>\
+					</td>\
+					</tr>'
+				let skuattr=obj.skuattr
+				for(let i=0;i<skuattr.length;i++)
+				{
+					attributeSTR=attributeSTR.replace("{attr"+(i+1)+"A}",skuattr[i].A);
+					attributeSTR=attributeSTR.replace("{attr"+(i+1)+"B}",skuattr[i].B);
+				}
+				break;
+			case "3":attributemode3='checked="checked"';break;
+			default:break;
+		}
+		html='\
+				<tbody>\
+					<tr><td class="label">采集地址：</td><td><a href="'+URL+'" target="_blank">'+URL+'</a></td></tr>\
+					<tr id="htmltable">\
+						<td class="label">显示源码：</td><td><textarea id="htmlcode" style="width:800px;height:200px;font-family:Fixedsys" wrap="off" readonly>'+htmlcode+'</textarea>\
+						</td>\
+					</tr>\
+					<tr>\
+						<td class="label">可选采集字段</td>\
+						<td>\
+							<input type="checkbox" class="checkbox" name="fields" id="cls" value="cls" onClick="if(this.checked){show(\'autoclsbody\')}else{hide(\'autoclsbody\')}" '+clsAB+'/>\
+							<label for="cls">分类</label>\
+							<input type="checkbox" class="checkbox" name="fields" id="piccheckbox" value="pic2" onClick="if(this.checked){show(\'pic2body\')}else{hide(\'pic2body\')}" '+pic2AB+'/>\
+							<label for="piccheckbox">图片</label>\
+							<input type="checkbox" class="checkbox" name="fields" id="note" value="note" onClick="if(this.checked){show(\'notebody\')}else{hide(\'notebody\')}" '+noteAB+'/>\
+							<label for="note">备注</label>\
+							<input type="checkbox" class="checkbox" name="fields" id="attribute" value="attribute" onClick="if(this.checked){show(\'attributebody\')}else{hide(\'attributebody\')}" '+attributeAB+'/>\
+							<label for="attribute">商品属性</label>\
+							<input type="checkbox" class="checkbox" name="fields" id="keys" value="keys" onClick="if(this.checked){show(\'keysbody\')}else{hide(\'keysbody\')}" '+keysAB+'/>\
+							<label for="keys">关键词</label>\
+							<input type="checkbox" class="checkbox" name="fields" id="price" value="price" onClick="if(this.checked){show(\'pricebody\')}else{hide(\'pricebody\')}" '+priceAB+'/>\
+							<label for="des">价格</label>\
+							<input type="checkbox" class="checkbox" name="fields" id="des" value="des" onClick="if(this.checked){show(\'desbody\')}else{hide(\'desbody\')}" '+desAB+'/>\
+							<label for="des">介绍</label>\
+						</td>\
+					</tr>\
+				</tbody>\
+				<tr id="typebody" '+typemode0d+'>\
+						<td class="label">分类ID：</td>\
+						<td>\
+							<table class="tb2">\
+								<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+								<tr><td><textarea id="typeA" rows="3" cols="50">'+obj.typeA+'</textarea></td><td><textarea id="typeB" rows="3" cols="50">'+obj.typeB+'</textarea></td></tr>\
+							</table>\
+						</td>\
+				</tr>\
+				<tr id="namebody">\
+						<td class="label">标题：</td>\
+						<td>\
+							<table class="tb2">\
+								<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+								<tr><td><textarea id="nameA" rows="3" cols="50">'+obj.nameA+'</textarea></td><td><textarea id="nameB" rows="3" cols="50">'+obj.nameB+'</textarea></td></tr>\
+							</table>\
+						</td>\
+				</tr>\
+				<tr>\
+					<td class="label">商品ID：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="productIDA" rows="3" cols="50">'+obj.productIDA+'</textarea></td><td><textarea id="productIDB" rows="3" cols="50">'+obj.productIDB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr id="pricebody" '+priceABD+'>\
+					<td class="label">价格：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="priceA" rows="3" cols="50">'+obj.priceA+'</textarea></td><td><textarea id="priceB" rows="3" cols="50">'+obj.priceB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr>\
+					<td class="label">单位：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="unitA" rows="3" cols="50">'+obj.unitA+'</textarea></td><td><textarea id="unitB" rows="3" cols="50">'+obj.unitB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr>\
+					<td class="label">单重量：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="weightA" rows="3" cols="50">'+obj.weightA+'</textarea></td><td><textarea id="weightB" rows="3" cols="50">'+obj.weightB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr id="notebody" '+noteABD+'>\
+					<td class="label">备注：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="noteA" rows="3" cols="50">'+obj.noteA+'</textarea></td><td><textarea id="noteB" rows="3" cols="50">'+obj.noteB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr id="attributebody" '+attributeABD+'>\
+					<td class="label">备注：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="attributeA" rows="3" cols="50">'+obj.attributeA+'</textarea></td><td><textarea id="attributeB" rows="3" cols="50">'+obj.attributeB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr>\
+					<td class="label">备货期：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="deliveryTimeA" rows="3" cols="50">'+obj.deliveryTimeA+'</textarea></td><td><textarea id="deliveryTimeB" rows="3" cols="50">'+obj.deliveryTimeB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr>\
+					<td class="label">备货期：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="lotNumA" rows="3" cols="50">'+obj.lotNumA+'</textarea></td><td><textarea id="lotNumB" rows="3" cols="50">'+obj.lotNumB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr>\
+					<td class="label">关键词：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="keysA" rows="3" cols="50">'+obj.keysA+'</textarea></td><td><textarea id="keysB" rows="3" cols="50">'+obj.keysB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr>\
+					<td class="label">关键词一：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="keys1A" rows="3" cols="50">'+obj.keys1A+'</textarea></td><td><textarea id="keys1B" rows="3" cols="50">'+obj.keys1B+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr>\
+					<td class="label">关键词二：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="keys2A" rows="3" cols="50">'+obj.keys2A+'</textarea></td><td><textarea id="keys2B" rows="3" cols="50">'+obj.keys2B+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr>\
+					<td class="label">长：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="lengthA" rows="3" cols="50">'+obj.lengthA+'</textarea></td><td><textarea id="lengthB" rows="3" cols="50">'+obj.lengthB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr>\
+					<td class="label">宽：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="widthA" rows="3" cols="50">'+obj.widthA+'</textarea></td><td><textarea id="widthB" rows="3" cols="50">'+obj.widthB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr>\
+					<td class="label">高：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="heightA" rows="3" cols="50">'+obj.heightA+'</textarea></td><td><textarea id="heightB" rows="3" cols="50">'+obj.heightB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr>\
+					<td class="label">备货期：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left">截取开始位置:</th><th style="text-align:left">截取结束位置:</th></tr>\
+							<tr><td><textarea id="deliveryTimeA" rows="3" cols="50">'+obj.deliveryTimeA+'</textarea></td><td><textarea id="deliveryTimeB" rows="3" cols="50">'+obj.deliveryTimeB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr>\
+					<td class="label">放大镜图：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th>说明</th><th>截取开始位置</th><th>截取结束位置</th></tr>\
+							<tr align="center"><td>首张</td><td><textarea id="picA" rows="3" cols="50">'+obj.picA+'</textarea></td><td><textarea id="picB" rows="3" cols="50">'+obj.picB+'</textarea></td></tr>\
+							<tr align="center"><td>图片组列表</td><td><textarea id="PicListA" rows="3" cols="50">'+obj.PicListA+'</textarea></td><td><textarea id="PicListB" rows="3" cols="50">'+obj.PicListB+'</textarea></td></tr>\
+							<tr align="center"><td>小图</td><td><textarea id="PicSmallA" rows="3" cols="50">'+obj.PicSmallA+'</textarea></td><td><textarea id="PicSmallB" rows="3" cols="50">'+obj.PicSmallB+'</textarea></td></tr>\
+							<tr align="center"><td>中图</td><td colspan="2">从小图中查找<input type="text" id="PicCentreA" value="'+obj.PicCentreA+'" size=40/>替换<input type="text" id="PicCentreB" value="'+obj.PicCentreB+'" size=40/>做为中图</td></tr>\
+							<tr align="center"><td>大图</td><td colspan="2">从小图中查找<input type="text" id="PicBigA" value="'+obj.PicBigA+'" size=40/>替换<input type="text" id="PicBigB" value="'+obj.PicBigB+'" size=40/>做为大图</td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr id="desbody" '+desABD+'>\
+					<td class="label">正文：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th style="text-align:left" colspan="3">获取正文方式:<input type="radio" name="desmode" value="0" '+desmode0+' id="desmode-0"><label for="desmode-0">在该页获取</label><input type="radio" name="desmode" value="1" '+desmode1+' id="desmode-1"><label for="desmode-1">在基它页获取</label><input type="checkbox" value="1" id="desmodeR" '+desmodeR+'/><label for="desmodeR">只要正文中的图片且高度大于200px且宽大于450px且不要链接中的图片</label></th></tr>\
+							<tr align="center"><td>说明</td><td>截取开始位置</td><td>截取结束位置</td></tr>\
+							<tr align="center"><td>正文</td><td><textarea id="desA" rows="3" cols="50">'+obj.desA+'</textarea></td><td><textarea id="desB" rows="3" cols="50">'+obj.desB+'</textarea></td></tr>\
+							<tr align="center"><td>基它页的链接</td><td colspan="2" align="left"><input type="text" size=130 id="DesLink" value="'+obj.DesLink+'"/>&nbsp;变量<font color="red">{$ID}</font></td></tr>\
+							<tr align="center"><td>说明</td><td>截取开始位置</td><td>截取结束位置</td></tr>\
+							<tr align="center"><td>其它页</td><td><textarea id="des2A" rows="3" cols="50">'+obj.des2A+'</textarea></td><td><textarea id="des2B" rows="3" cols="50">'+obj.des2B+'</textarea></td></tr>\
+							<tr align="center"><td>链接替换</td><td colspan="2" align="left"><input type="text" size=100 id="ReplaceDesLink" value="'+obj.ReplaceDesLink+'"/></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+			'+attributeSTR+'\
+				<tr>\
+					<td class="label">自定义属性：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr><th>说明</th><th>截取开始位置</th><th>截取结束位置</th></tr>\
+							<tr><td>列表</td><td><textarea id="PropertysListA" rows="3" cols="50">'+obj.PropertysListA+'</textarea></td><td><textarea id="PropertysListB" rows="3" cols="50">'+obj.PropertysListB+'</textarea></td></tr>\
+							<tr><td>左边</td><td><textarea id="PropertysLeftA" rows="3" cols="50">'+obj.PropertysLeftA+'</textarea></td><td><textarea id="PropertysLeftB" rows="3" cols="50">'+obj.PropertysLeftB+'</textarea></td></tr>\
+							<tr><td>右边</td><td><textarea id="PropertysRightA" rows="3" cols="50">'+obj.PropertysRightA+'</textarea></td><td><textarea id="PropertysRightB" rows="3" cols="50">'+obj.PropertysRightB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+				<tr>\
+					<td class="label">产品评论：</td>\
+					<td>\
+						<table class="tb2">\
+							<tr align="center"><th>说明</th><th>截取开始位置</th><th>截取结束位置</th></tr>\
+							<tr align="center"><td>变量</td><td><textarea id="reviewIA" rows="3" cols="50">'+obj.review.IA+'</textarea></td><td><textarea id="reviewIB" rows="3" cols="50">'+obj.review.IB+'</textarea></td></tr>\
+							<tr align="center"><td>基它页的链接</td><td colspan="2" align="left"><input type="text" size=130 id="reviewLink" value="'+obj.review.Link+'"/><font color="red">{$变量}</font>;<font color="red">{$页码}</font>;</td></tr>\
+							<tr align="center"><td>总页数</td><td><textarea id="reviewPageTotalA" rows="3" cols="50">'+obj.review.PageTotalA+'</textarea></td><td><textarea id="reviewPageTotalB" rows="3" cols="50">'+obj.review.PageTotalB+'</textarea></td></tr>\
+							<tr align="center"><td>用户名</td><td><textarea id="reviewNameA" rows="3" cols="50">'+obj.review.NameA+'</textarea></td><td><textarea id="reviewNameB" rows="3" cols="50">'+obj.review.NameB+'</textarea></td></tr>\
+							<tr align="center"><td>国家代码</td><td><textarea id="reviewCountryCodeA" rows="3" cols="50">'+obj.review.CountryCodeA+'</textarea></td><td><textarea id="reviewCountryCodeB" rows="3" cols="50">'+obj.review.CountryCodeB+'</textarea></td></tr>\
+							<tr align="center"><td>国家</td><td><textarea id="reviewCountryNameA" rows="3" cols="50">'+obj.review.CountryNameA+'</textarea></td><td><textarea id="reviewCountryNameB" rows="3" cols="50">'+obj.review.CountryNameB+'</textarea></td></tr>\
+							<tr align="center"><td>等级</td><td><textarea id="reviewRankA" rows="3" cols="50">'+obj.review.RankA+'</textarea></td><td><textarea id="reviewRankB" rows="3" cols="50">'+obj.review.RankB+'</textarea></td></tr>\
+							<tr align="center"><td>单价</td><td><textarea id="reviewPriceA" rows="3" cols="50">'+obj.review.PriceA+'</textarea></td><td><textarea id="reviewPriceB" rows="3" cols="50">'+obj.review.PriceB+'</textarea></td></tr>\
+							<tr align="center"><td>数量</td><td><textarea id="reviewQuantityA" rows="3" cols="50">'+obj.review.QuantityA+'</textarea></td><td><textarea id="reviewQuantityB" rows="3" cols="50">'+obj.review.QuantityB+'</textarea></td></tr>\
+							<tr align="center"><td>单位</td><td><textarea id="reviewUnitA" rows="3" cols="50">'+obj.review.UnitA+'</textarea></td><td><textarea id="reviewUnitB" rows="3" cols="50">'+obj.review.UnitB+'</textarea></td></tr>\
+							<tr align="center"><td>每包数量</td><td><textarea id="reviewLotNumA" rows="3" cols="50">'+obj.review.LotNumA+'</textarea></td><td><textarea id="reviewLotNumB" rows="3" cols="50">'+obj.review.LotNumB+'</textarea></td></tr>\
+							<tr align="center"><td>星级</td><td><textarea id="reviewStarA" rows="3" cols="50">'+obj.review.StarA+'</textarea></td><td><textarea id="reviewStarB" rows="3" cols="50">'+obj.review.StarB+'</textarea></td></tr>\
+							<tr align="center"><td>日期</td><td><textarea id="reviewDateA" rows="3" cols="50">'+obj.review.DateA+'</textarea></td><td><textarea id="reviewDateB" rows="3" cols="50">'+obj.review.DateB+'</textarea></td></tr>\
+							<tr align="center"><td>买家反馈</td><td><textarea id="reviewBuyerFeedbackA" rows="3" cols="50">'+obj.review.BuyerFeedbackA+'</textarea></td><td><textarea id="reviewBuyerFeedbackB" rows="3" cols="50">'+obj.review.BuyerFeedbackB+'</textarea></td></tr>\
+							<tr align="center"><td>供应商的回复</td><td><textarea id="reviewSupplierReplyA" rows="3" cols="50">'+obj.review.SupplierReplyA+'</textarea></td><td><textarea id="reviewSupplierReplyB" rows="3" cols="50">'+obj.review.SupplierReplyB+'</textarea></td></tr>\
+							<tr align="center"><td>买方的答复</td><td><textarea id="reviewBuyerReplyA" rows="3" cols="50">'+obj.review.BuyerReplyA+'</textarea></td><td><textarea id="reviewBuyerReplyB" rows="3" cols="50">'+obj.review.BuyerReplyB+'</textarea></td></tr>\
+							<tr align="center"><td>顶</td><td><textarea id="reviewDiggUpA" rows="3" cols="50">'+obj.review.DiggUpA+'</textarea></td><td><textarea id="reviewDiggUpB" rows="3" cols="50">'+obj.review.DiggUpB+'</textarea></td></tr>\
+							<tr align="center"><td>踩</td><td><textarea id="reviewDiggDownA" rows="3" cols="50">'+obj.review.DiggDownA+'</textarea></td><td><textarea id="reviewDiggDownB" rows="3" cols="50">'+obj.review.DiggDownB+'</textarea></td></tr>\
+						</table>\
+					</td>\
+				</tr>\
+			<tr>\
+				<td class="label"></td>\
+				<td>\
+					<input type="button" class="pn" name="back" value="返回上一步" onClick="prestep()"/>\
+					<input type="button" class="pn" id="next" value="下一步" onClick="nextstep()"/>\
+				</td>\
+			</tr>\
+			'
+		$("#step3").html(html)
+	});
+	function returnURL(obj){
+		let reverse,URL,pageset,htmlcode
+		URL=obj.pageurl1
+		pageset=obj.pageset
+		if(pageset=="1")
+		{
+			if(obj.reverse=="0"){reverse=obj.istart}else{reverse=obj.iend}
+			URL=URL.replace(/\{\$ID\}/,reverse);
+			htmlcode=$.ajax({type:"POST",url:"exe.html?"+Math.random(),data:{data:escape("{"+"Fun(WebRequestGet("+URL+"))}")},async:false}).responseText;
+			htmlcode=htmlcode.replace(/\<\/textarea\>/ig,"&lt;/textarea&gt;");
+			if(obj.typemode=="1"){Gtype=StrSlice(htmlcode,obj.typeA,obj.typeB);}//获取分类ID方式
+			htmlcode=StrSlice(htmlcode,obj.listA,obj.listB);
+			if(htmlcode===false){if(!confirm("截取 列表开始~数据列表结束 失败\n\n点[确定]忽略这错误提示，[取消]返回修改")){return;}}
+		  htmlcode=StrSlice(htmlcode,obj.mlinkA,obj.mlinkB);
+		  if(htmlcode===false){if(!confirm("截取 链接开始~数据链接结束 失败\n\n点[确定]忽略这错误提示，[取消]返回修改")){return;}}
+			URL=htmlcode
+		}
+		else if(pageset=="2")
+		{
+			let arr=(obj.pageurl2).split("\n")
+			if(obj.reverse=="0"){reverse=0}else{reverse=arr.length-1}
+			URL=arr[reverse];
+		}
+		else if(pageset=="3")
+		{
+			let arr=(obj.pageurlarticle).split("\n")
+			if(obj.reverse=="0"){reverse=0}else{reverse=arr.length-1}
+			URL=arr[reverse];
+		}
+		return URL
+	}
+	function StrSlice(Str,sStr,eStr){
+		if(eStr=='') return false;
+		let tStr=Str.toLowerCase(),iPos=tStr.indexOf(sStr.toLowerCase()),sLen=sStr.length;
+		if(iPos==-1) return false;
+		iPos=sLen>0 ? iPos+sLen : 0;
+		return Str.substr(iPos,tStr.slice(iPos).indexOf(eStr.toLowerCase()));
+	}
+	function nextstep(){
+		let html,nameA,clsA,clsB,noteA,noteB,keysA,keysB,attributeA,attributeB,pic2A,pic2B,priceA,priceB,desA,desB,ReplaceDesLink,PicListA,PicListB,PicSmallA,PicSmallB,PicCentreA,PicCentreB,PicCentreRA,PicCentreRB,PicBigA,PicBigB,PicBigRA,PicBigRB,des2A,des2B,DesLink,productIDA,productIDB,attributemode,typeA,typeB,skuPriceA,skuPriceB,skuInventoryA,skuInventoryB,desmodeR
+		attributemode=$("[name='attributemode']:checked").val();
+		desmodeR=$("#desmodeR:checked").val();
+		if(!desmodeR)desmodeR="0"
+		skuPriceA=$("#skuPriceA").val();skuPriceB=$("#skuPriceB").val()
+		skuInventoryA=$("#skuInventoryA").val();skuInventoryB=$("#skuInventoryB").val()
+		typeA=$("#typeA").val();typeB=$("#typeB").val()
+		nameA=$("#nameA").val();nameB=$("#nameB").val()
+		productIDA=$("#productIDA").val();productIDB=$("#productIDB").val()
+		clsA=$("#clsA").val();clsB=$("#clsB").val()
+		pic2A=$("#pic2A").val();pic2B=$("#pic2B").val()
+		keysA=$("#keysA").val();keysB=$("#keysB").val()
+		attributeA=$("#attributeA").val();attributeB=$("#attributeB").val()
+		priceA=$("#priceA").val();priceB=$("#priceB").val()
+		desA=$("#desA").val();desB=$("#desB").val()
+		ReplaceDesLink=$("#ReplaceDesLink").val();
+		PicListA=$("#PicListA").val();PicListB=$("#PicListB").val()
+		PicSmallA=$("#PicSmallA").val();PicSmallB=$("#PicSmallB").val()
+		PicCentreA=$("#PicCentreA").val();PicCentreB=$("#PicCentreB").val()
+		PicCentreRA=$("#PicCentreRA").val();PicCentreRB=$("#PicCentreRB").val()
+		PicBigA=$("#PicBigA").val();PicBigB=$("#PicBigB").val()
+		PicBigRA=$("#PicBigRA").val();PicBigRB=$("#PicBigRB").val()
+		des2A=$("#des2A").val();des2B=$("#des2B").val();DesLink=$("#DesLink").val();
+		obj.review=review()
+		obj.skuattr=skuattr()
+		obj.desmodeR=desmodeR;
+		obj.skuPriceA=skuPriceA;obj.skuPriceB=skuPriceB
+		obj.skuInventoryA=skuInventoryA;obj.skuInventoryB=skuInventoryB
+		obj.skuImgA=$("#skuImgA").val();obj.skuImgB=$("#skuImgB").val()
+		obj.skuImgNameA=$("#skuImgNameA").val();obj.skuImgNameB=$("#skuImgNameB").val()
+		obj.PropertysListA=$("#PropertysListA").val();obj.PropertysListB=$("#PropertysListB").val()
+		obj.PropertysLeftA=$("#PropertysLeftA").val();obj.PropertysLeftB=$("#PropertysLeftB").val()
+		obj.PropertysRightA=$("#PropertysRightA").val();obj.PropertysRightB=$("#PropertysRightB").val()
+		obj.skuImg2A=$("#skuImg2A").val();obj.skuImg2B=$("#skuImg2B").val()
+		obj.picA=$("#picA").val();obj.picB=$("#picB").val()
+		obj.unitA=$("#unitA").val();obj.unitB=$("#unitB").val()
+		obj.deliveryTimeA=$("#deliveryTimeA").val();obj.deliveryTimeB=$("#deliveryTimeB").val()
+		obj.lotNumA=$("#lotNumA").val();obj.lotNumB=$("#lotNumB").val()
+		obj.keys1A=$("#keys1A").val();obj.keys1B=$("#keys1B").val()
+		obj.keys2A=$("#keys2A").val();obj.keys2B=$("#keys2B").val()
+		obj.weightA=$("#weightA").val();obj.weightB=$("#weightB").val()
+		obj.lengthA=$("#lengthA").val();obj.lengthB=$("#lengthB").val()
+		obj.widthA=$("#widthA").val();obj.widthB=$("#widthB").val()
+		obj.heightA=$("#heightA").val();obj.heightB=$("#heightB").val()
+		obj.deliveryTimeA=$("#deliveryTimeA").val();obj.deliveryTimeB=$("#deliveryTimeB").val()
+		obj.typeA=typeA;obj.typeB=typeB
+		obj.nameA=nameA;obj.nameB=nameB
+		obj.productIDA=productIDA;obj.productIDB=productIDB
+		obj.clsA=clsA;obj.clsB=clsB
+		obj.pic2A=pic2A;obj.pic2B=pic2B
+		obj.keysA=keysA;obj.keysB=keysB
+		obj.attributeA=attributeA;obj.attributeB=attributeB
+		obj.priceA=priceA;obj.priceB=priceB
+		obj.desA=desA;obj.desB=desB
+		obj.ReplaceDesLink=ReplaceDesLink;
+		obj.PicListA=PicListA;obj.PicListB=PicListB
+		obj.PicSmallA=PicSmallA;obj.PicSmallB=PicSmallB
+		obj.PicCentreA=PicCentreA;obj.PicCentreB=PicCentreB
+		obj.PicCentreRA=PicCentreRA;obj.PicCentreRB=PicCentreRB
+		obj.PicBigA=PicBigA;obj.PicBigB=PicBigB
+		obj.PicBigRA=PicBigRA;obj.PicBigRB=PicBigRB
+		obj.des2A=des2A;obj.des2B=des2B;obj.DesLink=DesLink
+		obj.attributemode=attributemode
+		html="{ren"+"die:area tag=\"sql\">update @.gatherURL set @.code='"+(JSON.stringify(obj)).replace(/'/ig, "''")+"' where @.id=<.arr(4)/>{/ren"+"die:area/>"
+		html=$.ajax({type:"POST",url:"exe.html?"+Math.random(),data:{data:escape(html)},async:false}).responseText;
+		location.href="<.arr(1)/>/list/<:attr(type4)/>/{r:arr(4)/>.html?"+Math.random()
+	}
+	function review(){
+		let obj=Object()
+		obj.IA=$("#reviewIA").val()
+		obj.IB=$("#reviewIB").val()
+		obj.Link=$("#reviewLink").val()
+		obj.PageTotalA=$("#reviewPageTotalA").val()
+		obj.PageTotalB=$("#reviewPageTotalB").val()
+		obj.NameA=$("#reviewNameA").val();obj.NameB=$("#reviewNameB").val()
+		obj.CountryCodeA=$("#reviewCountryCodeA").val();obj.CountryCodeB=$("#reviewCountryCodeB").val()
+		obj.CountryNameA=$("#reviewCountryNameA").val();obj.CountryNameB=$("#reviewCountryNameB").val()
+		obj.RankA=$("#reviewRankA").val();obj.RankB=$("#reviewRankB").val()
+		obj.PriceA=$("#reviewPriceA").val();obj.PriceB=$("#reviewPriceB").val()
+		obj.QuantityA=$("#reviewQuantityA").val();obj.QuantityB=$("#reviewQuantityB").val()
+		obj.UnitA=$("#reviewUnitA").val();obj.UnitB=$("#reviewUnitB").val()
+		obj.LotNumA=$("#reviewLotNumA").val();obj.LotNumB=$("#reviewLotNumB").val()
+		obj.StarA=$("#reviewStarA").val();obj.StarB=$("#reviewStarB").val()
+		obj.DateA=$("#reviewDateA").val();obj.DateB=$("#reviewDateB").val()
+		obj.BuyerFeedbackA=$("#reviewBuyerFeedbackA").val();obj.BuyerFeedbackB=$("#reviewBuyerFeedbackB").val()
+		obj.SupplierReplyA=$("#reviewSupplierReplyA").val();obj.SupplierReplyB=$("#reviewSupplierReplyB").val()
+		obj.BuyerReplyA=$("#reviewBuyerReplyA").val();obj.BuyerReplyB=$("#reviewBuyerReplyB").val()
+		obj.DiggUpA=$("#reviewDiggUpA").val();obj.DiggUpB=$("#reviewDiggUpB").val()
+		obj.DiggDownA=$("#reviewDiggDownA").val();obj.DiggDownB=$("#reviewDiggDownB").val()
+		return obj
+	}
+	function skuattr(){
+		let attr=[],i=0,val
+	  $("[name='attr']").each(function(){
+			val=$(this).attr("var")
+			attr[i]=Object()
+			attr[i].A=$(this).val()
+			attr[i].B=$("#attr"+val+"B").val()
+			i++
+		})
+		return attr
+	}
+	function prestep(){
+		if(confirm("确实要离开该页面吗？\n\n这将会导致规则页面上未保存的数据丢失，确定？\n\n按\"确定\"继续，或按\"取消\"留在当前页面。")){history.go(-1);}
+	}
+	function show()
+	{
+	  let arg=arguments;
+	  for(let i=0;i<arg.length;i++)
+	  {
+		S(arg[i]).style.display="";
+	  }
+	}
+	function hide()
+	{
+	  let arg=arguments;
+	  for(let i=0;i<arg.length;i++)
+	  {
+		S(arg[i]).style.display="none";
+	  }
+	}
+	function extend(des, src, override){
+		/*
+			let a ={"a":"1","d":"2"}
+			let b ={"c":"3","d":"4","e":"5"}
+			let c = extend(a,b);
+			alert(JSON.stringify(c));
+		*/
+		 if(src instanceof Array){
+				 for(let i = 0, len = src.length; i < len; i++)extend(des, src[i], override);
+		 }
+		 for( let i in src){if(override || !(i in des)){des[i] = src[i];}} 
+		 return des;
+	}
+	</script>
+<table class="tb">
+	<tr class="thead"><td colspan="2">使用采集规则向导生成采集规则文件</td></tr>
+	<tr align="center">
+		<td colspan="2">
+			<font id="stephit1">１. 设置基本参数</font>&nbsp;&nbsp;
+			<font id="stephit2">２. 采集列表连接设置</font>&nbsp;&nbsp;
+			<font id="stephit3" color="red">３. 采集内容与数据地址设置</font>&nbsp;&nbsp;
+			<font id="stephit4">４. 预览结果</font>    
+		</td>
+	</tr>
+	<tbody id="step3"></tbody>
+</table>
+

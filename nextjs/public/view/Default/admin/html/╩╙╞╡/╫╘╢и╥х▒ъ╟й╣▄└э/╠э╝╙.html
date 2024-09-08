@@ -1,0 +1,28 @@
+<div class="m-2 shadow p-2 bg-white rounded">
+  <load admin/html/头部.html/>
+  <form action="/<.Config(admin)/>/ajax/admin_template.aspx/SelfLabelAddSave.html" method="post" >
+    <table class="tb">
+      <TR>
+        <TD align="right"width="11%" >自定义标签名称：</TD>
+        <TD width="89%" ><input type="text" size="50" name="pre_name" />
+          (请填写英文字母或数字)<font color="red">＊</font></TD>
+      </TR>
+      <TR>
+        <TD align="right">自定义标签描述：</TD>
+        <TD ><input type="text" size="100" name="pre_des" /></TD>
+      </TR>
+      <TR>
+        <TD align="right">自定义标签内容：</TD>
+        <TD><textarea name="pre_content"  cols="100" rows="20" ></textarea>
+          <font color="red">＊</font><br />
+          如果希望同时多个内容随机显示，请使用$$$隔开 </TD>
+      </TR>
+      <TR>
+        <td></td>
+        <TD><input type="submit" value="添加自定义标签" class="pn" />
+          <input type="button" value="返  回"  class="pn" onClick="javascript:history.go(-1)"/></TD>
+      </TR>
+    </table>
+  </form>
+</div>
+<template admin/html/通用模板.html/>

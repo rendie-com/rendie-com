@@ -1,0 +1,41 @@
+<table class="tb">
+  <tr class="thead"><th colspan="7">论坛主题鉴定</th></tr>	
+  <tr>
+    <th>id</th>
+    <th>图片 ID</th>
+    <th>图章名称</th>
+    <th>图片</th>
+    <th>文件名</th>
+    <th>关联图标</th>
+    <th>关联操作</th>
+  </tr>
+  <form name="cpform" action="admin.php?action=misc&operation=stamp">
+  <tr>
+    <td><input class="checkbox" type="checkbox" name="delete[]" value="65"></td>
+    <td><input type="text" class="txt" size="2" name="displayorder[65]" value="0"></td>
+    <td><input type="text" class="txt" size="2" name="code[65]" value="精华"></td>
+    <td><img src="http://localhost/static/image/stamp/001.gif"></td>
+    <td>001.gif</td>
+    <td>
+      <input class="checkbox" type="checkbox" name="stampicon[65]" value="74" />
+      <img class="vmiddle" src="http://localhost/static/image/stamp/001.small.gif">
+    </td>
+    <td>
+    <select name="typeidnew[65]">
+      <option value="0">无</option>
+      <option value="1">置顶</option>
+      <option value="2">精华</option>
+      <option value="3">推荐</option>
+      <option value="4">推送</option>
+    </select>
+    </td>
+  </tr>
+  </form>
+  <tr>
+  <td colspan="7">
+    <input type="button" value="反选" name="chkall" class="pn" onclick="checkAll('prefix', this.form, 'delete')" />
+    <input type="submit" class="pn" id="submit_stampsubmit" name="stampsubmit" title="按 Enter 键可随时提交您的修改" value="提交" />
+  </td>
+  </tr>
+</table>
+

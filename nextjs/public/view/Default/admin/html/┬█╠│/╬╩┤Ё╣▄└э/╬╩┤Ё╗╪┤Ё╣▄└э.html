@@ -1,0 +1,43 @@
+<load admin/html/头部.html/>
+<table class="tb">
+  <tr>
+    <td colspan="7">问答列表管理(<a href="?">所有问题列表</a>&nbsp;|&nbsp;<a href="?action=verifyanswer">审核用户的回答</a>)</td>
+  </tr>
+  <tr>
+    <td>选择</td>
+    <td>问题</td>
+    <td>回答内容</td>
+    <td>回答人</td>
+    <td>回答时间</td>
+    <td>状态</td>
+    <td>管理操作</td>
+  </tr>
+  <form name="myform" id="myform" method="post" action="?">
+  <input type="hidden" name="action" id="action" value="delanswer">
+  <input type="hidden" name="v" id="v" value="0">
+  <tr>
+    <td><input type="checkbox" name="ID" value='180' id="ID-180"><label for="ID-180">180</label></td>
+    <td><a href="../ask/q.aspx?id=85" target="_blank">我来问一个问题</a>
+    <td><a href="javascript:modifyanswer(172);">我要补充一下，希望能采纳意见。</a></td>
+    <td>admin</td>
+    <td>2012/4/1 15:46:43</td>
+    <td><a href="?action=verifyda&v=0&id=172"><font color=green>已审</font></a></td>
+    <td>
+    <a href="?action=verifyda&v=0&id=172">审核</a>
+    &nbsp;|&nbsp;
+    <a href="javascript:modifyanswer(172);">修改</a>
+    &nbsp;|&nbsp;
+    <a href="?action=delanswer&id=172" onClick="return(confirm('确定删除该回答吗？'))">删除</a>
+    </td>
+  </tr>
+  <tr>
+  <td colspan="7">
+     <input type="button" class="pn" value="反选" onclick="checkOthers('input','pre_id')" />  
+    <input class="pn" type="submit" name="submit_button1" value="批量删除" onClick="$('action').value='del';return confirm('您确定执行该操作吗?');">
+    <input type="submit" value="批量审核" class="pn" onClick="$('#action').val('verifyda');$('#v').val(1);return(confirm('确定批量审核吗?'));">
+    <input type="submit" value="批量取消审核" class="pn" onClick="$('#action').val('verifyda');$('#v').val(0);return(confirm('确定批量取消审核吗?'));">
+  </td>
+  </tr>
+  </form>
+</table>
+

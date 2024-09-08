@@ -1,0 +1,25 @@
+{
+  "common":<load product/html/self/ajax_common.js/>,
+  "pro":[
+  	{
+    	"size":52,
+    	"count":<@count/>
+     }
+    <r:pro db="sqlite.aliexpress" where=" where @.<.UnArr(3)/>" size=48 page=5>,
+    {
+      "id":<:id/>,
+      "SaleNum":<:SaleNum/>,
+      "Review":<:Review/>,
+      "Discount":<:Discount/>,
+      "pic1":"<:pic1/>",
+      "name":"<:name tag=js/>",
+      "minprice":<:minprice f=2/>,
+      "maxprice":<:maxprice f=2/>,
+      "keywords":<:keywords tag=json/>,
+      "type":<:type/>,
+      "type1":<:type1/>,
+      "type2":<:type2/>,
+      "type3":<:type3/>
+    }
+    </r:pro>]
+}

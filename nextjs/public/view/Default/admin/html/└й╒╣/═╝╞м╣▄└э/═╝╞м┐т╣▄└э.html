@@ -1,0 +1,33 @@
+  <load admin/html/头部.html/>
+<table class="tb">
+  <tr>
+    <td align="left" colspan="8"><input type="text" id="searchword"  value="<.unarr(7)/>"size="50"onkeydown="javascript:if(event.keyCode==13) productSearch();">
+      <input type="button" id="selectBtn" value="搜 索" class="pn" />
+  </tr>
+  <tr align="center">
+    <td width="70">ID</td>
+    <td>上传前</td>
+    <td>上传后</td>
+    <td>来源</td>
+    <td>图片大小</td>
+    <td>MD5</td>
+    <td>添加时间</td>
+    <td>更新时间</td>
+  </tr>
+ 	<!--查看重复数据 where=" where @.fromMd5 in (select @.fromMd5 from @.images group by @.fromMd5 having count(1)>1) order by @.fromMd5 desc"-->
+  <form method="post" name="photoform">
+    <r:images size=20 page=4 where=" order by @.uptime desc,@.id desc">
+    <tr align="center">
+      <td align="left">[images:id]</td>
+      <td><a href="[images:url]" target="_blank"><img style="margin:2px;padding:1px;border:1px solid #ccc" src="[images:url]" title="点击预览" border="0" width="50" height="50"></a></td>
+      <td><a href="http://www.dhresource.com/[images:fromurl]" target="_blank"><img style="margin:2px;padding:1px;border:1px solid #ccc" src="http://www.dhresource.com/[images:fromurl]" title="点击预览" border="0" width="50" height="50"></a></td>
+      <td>[images:from]</td>
+      <td>[images:size]</td>
+      <td>[images:fromMd5]</td>
+      <td>[images:addtime]</td>
+      <td>[images:uptime]</td>
+    </tr>
+    </r:images>
+  </form>
+</table><.load(admin/html/分页通用.html)/>
+ 

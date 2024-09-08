@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>注：要用HTTP的方式运行</title>
+</head>
+<style>
+	h4 + canvas {
+		cursor: crosshair;
+	}
+
+	canvas {
+		background: url(/plugins/demo/canvas图片背景色去色变透明/tt-bg.gif);
+	}
+</style>
+<body>
+	<h4>左取色图，右效果图</h4>
+	<canvas></canvas>
+	<canvas></canvas>
+
+	<p>取色色值：<input type="color" id="color" /></p>
+	<p>容差范围：<input type="number" id="tolerance" min="0" max="255" step="1" value="0" size="4" /></p>
+	<p><button id="button">执行去色</button></p>
+	<script>
+		/**
+		 * by zhangxinxu(.com)
+		 * 更多介绍：http://www.zhangxinxu.com/wordpress/?p=7510
+		 * MIT协议，可以任意复制，编辑，但需保留版权信息
+		*/
+		var canvas = document.querySelectorAll('canvas')[0];
+		var context = canvas.getContext('2d');
+		// 结果canvas
+		var canvasResult = document.querySelectorAll('canvas')[1];
+		var contextResult = canvasResult.getContext('2d');
+		// 图片数据
+		var imgData = null, imgDataResult = null;
+
+		// canvas上绘制图片
+		var img = new Image();
+		img.onload = function () {
+			// 尺寸数据
+			var w = img.width, h = img.height;
+			canvas.height = h; canvas.width = w
+
+			canvasResult.height = h - 100;
+			canvasResult.width = w - 100
+			context.drawImage(this, 0, 0);
+			contextResult.drawImage(this, -100, -100);
+
+			// 获取像素信息数据
+			imgData = context.getImageData(0, 0, w, h);
+			imgDataResult = contextResult.getImageData(0, 0, w, h);
+		};
+		img.src = '/plugins/demo/canvas图片背景色去色变透明/2.png';
+
+		// 取色
+		var rgbaPicker = '[0,0,0,255]';
+
+		canvas.addEventListener('click', function (event) {
+			var rect = this.getBoundingClientRect();
+			var x = event.clientX - rect.left;
+			var y = event.clientY - rect.top;
+			rgbaPicker = context.getImageData(x, y, 1, 1).data;
+			// color输入框变化
+			var strHex = '#';
+			for (var i = 0; i < rgbaPicker.length - 1; i++) {
+				var hex = rgbaPicker[i].toString(16);
+				if (hex.length < 2) {
+					hex = '0' + hex;
+				}
+				strHex += hex;
+			}
+			eleColor.value = strHex;
+		});
+
+		// 后面重新写入
+		var eleColor = document.getElementById('color');
+		var eleTolerance = document.getElementById('tolerance');
+		var eleButton = document.getElementById('button');
+
+		if (eleButton && eleTolerance) {
+			eleButton.onclick = function () {
+
+
+
+				// 像素点色值
+				var rgba = rgbaPicker;
+				// 容差大小
+				var tolerance = eleTolerance.value;
+				// 基于原始图片数据处理
+				for (var index = 0; index < imgData.data.length; index += 4) {
+					var r = imgData.data[index];
+					var g = imgData.data[index + 1];
+					var b = imgData.data[index + 2];
+
+					if (Math.sqrt(
+						(r - rgba[0]) * (r - rgba[0]) +
+						(g - rgba[1]) * (g - rgba[1]) +
+						(b - rgba[2]) * (b - rgba[2])) <= tolerance
+					) {
+						imgDataResult.data[index] = 0;
+						imgDataResult.data[index + 1] = 0;
+						imgDataResult.data[index + 2] = 0;
+						imgDataResult.data[index + 3] = 0;
+					} else {
+						imgDataResult.data[index] = r;
+						imgDataResult.data[index + 1] = g;
+						imgDataResult.data[index + 2] = b;
+						imgDataResult.data[index + 3] = imgData.data[index + 3];
+					}
+				}
+
+
+
+				// put数据
+				contextResult.putImageData(imgDataResult, 0, 0);
+			};
+		}
+	</script>
+</body>
+</html>

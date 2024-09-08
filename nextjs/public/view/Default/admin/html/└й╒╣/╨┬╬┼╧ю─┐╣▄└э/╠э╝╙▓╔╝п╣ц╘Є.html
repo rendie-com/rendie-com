@@ -1,0 +1,639 @@
+
+  <load admin/html/头部.html/>
+<table class="tb">
+	<thead>
+		<tr>
+			<td>1. 通过本向导将传统的采集规则转换成采集规则文件</td>
+		</tr>
+		<tr>
+			<th colspan="2" height="20"><span id="showurl"></span></th>
+		</tr>
+		<tr id="htmltable" style="display:none">
+			<th colspan="2"><textarea id="htmlcode" style="width:99%;height:200px;font-family:Fixedsys" wrap="off" readonly></textarea></th>
+		</tr>
+		<tr>
+			<th colspan="2" class="thc">使用采集规则向导生成采集规则文件</th>
+		</tr>
+		<tr>
+			<th colspan="2" class="thr"><font id="stephit1" color="red">１. 设置基本参数</font>&nbsp;&nbsp;<font id="stephit2">２. 采集列表连接设置</font>&nbsp;&nbsp;<font id="stephit3">３. 采集内容与数据地址设置</font>&nbsp;&nbsp;<font id="stephit4">４. 预览结果</font>&nbsp;&nbsp;<font id="stephit5">５. 完成向导并真实演示</font></th>
+		</tr>
+	</thead>
+</table>
+<form name="wizardform" id="wizardform" method="post" action="?action=WIZARD2SAVE" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="referer" value="http://localhost:86/admin/index.asp" />
+
+<table class="tb2" id="step1" style="display:.none">
+	<tbody>
+		<tr>
+			<td class="label">站点名称：</td>
+			<td><input type="text" class="txt" name="itemname" value="" /></td>
+		</tr>
+
+		<tr style="display:none">
+			<td class="label">入库方式：</td>
+			<td><input type="radio" class="radio" name="into" value="0" checked /><span class="red">临时库</span><input type="radio" class="radio" name="into" value="1" />直接入库(不建议使用，会损成数据库很大 或 损坏)</td>
+		</tr>
+		<tr style="display:none">
+			<td class="label">只采集最近：</td>
+			<td><select name="getherday" onchange="if(this.value=='0'){hide('datebody')}else{show('datebody')}"><option value="0">不限</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select> 天 * 选择天数还要填写第3步的 <span class="red">数据日期 开始 和 结束</span>才有效</td>
+		</tr>
+		<tr>
+			<td class="label">目标站点网址：</td>
+			<td><input type="text" class="txt" name="siteurl" value="" /></td>
+		</tr>
+		<tr>
+			<td class="label">网页编码：</td>
+			<td><input type="text" name="charset" value="" style="width: 85px" />&nbsp;&nbsp;<font color="#0000FF">请选择编码→</font><select onchange="this.form.charset.value=this.value"><option value="">请选择编码</option><option value="GB2312">GB2312</option><option value="GBK">GBK</option><option value="BIG5">BIG5</option><option value="UTF-8">UTF-8</option></select></td>
+		</tr>
+
+		<tr>
+			<td class="label">预设文章来源：</td>
+			<td><input type="text" name="playfrom" class="txt" value="" maxlength="255"/></td>
+		</tr>
+		<tr>
+			<td class="label red">分类设置：</td>
+			<td><input type="radio" class="radio" name="autocls" value="0" onclick="hide('autoclsbody');show('selcls');" checked/>固定分类<input type="radio" class="radio" name="autocls" value="1" onclick="hide('selcls');show('autoclsbody');"/>智能归类</td>
+		</tr>
+		<tr id="selcls" style="">
+			<td class="label">所属分类：</td>
+			<td><select name="classid"><option value="">请选择数据分类</option><option value='16' >&nbsp;|—国内</option><option value='17' >&nbsp;|—国际</option><option value='18' >&nbsp;|—社会</option><option value='19' >&nbsp;|—军事</option><option value='20' >&nbsp;|—娱乐</option><option value='21' >&nbsp;|—八卦</option><option value='22' >&nbsp;|—科技</option><option value='23' >&nbsp;|—财经</option><option value='24' >&nbsp;|—公益</option><option value='25' >&nbsp;|—评论</option><option value='26' >&nbsp;|—图片</option></select></td>
+		</tr>
+		<tr>
+			<td class="label">分页设置：</td>
+			<td>
+			<input type="radio" class="radio" name="pageset" value="0" onclick="hide('page_0','page_1','page_2');show('page_0');"checked/>不分页
+			<input type="radio" class="radio" name="pageset" value="1" onclick="hide('page_0','page_1','page_2');show('page_1');"/>批量分页
+			<input type="radio" class="radio" name="pageset" value="2" onclick="hide('page_0','page_1','page_2');show('page_2');"/>手动分页
+			<input type="radio" class="radio" name="pageset" value="3" onclick="hide('page_0','page_1','page_2');show('page_1');"/>直接采集内容页
+			</td>
+		</tr>
+		<tr id="page_0" style="">
+			<td class="label">采集网址：</td>
+			<td><input type="text" class="txt" name="pageurl0" value="" /></td>
+		</tr>
+		</tbody>
+		<tbody id="page_1" style="display:none">
+		<tr>
+			<td class="label">批量生成采集网址：</td>
+			<td><input type="text" class="txt" name="pageurl1" value="" />&nbsp;ID变量<font color="red">{$ID}</font></td>
+		</tr>
+		<tr>
+			<td class="label">起始ID：</td>
+			<td>标准格式：Http://www.damin.com/list/list_{$ID}.html<br />开始：<input type="text" name="istart" value="1" style="width: 60px"/> - 结束：<input type="text" name="iend" value="1" style="width: 60px" />&nbsp;例如：1 - 10 或者 10 - 1</td>
+		</tr>
+		</tbody>
+		<tbody id="page_2" style="display:none">
+		<tr>
+			<td class="label">手动分页：</td>
+			<td><textarea name="pageurl2" rows="6" cols="80"></textarea></td>
+		</tr>
+		</tbody>
+		<tbody>
+		<tr>
+			<td class="label">采集方式：</td>
+			<td><input type="checkbox" class="checkbox" name="reverse" value="1"/>倒序采集</td>
+		</tr>
+		<tr>
+			<td class="label">内容过滤设置：</td>
+			<td>
+			<input type="checkbox" class="checkbox" name="removecode" value="IFRAME"checked/>IFRAME<input type="checkbox" class="checkbox" name="removecode" value="OBJECT"checked/>OBJECT<input type="checkbox" class="checkbox" name="removecode" value="BUTTON"checked/>BUTTON<input type="checkbox" class="checkbox" name="removecode" value="CLASS"checked/>CLASS<input type="checkbox" class="checkbox" name="removecode" value="HTML"/>HTML<input type="checkbox" class="checkbox" name="removecode" value="SPAN"/>SPAN<input type="checkbox" class="checkbox" name="removecode" value="DIV"checked/>DIV<input type="checkbox" class="checkbox" name="removecode" value="P"/>P<br><input type="checkbox" class="checkbox" name="removecode" value="SCRIPT"checked/>SCRIPT<input type="checkbox" class="checkbox" name="removecode" value="APPLET"checked/>APPLET<input type="checkbox" class="checkbox" name="removecode" value="STRONG"checked/>STRONG<input type="checkbox" class="checkbox" name="removecode" value="STYLE"checked/>STYLE<input type="checkbox" class="checkbox" name="removecode" value="TABLE"checked/>TABLE<input type="checkbox" class="checkbox" name="removecode" value="FONT"/>FONT<input type="checkbox" class="checkbox" name="removecode" value="IMG"/>IMG<input type="checkbox" class="checkbox" name="removecode" value="A"checked/>A
+			</td>
+		</tr>
+		</tbody>
+	</tbody>
+</table>
+<table class="tb2" id="step2" style="display:none">
+	<tbody>
+		<tr>
+			<td class="label">列表开始：</td>
+			<td><textarea name="listA" rows="6" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">列表结束：</td>
+			<td><textarea name="listB" rows="6" cols="80"></textarea></td>
+		</tr>
+		<tbody>
+		<tr>
+			<td class="label red">获取数据图片方式：</td>
+			<td><input type="radio" class="radio" name="picmode" value="1" onclick="show('picbody');$('step2').insertBefore($('picbody'),parentNode.parentNode.parentNode.nextSibling);$('piccheckbox').checked=true;"/>在列表页<input type="radio" class="radio" name="picmode" value="0" onclick="$('step3').insertBefore($('picbody'),$('desbody'));"checked/>在内容页</td>
+		</tr>
+		</tbody>
+
+		<tbody>
+		<tr>
+			<td class="label">链接开始：</td>
+			<td><textarea name="mlinkA" rows="6" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">链接结束：</td>
+			<td><textarea name="mlinkB" rows="6" cols="80"></textarea></td>
+		</tr>
+
+		<tr>
+			<td class="label red">特殊链接处理：</td>
+			<td><input type="radio" class="radio" name="isspecialmlink" value="0" onclick="hide('specialmlinkbody');"checked/>不作设置<input type="radio" class="radio" name="isspecialmlink" value="1" onclick="show('specialmlinkbody')"/>替换地址<br>对于使用了JavaScript跳转形式的连接请使用此功能</td>
+		</tr>
+	</tbody>
+	<tbody id="specialmlinkbody" style="display:none">
+		<tr>
+			<td class="label">要替换的地址：</td>
+			<td><p class="red">要替换的连接:/channel/[变量]/[变量].html</p><textarea name="mlinkRF" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">替换为的地址：</td>
+			<td><p class="red">实际连接:/list/?$1-$2.html ($1至$99对应[变量]的出现位置)<br>/list/?[变量]-[变量].html中的[变量]等同$1</p><textarea name="mlinkRR" rows="4" cols="80"></textarea></td>
+		</tr>
+	</tbody>
+</table>
+<table class="tb2" id="step3" style="display:none">
+	<tbody>
+		<tr>
+			<td class="label">可选采集字段</td>
+			<td>
+				<input type="checkbox" class="checkbox" name="fields" id="piccheckbox" value="pic" onclick="if(this.checked){show('picbody')}else{hide('picbody')}"/><label for="piccheckbox">图片</label>
+				<input type="checkbox" class="checkbox" name="fields" id="cls" value="cls" onclick="if(this.checked){show('autoclsbody')}else{hide('autoclsbody')}"/><label for="cls">分类</label>
+				<input type="checkbox" class="checkbox" name="fields" id="author" value="author" onclick="if(this.checked){show('authorbody')}else{hide('authorbody')}"/><label for="author">作者</label>
+				<input type="checkbox" class="checkbox" name="fields" id="from" value="from" onclick="if(this.checked){show('frombody')}else{hide('frombody')}"/><label for="from">来源</label>
+				<input type="checkbox" class="checkbox" name="fields" id="outline" value="outline" onclick="if(this.checked){show('outlinebody')}else{hide('notebody')}"/><label for="outline">简述</label>
+				<input type="checkbox" class="checkbox" name="fields" id="keys" value="keys" onclick="if(this.checked){show('keysbody')}else{hide('keysbody')}"/><label for="keys">关键词</label>
+				<input type="checkbox" class="checkbox" name="fields" id="des" value="des" onclick="if(this.checked){show('desbody')}else{hide('desbody')}"/><label for="des">正文</label>
+				<input type="checkbox" class="checkbox" name="fields" id="date" value="date" onclick="if(this.checked){show('datebody')}else{hide('datebody')}"/><label for="date">采集日期</label>
+			</td>
+		</tr>
+	</tbody>
+	<tbody id="namebody">
+		<tr>
+			<td class="label red">标题开始：</td>
+			<td><textarea name="nameA" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">标题结束：</td>
+			<td><textarea name="nameB" rows="4" cols="80"></textarea></td>
+		</tr>
+	</tbody>
+
+	<tbody id="picbody" style="display:none">
+		<tr>
+			<td class="label">图片开始：</td>
+			<td><textarea name="picA" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">图片结束：</td>
+			<td><textarea name="picB" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">图片替换变量：</td>
+			<td><input type="radio" class="radio" name="0" value="0" onclick="hide('picvardc');"checked/>不作设置<input type="radio" class="radio" name="0" value="1" onclick="show('picvardc')"/>替换变量</td>
+		</tr>
+		<tr id="picvardc" style="display:none">
+			<td class="label">替换变量：<p class="red">图片开始加 [变量]<br />图片结束 [变量]</p></td>
+			<td><textarea name="picvar" rows="4" cols="80"></textarea></td>
+		</tr>
+	</tbody>
+
+	<tbody id="autoclsbody" style="display:none">
+		<tr>
+			<td class="label">分类开始：</td>
+			<td><textarea name="clsA" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">分类结束：</td>
+			<td><textarea name="clsB" rows="4" cols="80"></textarea></td>
+		</tr>
+	</tbody>
+	<tbody id="authorbody" style="display:none">
+		<tr>
+			<td class="label">作者开始：</td>
+			<td><textarea name="authorA" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">作者结束：</td>
+			<td><textarea name="authorB" rows="4" cols="80"></textarea></td>
+		</tr>
+	</tbody>
+	<tbody id="frombody" style="display:none">
+		<tr>
+			<td class="label">来源开始：</td>
+			<td><textarea name="fromA" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">来源结束：</td>
+			<td><textarea name="fromB" rows="4" cols="80"></textarea></td>
+		</tr>
+	</tbody>
+	<tbody id="outlinebody" style="display:none">
+		<tr>
+			<td class="label">备注开始：</td>
+			<td><textarea name="outlineA" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">备注结束：</td>
+			<td><textarea name="outlineB" rows="4" cols="80"></textarea></td>
+		</tr>
+	</tbody>
+	<tbody id="keysbody" style="display:none">
+		<tr>
+			<td class="label">关键词开始：</td>
+			<td><textarea name="keysA" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">关键词结束：</td>
+			<td><textarea name="keysB" rows="4" cols="80"></textarea></td>
+		</tr>
+	</tbody>
+	<tbody id="datebody" style="display:none">
+		<tr>
+			<td class="label">日期开始：</td>
+			<td><textarea name="dateA" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">日期结束：</td>
+			<td><textarea name="dateB" rows="4" cols="80"></textarea></td>
+		</tr>
+	</tbody>
+	<tbody id="desbody" style="display:none">
+		<tr>
+			<td class="label">正文开始：</td>
+			<td><textarea name="desA" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">正文结束：</td>
+			<td><textarea name="desB" rows="4" cols="80"></textarea></td>
+		</tr>
+	</tbody>
+
+	<tbody>
+		<tr>
+			<td class="label red">分页列表范围：</td>
+			<td><input type="radio" class="radio" name="splay" value="0" onclick="hide('plistbody');"checked/>关闭<input type="radio" class="radio" name="splay" value="1" onclick="show('plistbody')"/>开启</td>
+		</tr>
+	</tbody>
+	<tbody id="plistbody" style="display:none">
+		<tr>
+			<td class="label">分页列表开始：</td>
+			<td><textarea name="plistA" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">分页列表结束：</td>
+			<td><textarea name="plistB" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">分页链接开始：</td>
+			<td><textarea name="plinkA" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">分页链接结束：</td>
+			<td><textarea name="plinkB" rows="4" cols="80"></textarea></td>
+		</tr>
+
+		<tr>
+			<td class="label red">特殊链接处理：</td>
+			<td><input type="radio" class="radio" name="isspecial" value="0" onclick="hide('specialbody');"checked/>不作设置<input type="radio" class="radio" name="isspecial" value="1" onclick="show('specialbody')"/>替换地址<br>对于使用了JavaScript:openwindow形式的连接请使用此功能</td>
+		</tr>
+	</tbody>
+	<tbody id="specialbody" style="display:none">
+		<tr>
+			<td class="label">要替换的地址：</td>
+			<td><p class="red">要替换的连接:javaScript:OpenWnd([变量])</p><textarea name="linkRF" rows="4" cols="80"></textarea></td>
+		</tr>
+		<tr>
+			<td class="label">替换为的地址：</td>
+			<td><p class="red">实际连接:content.aspx?id=1&amp;page=$1</p><textarea name="linkRR" rows="4" cols="80"></textarea></td>
+		</tr>
+	</tbody>
+</table>
+<div id="step4" style="display:none">
+</div>
+<div id="step5" style="display:none">
+</div>
+<table class="tb2">
+	<tbody>
+		<tr>
+			<td class="label"></td>
+			<td><input type="button" class="pn" name="back" value="返回上一步" onclick="prestep()" />&nbsp;&nbsp;<input type="button" class="pn" name="next" value="下一步" onclick="nextstep()" />&nbsp;&nbsp;<input type="checkbox" class="checkbox" name="showcode" id="showcode" value="1"/>下一步显示源码 &nbsp;&nbsp;<a href="?action=exec&step=1&filename=">不保存当前设置,立即采集</a></td>
+		</tr>
+	</tbody>
+</table>
+</form>
+<script type="text/javascript">
+function setHtmlCode(str){
+	$('htmlcode').value=(""+str).replace(/([^\r])\n([^\r])/ig,"$1\\n$2");
+}
+
+function trim(s){
+	return (""+s).replace(/(^\s*)|(\s*$)/g,"");
+}
+
+function trimall(s){
+	return (""+s).replace(/(\s*)/g,"");
+}
+
+function addcslashes(str){
+	return (""+str).replace(/\\n/g,"\n").replace(/\\r/g,"\r").replace(/([\(\)\[\]\""\'\.\?\+\*\/\\\^\$])/ig,"\\$1").replace(/\n/g,"\\n").replace(/\r/g,"\\r");
+}
+
+function StrSlice(Str,sStr,eStr){
+	if(eStr=='') return false;
+	let tStr=Str.toLowerCase(),iPos=tStr.indexOf(sStr.toLowerCase()),sLen=sStr.length;
+	if(iPos==-1) return false;
+	iPos=sLen>0 ? iPos+sLen : 0;
+	return Str.substr(iPos,tStr.slice(iPos).indexOf(eStr.toLowerCase()));
+}
+
+function StrSliceB(Str,sStr,eStr){
+	if(sStr+eStr=="") return Str;
+	let tStr=Str.toLowerCase(),iPos=tStr.indexOf(sStr.toLowerCase()),sLen=sStr.length;
+	if(iPos==-1) return false;
+	iPos=sLen>0 ? iPos+sLen : 0;
+	if(eStr==""){
+		return Str.slice(iPos);
+	}else{
+		return Str.substr(iPos,tStr.slice(iPos).lastIndexOf(eStr.toLowerCase()));
+	}
+}
+function ReCrlf(Str){
+	return Str.replace(/\\t/g,'\u0009').replace(/\\n/g,'\u000a').replace(/\\r/g,'\u000d');
+}
+//分割文件段
+function StrSplits(Str,sStr,eStr){
+	if(eStr=="" || Str=="") return [];
+	let ret=[],tStr=Str.toLowerCase(),str=Str;
+	sStr=sStr.toLowerCase(),eStr=eStr.toLowerCase();
+	let sLen=sStr.length,eLen=eStr.length,iPos,ePos;
+	while(true){
+		iPos=tStr.indexOf(sStr);
+		if(iPos==-1) break;
+		iPos=sLen>0 ? iPos+sLen : 0,tStr=tStr.slice(iPos),ePos=tStr.indexOf(eStr);
+		if(ePos==-1) break;
+		ret[ret.length]=str.substr(iPos,ePos),tStr=tStr.slice(ePos+eLen),str=str.slice(iPos+ePos+eLen)
+	}
+	return ret;
+}
+
+function paseAbsURI(aLink,currUrl){
+	let b,t,H,i,j,k,siteUrl,rg=/^\s*[\/\\]/i,ab=/^http:\/\//i,qt=/\\([\\\/])/ig;
+	currUrl=trim(currUrl).replace(qt,"/"),siteUrl=currUrl.replace(/(https?\:\/\/)((\w+)(\.\w+)*(:\d+)?)\/.*/i,"$1$2"),currUrl=currUrl.replace(siteUrl,"")
+	for(let i=0;i<aLink.length;i++){
+		H=""+aLink[i];
+		if(ab.test(H)){
+		}else if(rg.test(H)){
+			aLink[i]=siteUrl+H
+		}else{
+			j=H.split("../").length,t=currUrl.split("/"),k=t.length
+			t.length=j<k ? k-j : 0
+			aLink[i]=siteUrl+t.join("/")+"/"+H.replace(/([\.]{2}\/)/g,"")
+		}
+	}
+	return aLink;
+}
+
+function speciallink(sLink,fLink,rLink){
+	let a=fLink.split('[变量]');
+	rLink=rLink.split('[变量]').join("$1");
+	for(let i=0;i<a.length;i++){
+		a[i]=addcslashes(a[i]);
+	};
+	let rg=new RegExp(a.join("([\\w\\W]+)"),"ig");
+	return a.length>1 ? sLink.replace(rg,rLink) : sLink;
+}
+
+function removeHTMLCode(Str,cHas){
+	if(cHas=="" || Str===false) return Str;
+	cHas=cHas.toUpperCase().split("|"),Str=""+Str;
+	for(let i=0;i<cHas.length;i++){
+		switch(cHas[i]){
+			case "TABLE":
+				Str=Str.replace(/<\/?(table|thead|tbody|tr|th|td).*>/ig,"");
+			break;
+			case "OBJECT":
+				Str=Str.replace(/<\/?(object|param|embed).*>/ig,"");
+			break;
+			case "SCRIPT":
+				Str=Str.replace(new RegExp("<scr"+"ipt.*>[\\w\\W]+?<\\/scr"+"ipt>","ig"),"").replace(new RegExp("\\son[\\w]+=[\\'\\\"].+?[\\'\\\"](\\s|>)(\\s|\\>)","ig"),"$1");
+			break;
+			case "STYLE":
+				Str=Str.replace(/<style.*>[\w\W]+?<\/style>/ig,"");
+				Str=Str.replace(/\sstyle=.+(\s|\>)/ig,"$1");
+			break;
+			case "CLASS":
+				Str=Str.replace(/\sclass=.+(\s|\>)/ig,"$1");
+			break;
+			default:
+				Str=removeHTMLCode(removeHTMLCode(Str,"SCRIPT"),"STYLE").replace(new RegExp("<.*?>","ig"),"");
+			break;
+		}
+	}
+	return Str
+}
+
+let f=$('wizardform'),hurl={1:"",2:"",3:"",4:""},url,cache={},step=[],stephit=[],istep=1;
+for(let i=1;i<6;i++){
+	step.push($("step"+i));
+	stephit.push($("stephit"+i));
+}
+
+function clearvalue(){
+	let arg=arguments;
+	for(let i=0;i<arg.length;i++){
+		try{f.elements[arg[i]].value='';}catch(ignore){}
+	}
+};
+
+function showBody(n){
+	n--;
+	for(let i=0;i<step.length;i++){
+		step[i].style.display= n!=i ? "none" : "";
+		stephit[i].color= n==i ? "red" : "";
+	};
+}
+
+function prestep(){
+	if(istep>1){
+		showurl(url=hurl[--istep]);
+		showBody(istep);
+		if(url!="") request(url,function (Q){setHtmlCode(Q.responseText)});
+	}else{
+		if(confirm("确实要离开该页面吗？\n\n这将会导致规则页面上未保存的数据丢失，确定？\n\n按'确定'继续，或按'取消'留在当前页面。")){
+			history.go(-1);
+		}
+	}
+}
+
+function request(url,fun){
+	url="admin_collectnews.aspx?action=proxy&result=true&charset="+f.elements['charset'].value+"&url="+escape(url);
+	if(cache[url]==undefined || cache[url]!=''){
+		ajax.get(url,function (Q){
+			let txt=Q.responseText;
+			if(txt!="err" && txt!="ok") cache[url]=txt;
+			fun(Q);
+		});
+	}else{
+		fun({responseText:cache[url]})
+	}
+};
+
+function _nextstep(Q){
+	let txt=Q.responseText;
+	if(txt!="err"){
+		showBody(++istep);
+		$('htmltable').style.display=$('showcode').checked ? '' : 'none'
+		if(txt!="OK") setHtmlCode(txt);
+	}else{
+		alert("err")
+	}
+}
+function showurl(s){
+	$('showurl').innerHTML="&nbsp;&nbsp;当前采集地址：<font color=red>"+s+"</font>";
+}
+let hPic="",rg=/\[\u53d8\u91cf\]/g;
+function nextstep(){
+	let es=f.elements,showcode=es['showcode'].checked;
+	if(trim(es["charset"].value)==""){alert("请选择网页编码");return;}
+	if(istep==1){
+		for(let i=0,ps;i<es['pageset'].length;i++){
+			if(es['pageset'][i].checked){
+				ps=i;
+				break;
+			}
+		};
+		if(ps==0){
+			url = es['pageurl0'].value
+		}else if(ps==1 || ps==3){
+			let _s=parseInt(es['istart'].value),_e=parseInt(es['iend'].value);
+			if(_s>_e){
+				es['istart'].value=_e,es['iend'].value=_s,es['reverse'].checked=true;
+			}
+			url = es['pageurl1'].value.replace("{$ID}",trim(es['istart'].value));
+		}else if(ps==2){
+			url = trim(es['pageurl2'].value).split("\r\n")[0]
+		}else{
+			alert("请选择分类设置")
+		};
+		if(es['autocls'][0].checked && es['classid'].value==""){
+			alert("请选择所属分类");
+			return;
+		};
+		if(trim(url) == ""){
+			alert("请输入采集列表网址");
+			return;
+		};
+		showurl(hurl[2]=url);
+		request(url,function (Q){
+				if(ps==3) istep=2;
+				_nextstep(Q);
+		});
+	}else if(istep == 2){
+		request(url,function (Q){
+			let txt=Q.responseText,ls=StrSliceB(txt,ReCrlf(es["listA"].value),ReCrlf(es["listB"].value));
+			if(ls===false){if(!confirm("截取 列表开始~数据列表结束 失败\n\n点[确定]忽略这错误提示，[取消]返回修改")){return;}}
+			let mlink=StrSlice(ls,ReCrlf(es["mlinkA"].value),ReCrlf(es["mlinkB"].value));
+			if(mlink===false){if(!confirm("截取 链接开始~数据链接结束 失败\n\n点[确定]忽略这错误提示，[取消]返回修改")){return;}}
+			if(es['isspecialmlink'][1].checked) mlink=speciallink(mlink,es["mlinkRF"].value,es["mlinkRR"].value);
+			if(es['picmode'][0].checked){
+				let sa=ReCrlf(es["picA"].value),sb=ReCrlf(es["picB"].value),t=ReCrlf(es['picvar'].value);
+				if(t!=""){
+					hPic = sa+sb!='' ? (rg.test(sa) ? t : '')+StrSlice(ls,sa.replace(rg,""),sb.replace(rg,""))+((rg.test(sb) ? t : '')) : '-';
+				}else{
+					hPic = sa+sb!='' ? StrSlice(ls,sa,sb) : '-';
+				};
+				if(hPic===false){
+						if(!confirm("截取 图片开始 ~ 数据结束 失败\n\n点[确定]忽略这错误提示，[取消]返回修改")){
+							return;
+						}
+				};
+			}
+			mlink=paseAbsURI([mlink],url);
+			setHtmlCode(mlink);
+			showurl(hurl[3]=url=mlink);
+			request(url,function (W){
+				_nextstep(W);
+			});
+		});
+	}else if(istep == 3){
+		request(url,function (Q){
+			let t,sa,sb,ttxt,txt=Q.responseText,val={},has={'name':"标题",'author': "作者",'from': '来源','outline': '简述','cls': '分类','date': '日期'};
+			ttxt = txt;
+			for(let k in has){
+				try{
+					t=document.getElementById(k);
+					if(k=='name' || t && t.checked){
+						sa=ReCrlf(es[k+"A"].value),sb=ReCrlf(es[k+"B"].value);
+						val[k] = sa+sb!='' ? removeHTMLCode(StrSlice(ttxt,sa,sb),"*") : '-';
+					}
+				}catch(ignore){}
+			};
+			if(!es['picmode'][0].checked){
+				sa=ReCrlf(es["picA"].value),sb=ReCrlf(es["picB"].value),t=ReCrlf(es['picvar'].value);
+				if(t!=""){
+					val['pic'] = sa+sb!='' ? (rg.test(sa) ? t : '')+StrSlice(ttxt,sa.replace(rg,""),sb.replace(rg,""))+((rg.test(sb) ? t : '')) : '-';
+				}else{
+					val['pic'] = sa+sb!='' ? StrSlice(ttxt,sa,sb) : '-';
+				};
+			}else{
+				val['pic']=hPic;
+			}
+			if(es["autocls"][1].checked && val['cls']=="-"){
+				if(!confirm("截取 "+has['cls']+"开始 ~ "+has['cls']+"结束 失败\n\n点[确定]忽略这错误提示，[取消]返回修改")){
+					return;
+				}
+			}
+			sa=ReCrlf(es["desA"].value),sb=ReCrlf(es["desB"].value);
+			val['des'] = sa+sb!='' ? StrSlice(txt,sa,sb) : "-";
+			has['des']='正文',has['pic']='图片',has['plist']='分页列表',has['plink']='分页链接',has['linkR']='特殊链接处理';
+			let ch=function (R){
+			let txt=R.responseText;
+				for(let k in has){
+					if(val[k]===false){
+						if(!confirm("截取 "+has[k]+"开始 ~ "+has[k]+"结束 失败\n\n点[确定]忽略这错误提示，[取消]返回修改")){
+							return;
+						}
+					};
+				};
+				if(val['pic']!='-') val['pic']=paseAbsURI([val['pic']],url).join();
+				let te=es["removecode"],removecode=[];
+				for(let i=0;i<te.length;i++){
+					if(te[i].checked) removecode.push(te[i].value);
+				};
+				removecode=removecode.join("|");
+				if(removecode!="") for(k in val){val[k]=removeHTMLCode(val[k],removecode);}
+				let dc=$('step4');
+let s="\
+标题："+trim(val['name'] || '')+"\r\n\
+图片："+trim(val['pic'] || '')+"\r\n\
+分类："+trim(val['cls'] || '')+"\r\n\
+作者："+trimall(val['author'] || '')+"\r\n\
+来源："+trimall(val['from'] || '')+"\r\n\
+时间："+trim(val['date'] || '')+"\r\n\
+简述："+trim(val['outline'] || '')+"\r\n\
+正文："+trim(val['des'] || '')+"\r\n\
+";
+				dc.innerHTML="<pre>"+s.replace(/\</g,"&lt;").replace(/\>/g,"&gt;")+"</pre>";
+				_nextstep(R);
+			};
+			if(es['splay'][1].checked){
+				k='plist',sa=ReCrlf(es[k+"A"].value),sb=ReCrlf(es[k+"B"].value);
+				val[k] = sa+sb!='' ? StrSlice(txt,sa,sb) : '-';
+				txt= val[k];
+				k='plink',sa=ReCrlf(es[k+"A"].value),sb=ReCrlf(es[k+"B"].value);
+				val[k] = sa+sb!='' ? StrSlice(txt,sa,sb) : '-';
+				if(val[k]===false){
+					if(!confirm("截取 "+has[k]+"开始 ~ "+has[k]+"结束 失败\n\n点[确定]忽略这错误提示，[取消]返回修改")){
+						return;
+					}
+				};
+				if(es['isspecial'][1].checked) val[k]=speciallink(val[k],ReCrlf(es["linkRF"].value),ReCrlf(es["linkRR"].value));
+				showurl(hurl[4]=paseAbsURI([val[k]],url).join());
+				request(hurl[4],function (R){
+					setHtmlCode(R.responseText);
+					ch(R);
+				});
+			}else{
+				ch({'responseText':txt});
+			}
+		});
+	}else if(istep == 4){
+		f.submit()
+	}
+}
+</script>
+
