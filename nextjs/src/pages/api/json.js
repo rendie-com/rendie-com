@@ -1,8 +1,8 @@
-import { sqlite } from '../../common/db/sqlite.js'
-import { PostgreSQL } from '../../common/db/PostgreSQL.js'
-import { index } from '../../common/index.js'
-import { self_config } from '../../common/self/config.js'
-import { fun } from '../../common/fun.js'
+import { sqlite } from '../../../common/db/sqlite.js'
+import { PostgreSQL } from '../../../common/db/PostgreSQL.js'
+import { index } from '../../../common/index.js'
+import { self_config } from '../../../common/self_config.js'
+import { fun } from '../../../common/fun.js'
 
 export const config = {
   api: {
@@ -14,6 +14,7 @@ export const config = {
 };
 
 export default async function handler(req, res) {
+  
   let obj = {};
   if (req.method === 'POST') {
     let body = req.body;

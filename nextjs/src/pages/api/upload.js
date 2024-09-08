@@ -1,4 +1,4 @@
-import { fun } from '../../common/fun.js'
+import { fun } from '../../../common/fun.js'
 export const config = {
     api: {
         bodyParser: false,
