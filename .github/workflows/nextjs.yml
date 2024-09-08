@@ -1,4 +1,4 @@
-name: 运行next.js和node.js
+name: 运行nextjs和node
 on: 
   # 手动触发
   workflow_dispatch:
