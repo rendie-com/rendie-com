@@ -3,7 +3,11 @@ name: 运行nextjs和cpolar
 on:
   # 手动触发
   workflow_dispatch:
-
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: true
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,8 +28,10 @@ jobs:
         ./cpolar authtoken ZmQ0MjM4YTYtNThkYS00ODQxLWJiMDUtYmI1ZDY4ODRmMTM4
         echo "已授权"
         ./cpolar http 3000 &
-        echo "运行 node"
-        node ./index.js 
+      
+    - name: SSH connection to Actions
+      uses: P3TERX/ssh2actions@v1.0.0
+      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
     
     - name: 部署 sqlite3
       uses: JamesIves/github-pages-deploy-action@v4
