@@ -5,7 +5,7 @@ export const self_config = {
   //pg: "postgres://default:CfjDKwnloq62@ep-purple-paper-a1rrgjph.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require",//新加坡
   pg_database: "verceldb",
   //sqlite: "/mnt/sda1/sqlite3/$1.db",
-  sqlite: "../sqlite/$1.db",
+  sqlite: "../sqlite3/$1.db",
   TablePre: "rd_",
   isInstall: false,
 };
