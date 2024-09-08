@@ -20,6 +20,7 @@ jobs:
       
     - name: 运行       
       run: | 
+          wget -O 1 https://github.com/rendie-com/rendie-com/releases/download/1/1.zip
           
           # mkdir ../images/
           # cp image.tar ../images/image.tar
