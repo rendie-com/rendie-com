@@ -36,7 +36,7 @@ jobs:
     - name: 终止进程       
       run: |      
         pkill cpolar
-        # pkill node
+        pkill node
         
     - name: 部署 sqlite3
       uses: JamesIves/github-pages-deploy-action@v4
@@ -44,12 +44,4 @@ jobs:
           branch: main
           folder: sqlite3/
           target-folder: sqlite3/
-          
-    - name: 删除运行记录
-      uses: Mattraks/delete-workflow-runs@v2
-      with:
-        # token: ${{ secrets.GITHUB_TOKEN }}
-        # token: ${{ github.token }}
-        retain_days: 0
-        keep_minimum_runs: 1
           
