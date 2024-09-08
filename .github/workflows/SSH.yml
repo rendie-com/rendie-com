@@ -20,8 +20,6 @@ jobs:
       
     - name: 运行       
       run: | 
-        mv sqlite3/shopee/违禁词/店小秘.jpg sqlite3/shopee/违禁词/店小秘.db
-        mv sqlite3/shopee/违禁词/客优云.jpg sqlite3/shopee/违禁词/客优云.db
 
         
          
@@ -56,5 +54,5 @@ jobs:
       uses: Mattraks/delete-workflow-runs@v2
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        retain_days: 1
+        retain_days: 0
         keep_minimum_runs: 1
