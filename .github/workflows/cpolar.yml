@@ -12,20 +12,22 @@ jobs:
     - name: 准备完成
       uses: actions/checkout@main
       
-    - name: 运行nextjs       
+    - name: 运行 nextjs       
       run: |                 
           cd ./nextjs/         
           npm install
           npm run dev & 
           
-    - name: 运行cpolar       
+    - name: 运行 cpolar       
       run: |      
         cd ./cpolar/ 
         chmod a+rwx ./cpolar
         ./cpolar authtoken ZmQ0MjM4YTYtNThkYS00ODQxLWJiMDUtYmI1ZDY4ODRmMTM4
         echo "已授权"
         ./cpolar http 3000 &
-             
+        echo "运行 node"
+        node ./index.js 
+    
     - name: 部署next.js
       uses: JamesIves/github-pages-deploy-action@v4
       with: 
