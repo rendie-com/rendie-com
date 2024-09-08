@@ -8,6 +8,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:   
+    
+    - name: 准备完成
+      uses: actions/checkout@main
+      
     - name: 运行nextjs       
       run: |                 
           cd ./next.js/
