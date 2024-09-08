@@ -22,14 +22,14 @@ jobs:
         id: date
         run: sudo timedatectl set-timezone "$TZ"
   
-      - name: 运行next.js和node.js       
+      - name: 运行nextjs     
         run: | 
           cd ./next.js/
           # cp common/self_config_sqlite.js common/self_config.js
           npm install                
           npm run dev &
                 
-      - name: 运行next.js和node.js       
+      - name: 运行node       
         run: |
           cd ./node-shopee/
           node ./index.js   
