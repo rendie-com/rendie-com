@@ -1,0 +1,98 @@
+<table class="tb nobdt">
+    <TR  class="thead">
+      <TD colspan="2">用户续天数</TD>
+    </TR>
+    <rendie:user where=" where @.id=Fun(arr(4))">
+    <TR>
+      <TD align="right">用户名：</TD>
+      <TD><if "[user:name]"=="">[user:email]<input id="UserName" type="hidden" value="[user:email]"><else/>[user:name]<input id="UserName" type="hidden" value="[user:name]"></if></TD>
+    </TR>
+    <TR>
+      <TD align="right">用户组：</TD>
+      <TD>
+      	<if "[user:GroupID]"=="0">
+        无用户组
+        <else/>
+      	<rendie:usergroup size=50>
+        {if <:id/>==[user:GroupID]}<:name/></if>
+        </rendie:usergroup>
+        </if>
+</TD>
+    </TR>
+    <TR>
+      <TD align="right">计费方式：</TD>
+      <TD>
+       	<if "[user:ChargeType]"=="0">
+      	不计费
+        <elseif "[user:ChargeType]"=="1">
+        扣点数
+        <elseif "[user:ChargeType]"=="2"}
+        有效期
+        <elseif "[user:ChargeType]"=="3"}
+        无限期
+        <else/>
+        其它([user:ChargeType])
+        </if>
+        <input type="hidden" id="ChargeType" value="[user:ChargeType]"></TD>
+    </TR>
+    <TR>
+      <TD align="right">可用资金：</TD>
+      <TD>[user:money f=2] 元人民币<input type="hidden" id="CurrMoney" value="[user:money f=2]"></TD>
+    </TR>
+    <TR>
+      <TD align="right">目前的有效期限信息：</TD>
+      <TD>开始计算日期：[user:BeginDate]，有效期[user:EDays]天</TD>
+    </TR>
+    <tr>
+      <td align="right">追加天数：<br></td>
+      <td>
+      	<input type="text" id="Edays" value="100" size="10" maxlength="10" style="text-align:center">
+        &nbsp;天<br />
+        若目前用户尚未到期，则追加相应天数<br />
+        若目前用户已经过了有效期，则有效期从续费之日起重新计数。
+     </td>
+    </tr>
+    <tr>
+      <td align="right">同时减去：<br></td>
+      <td><input type="text" id="Money" value="100" size="10" maxlength="10" style="text-align:center">
+        &nbsp;元人民币，不想扣除资金，请输入0 </td>
+    </tr>
+    <TR>
+      <TD align="right">请输入原因：</TD>
+      <TD><input name="Reason" type="text" id="Reason" value="续有效天数操作" size="55"></TD>
+    </TR>
+    </rendie:user>
+    <TR>
+      <TD></TD>
+      <TD><input class="pn"  type="button" value="保存" id="SaveAddMoney">
+        <input type="button" value="返回" class="pn" onClick="javascript:history.go(-1)" /></TD>
+    </TR>
+</TABLE>
+<script type="text/javascript">
+$(function(){
+	$('#SaveAddMoney').click(function(){
+		let sql,obj=Object(),str
+		obj.UserName=$("#UserName").val()
+		obj.Edays=$("#Edays").val()
+		obj.User="Fun(adminID)"
+		obj.Descript=$("#Reason").val()
+		obj.Money=$("#Money").val()//扣除资金
+		obj.CurrMoney=parseInt($("#CurrMoney").val())-parseInt(obj.Money)
+		sql="insert into @.LogEdays(:UserName,:InOrOutFlag,:Edays,:user,:descript,:adddate,:ip) values('"+obj.UserName+"',1,"+obj.Edays+",'"+obj.User+"','"+obj.Descript+"',now(),'Fun(getIp)')"
+		str='{ren'+'die:area tag="sql">'+sql+'{/ren'+'die:area}'
+		sql="update @.User set @.Edays=:Edays+"+obj.Edays+" where @.id=<.arr(4)/>"
+		str+='{ren'+'die:area tag="sql">'+sql+'{/ren'+'die:area}续天数成功！'
+		if(obj.Money!="0")
+		{
+			sql="Insert into @.LogMoney(:MoneyType,:UserName,:Money,:IncomeOrPayOut,:Remark,:PayTime,:Inputer,:IP,:CurrMoney)values(2,'"+obj.UserName+"',"+obj.Money+",2,'续天数扣除资金',now(),'Fun(adminID)','Fun(getIp)',"+obj.CurrMoney+")"
+			str+='{ren'+'die:area tag="sql">'+sql+'{/ren'+'die:area}！'
+			sql="update @.User set @.Money="+obj.CurrMoney+" where @.id=<.arr(4)/>"
+			str+='{ren'+'die:area tag="sql">'+sql+'{/ren'+'die:area}'
+		}
+		str=$.ajax({type:"POST",url:"exe.html?"+Math.random(),data:{data:escape(str)},async:false}).responseText;
+		alert(str)
+		window.location.reload();
+	})
+})
+</script>
+

@@ -1,0 +1,91 @@
+  <script type="text/javascript" src="/<.Path/>admin/js/weixin.js"></script>
+<load admin/html/头部.html/>
+<table class="tb">
+  <tr><td align="right" width="150">查询菜单:</td><td id="QueryMenu"></td></tr>
+  <tr><td align="right">创建菜单：（<a href="http://mp.weixin.qq.com/wiki/index.php?title=%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95%E5%88%9B%E5%BB%BA%E6%8E%A5%E5%8F%A3"  target="_blank">参考</a>）:</td><td><textarea  id="CreateMenuContent" style="width:95%;font-family: Arial, Helvetica, sans-serif;font-size: 14px;" wrap="off" rows="25" dataType="Require" msg="请填写回复消息">{
+     "button":[
+     {	
+           "name":"个人中心",
+           "sub_button":[
+           {
+               "type":"view",
+               "name":"微信官网",
+               "url":"http://www.rendie.com/Default.aspx/m.html"
+           }]
+      },
+     {
+           "name":"产品类型",
+           "sub_button":[
+           {	
+               "type":"view",
+               "name":"包围",
+               "url":"http://www.rendie.com/Default.aspx/m/product/search/_u5305_u56F4.html"
+            },
+           {
+               "type":"view",
+               "name":"踏板",
+               "url":"http://www.rendie.com/Default.aspx/m/product/search/_u8E0F_u677F.html"
+           },
+           {
+               "type":"view",
+               "name":"前后杠",
+               "url":"http://www.rendie.com/Default.aspx/m/product/search/_u524D_u540E_u6760.html"
+           },
+           {
+               "type":"view",
+               "name":"轮毂/钢圈",
+               "url":"http://www.rendie.com/Default.aspx/m/product/search/_u8F6E_u6BC2.html"
+            },
+           {
+               "type":"view",
+               "name":"行李架",
+               "url":"http://www.rendie.com/Default.aspx/m/product/search/_u884C_u674E_u67B6.html"
+           }]
+      },
+     {
+           "name":"产品区域",
+           "sub_button":[
+           {	
+               "type":"view",
+               "name":"欧美车改装",
+               "url":"http://www.rendie.com/Default.aspx/m/product/list/274.html"
+            },
+           {
+               "type":"view",
+               "name":"日本车改装",
+               "url":"http://www.rendie.com/Default.aspx/m/product/list/275.html"
+           },
+           {
+               "type":"view",
+               "name":"韩国车改装",
+               "url":"http://www.rendie.com/Default.aspx/m/product/list/276.html"
+           },
+           {
+               "type":"view",
+               "name":"国产车改装",
+               "url":"http://www.rendie.com/Default.aspx/m/product/list/277.html"
+           }
+           ]
+      }]
+}</textarea></td></tr>
+  <tr><td></td><td><input type="button" class="pn" value='创建菜单' id="CreateMenu"><input type="button" class="pn" value='删除菜单' id="DeleteMenu"></td></tr>
+</table>
+<script type="text/javascript">
+  $(function(){
+	let url="https://api.weixin.qq.com/cgi-bin/menu/get?access_token="+access_token
+	let rtext=$.ajax({type:"POST",url:"/inc/weixin.aspx/ReturnNetworkContent.html?"+Math.random(),data:{URL:url},async:false}).responseText
+	$("#QueryMenu").html(rtext)
+    $("#CreateMenu").click(function(){
+	  let url=" https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+access_token
+	  let JsonData=$("#CreateMenuContent").val()
+	  $.ajax({type:"POST",url:"/inc/weixin.aspx/ReturnNetworkContentJson.html?"+Math.random(),data:{URL:url,JsonData:JsonData},async:false})
+	  location.reload();
+    }); 
+    $("#DeleteMenu").click(function(){
+	  let url="https://api.weixin.qq.com/cgi-bin/menu/delete?access_token="+access_token
+	  $.ajax({type:"POST",url:"/inc/weixin.aspx/ReturnNetworkContent.html?"+Math.random(),data:{URL:url},async:false})
+	  location.reload();
+    }); 
+});
+</script>
+

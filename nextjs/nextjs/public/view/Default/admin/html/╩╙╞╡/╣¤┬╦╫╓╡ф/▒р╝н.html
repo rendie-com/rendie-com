@@ -1,0 +1,63 @@
+
+<table class="tb">
+	<tr class="thead"><th colspan="2">过滤字典编辑</th></tr>
+	<form action="ajax/admin_gathersoft.aspx?SaveEditOrAdd" method="post" name="form1">
+    <r:fwordlist id=<.arr(3)/>
+	<tr>
+		<td class="label">过滤器名称</td>
+		<td><input type="text" class="txt" name="name" value="[fwordlist:name]" /></td>
+	</tr>
+	<tr>
+		<td class="label">过滤字段</td>
+		<td>
+        <select name="rColumn">
+        <option value="0"{if [fwordlist:rColumn]=0} selected="selected"{/if}>文章标题</option>
+        <option value="1"{if [fwordlist:rColumn]=1} selected="selected"{/if}>文章正文</option>
+        </select>
+        </td>
+	</tr>
+	<tr>
+		<td class="label">过滤模式</td>
+		<td>
+        <input type="radio" class="radio" name="uesMode" value="0" id="uesMode-0"{if [fwordlist:uesMode]=0} checked="checked"{/if}/>
+        <label for="uesMode-0">简单替换</label>
+        <input type="radio" class="radio" name="uesMode" value="1" id="uesMode-1"{if [fwordlist:uesMode]=1} checked="checked"{/if}/>
+        <label for="uesMode-1">高级替换</label>
+        </td>
+	</tr>
+	<tr id="sFindBody" style="">
+		<td class="label">查找</td>
+		<td><textarea name="sFind" rows="4" cols="80">[fwordlist:sFind]</textarea></td>
+	</tr>
+	<tr id="sStartBody" style="display:none">
+		<td class="label">开始标记</td>
+		<td><textarea name="sStart" rows="4" cols="80">[fwordlist:sStart]</textarea></td>
+	</tr>
+	<tr id="sEndBody" style="display:none">
+		<td class="label">结束标记</td>
+		<td><textarea name="sEnd" rows="4" cols="80">[fwordlist:sEnd]</textarea></td>
+	</tr>
+	<tr>
+		<td class="label">替换</td>
+		<td><textarea name="sReplace" rows="4" cols="80">[fwordlist:sReplace]</textarea></td>
+	</tr>
+	<tr>
+		<td class="label">启用</td>
+		<td>
+        <input type="radio" class="radio" name="Flag" value="1" id="Flag-1"{if [fwordlist:Flag]=1} checked="checked"{/if}/>
+        <label for="Flag-1">启用</label>
+        <input type="radio" class="radio" name="Flag" value="0" id="Flag-0"{if [fwordlist:Flag]=0} checked="checked"{/if}/>
+        <label for="Flag-0">禁用</label>
+        </td>
+	</tr>
+	<tr>
+      <td></td>
+		<td>
+        <input  type="submit" class="pn" name="Submit" value="确定" >
+        <input type="button" class="pn" value="返回" onClick="javascript:history.go(-1);">
+        </td>
+	</tr>
+    </r:fwordlist}
+	</form>
+</table>
+

@@ -1,0 +1,134 @@
+<div class="m-2 shadow p-2 bg-white rounded">
+  <load admin/html/头部.html/>
+  <table class="tb">
+    <form action="KS.UserMessage.aspx?action=add" method=post name="myform" id="myform">
+      <tr>
+        <td align="right">用户类别：</td>
+        <td><Input type="radio" name="UserType" value="1" checked onClick="UType(this.value)">
+          用户名单
+          <Input type="radio" name="UserType" value="2" onClick="UType(this.value)">
+          用户组
+          <Input type="radio" name="UserType" value="0" onClick="UType(this.value)">
+          所有用户 </td>
+      </tr>
+      <tr id="ToUserName">
+        <td align="right">用 户 名：</td>
+        <td><INPUT  TYPE="text" value="" NAME="UserName" size="80">
+          请输入用户名：(多个用户名请以英文逗号","分隔,注意区分大小写) </td>
+      </tr>
+      <tr id="ToGroupID" style="display:none;">
+        <td height="25" align="right" class="clefttitle">用 户 组：</td>
+        <td><table width="100%">
+            <tr>
+              <td><r:usergroup size=50>
+                  <input type="checkbox" name="GroupID" value="<:id/>" id="GroupID-<:id/>">
+                  <label for="GroupID-<:id/>"><:name/></label>
+                </r:usergroup></td>
+            </tr>
+            <tr>
+              <td><input type="button" class="pn" value="打开高级设置" NAME="OPENSET" onClick="openset(this,'UpSetting')"></td>
+            </tr>
+            <tr>
+              <td height=20 ID="UpSetting" style="display:NONE"><table width="100%">
+                  <tr>
+                    <td height=20 colspan="4">符合条件设置(以下条件将对选择的用户组生效)</td>
+                  </tr>
+                  <tr>
+                    <td width="15%">上次登陆时间：</td>
+                    <td width="35%"><input  type="text" name="LoginTime" onKeyUp="CheckNumber(this,'天数')" size=6>
+                      天 &nbsp;
+                      <INPUT TYPE="radio" NAME="LoginTimeType" checked value="0">
+                      多于
+                      <INPUT TYPE="radio" NAME="LoginTimeType" value="1">
+                      少于 </td>
+                    <td width="15%">注册时间：</td>
+                    <td width="35%"><input  type="text" name="RegTime" onKeyUp="CheckNumber(this,'天数')" size=6>
+                      天 &nbsp;
+                      <INPUT TYPE="radio" NAME="RegTimeType" checked value="0">
+                      多于
+                      <INPUT TYPE="radio" NAME="RegTimeType" value="1">
+                      少于 </td>
+                  </tr>
+                  <tr>
+                    <td>登陆次数：</td>
+                    <td><input  type="text" name="Logins" size=6 onKeyUp="CheckNumber(this,'次数')">
+                      次 &nbsp;
+                      <INPUT TYPE="radio" NAME="LoginsType" checked value="0">
+                      多于
+                      <INPUT TYPE="radio" NAME="LoginsType" value="1">
+                      少于 </td>
+                    <td>发表文章：</td>
+                    <td><input  type="text" name="UserArticle" size=6 onKeyUp="CheckNumber(this,'篇数')">
+                      篇 &nbsp;
+                      <INPUT TYPE="radio" NAME="UserArticleType" checked value="0">
+                      多于
+                      <INPUT TYPE="radio" NAME="UserArticleType" value="1">
+                      少于</td>
+                  </tr>
+                </table></td>
+            </tr>
+          </table></td>
+      </tr>
+      <tr>
+        <td align="right">消息标题：</td>
+        <td><input  type="text"  value="" name="title" size="80"></td>
+      </tr>
+      <tr>
+        <td align="right">消息内容：</td>
+        <td><input type="hidden" id="message" name="message" value="" style="display:none" />
+          <input type="hidden" id="pre_content___Config" value="" style="display:none" />
+          <iframe id="pre_content___Frame" src="/<.Config(admin)/>/fckeditor/editor/fckeditor.html?InstanceName=message&amp;Toolbar=rendie" width="800" height="400" frameborder="0" scrolling="no"></iframe></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input type="submit" name="Submit" value="发送消息" class='pn' onClick="return(checkform())">
+          <input type="reset" name="Submit2" value="重新填写" class='pn'></td>
+      </tr>
+    </form>
+  </table>
+  <script>
+ function checkform()
+ {
+   if (document.myform.title.value==''){
+	 alert('站内短信标题不能为空！');
+	 document.myform.title.focus();
+	 return false;
+  }
+  if ((FCKeditorAPI.GetInstance('message').GetXHTML(true)==""))
+	{
+	  alert("站内短信内容不能为空！");
+	  FCKeditorAPI.GetInstance('message').Focus();
+	  return false;
+   } 
+  
+return true
+ }
+<!--
+function openset(v,s){
+	if (v.value=='打开高级设置'){
+		document.getElementById(s).style.display = "";
+		v.value="关闭高级设置";
+	}
+	else{
+		v.value="打开高级设置";
+		document.getElementById(s).style.display = "none";
+	}
+}
+function UType(n){
+	if (n==1){
+		document.getElementById("ToUserName").style.display = "";
+		document.getElementById("ToGroupID").style.display = "none";
+	}
+	else if(n==2){
+		document.getElementById("ToUserName").style.display = "none";
+		document.getElementById("ToGroupID").style.display = "";
+	}
+	else{
+		document.getElementById("ToUserName").style.display = "none";
+		document.getElementById("ToGroupID").style.display = "none";
+	}
+}
+//-->
+</SCRIPT> 
+</div>
+<template admin/html/通用模板.html/>

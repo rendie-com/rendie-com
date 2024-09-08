@@ -1,0 +1,100 @@
+
+<script type="text/javascript"> 
+	$(function(){
+	  let searchword
+	$('#selectBtn').click(function(){
+	  searchword=$("#searchword").val()
+	  searchword=searchword.replace("/",'*')
+	  searchword=escape(searchword)
+	  location.href="?<.arr(0)/>/<.arr(2)/>/{r:arr(3)/>/"+searchword
+	});
+ });
+</script>
+   <load admin/html/头部.html/>
+  <table class="tb">
+	<tr>
+      <th colspan="8">
+      &nbsp;管理临时库： 
+      <a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/{r:arr(6)/>/1.html">显示已入库的</a>&nbsp|&nbsp
+      <a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/{r:arr(6)/>/0.html">显示未入库的</a>&nbsp|&nbsp
+      <a href="ajax/admin_gathersoft.aspx?TempVideoDelAll-all" onClick="if(confirm('确定要删除所有吗')){return true;}else{return false;}">清空临时库</a>
+      </th>
+    </tr>
+    <tr>
+        <td align="left" colspan="8">
+        关键字<input type="text" id="searchword" size="50" value="<.unarr(4)/>">
+        <input type="button" value="查 询..." class="pn" id="selectBtn" />
+        &nbsp;
+        <select onChange="self.location.href='?<.arr(0)/>/<.arr(2)/>/{r:arr(3)/>/{r:arr(4)/>/'+this.options[this.selectedIndex].value;">
+        <option value="">按旧分类名查看</option>
+         
+        </select>
+        </td>
+    </tr>
+    <tr align="center">
+      <td width="70">编号<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/id.html"><img src="/{r:Path/>admin/img/minus.gif" title="按ID排序" /></a></td>
+      <td>标题</td>
+      <td>状态</td>
+      <td>来源</td>
+      <td>绑定分类</td>
+      <td>旧分类名</td>
+      <td>采集时间<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/addtime.html"><img src="/{r:Path/>admin/img/minus.gif" title="按时间排序" /></a></td>
+      <td align="center">操作</td>
+    </tr>
+    <form method="post">
+    <r:tempvideo size=20 type=type page=4>
+    <tr align="center">
+      <td align="left"><input type="checkbox" value="[tempvideo:id]" name="pre_id"  class="checkbox" id="check-[tempvideo:id]"/><label for="check-[tempvideo:id]">[tempvideo:id]</label></td>
+      <td align="left">[tempvideo:name]<if "[tempvideo:fromurl]"=="">&nbsp;（<a href="[tempvideo:fromurl]" target="_blank">查看来源</a>）</if></td>
+      <td>{if [tempvideo:inbase]=1}已入库<else/><font color="red">未入库</font></if></td>
+      <td>[tempvideo:from]</td>
+      <td></td>
+      <td><a href="?<.arr(0)/>/<.arr(2)/>/{r:arr(3)/>/[tempvideo:type]">[tempvideo:typename]</a></td>
+      <td><span title="[tempvideo:addtime]">[tempvideo:addtime]</span></td>
+      <td align="center">
+        <a href="[tempvideo:id]">编辑</a>&nbsp;|&nbsp;
+        <a href="ajax/admin_gathersoft.aspx?TempVideoDel-[tempvideo:id].html" onClick="return confirm('确定要删除吗')">删除</a>
+      </td>
+    </tr>
+    </r:tempvideo>
+    <tr>
+      <td colspan="8">同名更新：
+        <input type="checkbox" class="checkbox" name="fields" value="title" id="check-001" checked="checked" >
+        <label for="check-001">标题</label>
+        <input type="checkbox" class="checkbox" name="fields" value="author" checked="checked" id="check-002">
+        <label for="check-002">作者</label>
+        <input type="checkbox" class="checkbox" name="fields" value="pic" checked="checked" id="check-003">
+        <label for="check-003">图片</label>
+        <input type="checkbox" class="checkbox" name="fields" value="from" checked="checked" id="check-004">
+        <label for="check-004">来源</label>
+        <input type="checkbox" class="checkbox" name="fields" value="outline"  checked="checked" id="check-005">
+        <label for="check-005">简述</label>
+        <input type="checkbox" class="checkbox" name="fields" value="content"  checked="checked" id="check-006">
+        <label for="check-006">正文</label>
+        <input type="checkbox" class="checkbox" name="fields" value="keyword" checked="checked"  id="check-007">
+        <label for="check-007">关键词</label>
+        <input type="checkbox" class="checkbox" name="fields" value="commend" checked="checked"  id="check-008">
+        <label for="check-008">星级</label>
+        <input type="checkbox" class="checkbox" name="fields" value="note"  checked="checked" id="check-009">
+        <label for="check-009">属性</label>
+        <input type="checkbox" class="checkbox" name="fields" value="now" id="check-010">
+        <label for="check-010">使用现在时间</label>
+        <input type="checkbox" class="checkbox" name="fields" value="addtime" checked="checked"  id="check-011">
+        <label for="check-011">使用采集时间</label>
+      </td>
+      </tr>
+    <tr>
+      <td colspan="8">
+      <input type="button" class="pn" value="反选" onClick="checkOthers('input','pre_id')" />  
+      <input type="submit" value="批量删除" onClick="if(confirm('确定要批量删除吗')){this.form.action='ajax/admin_gathersoft.aspx?TempVideoDelAll'}else{return false}" class="pn" />
+      <input type="submit" value="导入选中数据" onClick="this.form.action='ajax/admin_gathersoft.aspx?TempVideoImport.html';" class="pn" style="width:85px"/>
+      <select name="movetype" id="movetype">
+      <option value="">请选择目标分类</option></select>
+      <input type="submit" value="批量移动" class="pn" onClick="if($('movetype').value==''){alert('请选择目标分类');return false;};if(confirm('确定要批量移动数据吗')){this.form.action='ajax/admin_gathersoft.aspx?TempVideoSetType'}else{return false;}"/>
+      <input type="submit" value="导入全部数据" onClick="this.form.action='ajax/admin_gathersoft.aspx?TempVideoImport/all.html';" class="pn"/>
+      <input type="submit" value="导入未入库数据" onClick="this.form.action='ajax/admin_gathersoft.aspx?TempVideoImport/noinbase.html';" class="pn"/>
+      </td>
+    </tr>
+  </form>
+  </table><.load(admin/html/分页通用.html)/>
+
