@@ -24,18 +24,14 @@ jobs:
   
       - name: 运行next.js和node.js       
         run: | 
-                cd ./next.js/
-                cp common/self_config_sqlite.js common/self_config.js
-                npm install pg
-                npm install sqlite3
-                npm install formidable
-                npm i --save-dev @types/formidable
-                npm run dev & 
-                cd ../node.js/
-                npm install puppeteer --save         
-                node ./index.js   
-                cd ../
-  
+              cd ./next.js/
+              # cp common/self_config_sqlite.js common/self_config.js
+              npm install                
+              npm run dev & 
+                
+      - name: 运行next.js和node.js       
+        run: node ./index.js   
+              
       - name: 部署next.js
         uses: JamesIves/github-pages-deploy-action@v4
         with: 
@@ -46,6 +42,5 @@ jobs:
       - name: 删除运行记录
         uses: Mattraks/delete-workflow-runs@v2
         with:
-          token: ${{ github.token }}
-          retain_days: 1
+          retain_days: 0
           keep_minimum_runs: 1
