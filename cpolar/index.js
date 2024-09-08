@@ -17,7 +17,7 @@
     count++
     console.log('已运行：' + ((count * 5) / 60).toFixed(2) + '（分钟）');
     await timeout(5000);//5秒       
-    if (count < 60 * 5 / 5) {//最多运行5分钟
+    if (count < 60 * 10 / 5) {//最多运行10分钟
       Enable = true;
     }
     else {
