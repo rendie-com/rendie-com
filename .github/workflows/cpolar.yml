@@ -24,16 +24,7 @@ jobs:
           ./cpolar authtoken ZmQ0MjM4YTYtNThkYS00ODQxLWJiMDUtYmI1ZDY4ODRmMTM4
           echo "已授权"
           ./cpolar http 3000  &
-          
-    - name: SSH connection to Actions
-      uses: P3TERX/ssh2actions@v1.0.0
-      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-      
-    - name: 运行node      
-      run: |
-          npm install puppeteer --save         
-          node ./index.js   
-          
+             
     - name: 部署next.js
       uses: JamesIves/github-pages-deploy-action@v4
       with: 
