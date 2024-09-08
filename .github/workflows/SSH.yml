@@ -20,7 +20,7 @@ jobs:
       
     - name: 运行       
       run: | 
-        mv ./nextjs/plugins/ ./nextjs/public/plugins/
+        # mv ./nextjs/plugins/ ./nextjs/public/plugins/
         # unzip ./nextjs.zip
         # unzip ./plugins.zip ./nextjs/
         
@@ -37,8 +37,8 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@v4
       with: 
           branch: main
-          folder: ./nextjs/
-          target-folder: ./nextjs/
+          folder: ./ne000000xtjs/
+          target-folder: ./ne0000000xtjs/
           
     - name: 自动发布固件到 Releases
       uses: softprops/action-gh-release@v2
