@@ -50,3 +50,10 @@ jobs:
         name: sqlite3 文件发布
         tag_name: 1
         files: ./releases/* 
+    - name: 删除运行记录
+      uses: Mattraks/delete-workflow-runs@v2
+      with:
+        # token: ${{ secrets.GITHUB_TOKEN }}
+        # token: ${{ github.token }}
+        retain_days: 0
+        keep_minimum_runs: 1
