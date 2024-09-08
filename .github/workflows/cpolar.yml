@@ -36,7 +36,7 @@ jobs:
     - name: 终止进程       
       run: |      
         pkill cpolar
-        pkill node
+        # pkill node
         
     - name: 部署 sqlite3
       uses: JamesIves/github-pages-deploy-action@v4
