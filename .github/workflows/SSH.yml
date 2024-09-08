@@ -20,12 +20,14 @@ jobs:
       
     - name: 运行       
       run: | 
-          wget -O 1 https://github.com/rendie-com/rendie-com/releases/download/1/1.zip
-          
+         mv sqlite3/ad.jpg sqlite3/ad.db
+         mv sqlite3/main.jpg sqlite3/main.db
+        
+         
+          # wget -O 1 https://github.com/rendie-com/rendie-com/releases/download/1/1.zip          
           # mkdir ../images/
           # cp image.tar ../images/image.tar
-          # tar -czvf ../images/image.tar.gz image.tar
-          
+          # tar -czvf ../images/image.tar.gz image.tar          
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
