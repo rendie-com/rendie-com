@@ -20,7 +20,7 @@ jobs:
       
     - name: 运行       
       run: | 
-
+        unzip ./node-shopee.zip
         
          
           # wget -O 1 https://github.com/rendie-com/rendie-com/releases/download/1/1.zip          
@@ -38,8 +38,8 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@v4
       with: 
           branch: main
-          folder: ./sqlite3/
-          target-folder: ./sqlite3/
+          folder: ./node-shopee/
+          target-folder: ./node-shopee/
           
     - name: 自动发布固件到 Releases
       uses: softprops/action-gh-release@v2
