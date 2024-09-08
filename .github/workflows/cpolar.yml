@@ -20,11 +20,10 @@ jobs:
           npm run dev & 
           
     - name: 运行cpolar       
-      run: |
-          curl -sL https://git.io/cpolar | sudo bash
-          cpolar authtoken ZmQ0MjM4YTYtNThkYS00ODQxLWJiMDUtYmI1ZDY4ODRmMTM4
+      run: |          
+          ./cpolar authtoken ZmQ0MjM4YTYtNThkYS00ODQxLWJiMDUtYmI1ZDY4ODRmMTM4
           echo "已授权"
-          cpolar http 3000  &
+          ./cpolar http 3000  &
           
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
