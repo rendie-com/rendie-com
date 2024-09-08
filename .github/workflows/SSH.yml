@@ -20,9 +20,12 @@ jobs:
       
     - name: 运行       
       run: | 
-        mv sqlite3/shopee/类目/类目.jpg sqlite3/shopee/类目/类目.db
-        mv sqlite3/shopee/类目/属性.jpg sqlite3/shopee/类目/属性.db
-        mv sqlite3/shopee/类目/属性名翻译.jpg sqlite3/shopee/类目/属性名翻译.db
+        mv sqlite3/shopee/任务/定时任务.jpg sqlite3/shopee/任务/定时任务.db
+        
+        mv sqlite3/shopee/商品/店铺商品/br.jpg sqlite3/shopee/商品/店铺商品/br.db
+        mv sqlite3/shopee/商品/店铺商品/my.jpg sqlite3/shopee/商品/店铺商品/my.db
+        mv sqlite3/shopee/商品/店铺商品/tw.jpg sqlite3/shopee/商品/店铺商品/tw.db
+        mv sqlite3/shopee/商品/全球商品.jpg sqlite3/shopee/商品/全球商品.db
 
         
          
