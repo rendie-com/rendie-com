@@ -1,0 +1,43 @@
+
+  <load admin/html/头部.html/>
+  <table class="tb">
+  <tr class="thead"><th colspan="3">所有时间的商品销售排行</th></tr>	
+  <tr>
+    <td colspan="3">
+    &nbsp;&nbsp;开始日期：<input name='BeginDate' type='text' id='BeginDate' value='' size='20'  >
+    &nbsp;&nbsp;结束日期：<input name='EndDate' type='text' id='EndDate' value='' size='20'  >
+    &nbsp;&nbsp;<input class="pn" type="submit" value=" 开 始 统 计 ">
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3">
+    <a href='#?action=SalePM' style='color:red'>所有时间</a>&nbsp;|&nbsp;
+    <a href='#?action=SalePM&d=1'>今日排名</a>&nbsp;|&nbsp;
+    <a href='#?action=SalePM&d=2'>本周排名</a>&nbsp;|&nbsp;
+    <a href='#?action=SalePM&d=3'>本月排名</a>&nbsp;|&nbsp;
+    <a href='#?action=SalePM&d=6'>上个月排名</a>&nbsp;|&nbsp;
+    <a href='#?action=SalePM&d=4'>本年度排名</a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td><strong>商品名称</strong></td>
+    <td><strong>销售量</strong></td>
+    <td><strong>总销售额(元)</strong></td>
+  </tr>
+  <!--select p.title,p.unit,a.proid,sum(a.Amount) as SaleNum,sum(TotalPrice) as SaleMoney from (ks_orderitem a inner join ks_product p on a.proid=p.id) inner join ks_order o on a.orderid=o.orderid where o.MoneyReceipt>0 group by a.proid,p.title,p.unit order by sum(Amount) desc-->
+  <r:orderitem size=20 page=5}
+  <tr align="center">
+    <td align="left">[orderitem:name]</td>
+    <td>[orderitem:amount][orderitem:unit]</td>
+    <td>￥[orderitem:price]</td>
+  </tr>
+  </r:orderitem>
+  </table>
+  <.load(admin/html/分页通用.html)/>
+  <div class="attention">
+    <font color=red><strong>说明：</strong><br/>
+    1、这里统计到的数据不包括非确认及无效订单;<br/>
+    2、您可以选择按时间段统计;
+    </font>
+  </div>
+

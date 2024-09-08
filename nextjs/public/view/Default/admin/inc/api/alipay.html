@@ -1,0 +1,47 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+{Fun(AdminReplaceAPI())}
+<script type="text/javascript" src="/<.Path/>admin/js/md5.js"></script>
+<script type="text/javascript">
+$(function(){
+	var txt,URL,access_token,html,code=getQueryString("token","")
+	if(code==null)//是否要登陆
+	{
+		var appid='{Fun(attr("api_alipaypartner"))}',appkey='{Fun(attr("api_alipaykey"))}'
+		var myString="_input_charset=utf-8&partner="+appid+"&return_url="+window.location.href+"&service=alipay.auth.authorize&target_service=user.auth.quick.login"
+		var md5SignValue =CryptoJS.MD5(myString+appkey);
+		location.href="https://mapi.alipay.com/gateway.do?"+myString+"&sign="+md5SignValue+"&sign_type=MD5"
+	}
+	else
+	{
+	
+		var user_id=getQueryString("user_id","")
+		var select1="select top 1 * from @.user where @.alipayID='"+user_id+"'"
+		var html='<pres>\
+							<if "Fun(Db('+select1+',count))"=="">\
+							<r: tag="sql">Insert into @.user(:alipayID) values(\''+user_id+'\')</r:>\
+							</if>\
+							</pres>\
+							'
+		var ran=Math.random()
+		html=$.ajax({type:"POST",url:"/inc/ajax.aspx/exe.html?"+ran,data:{data:escape(html)},async:false}).responseText;
+		html='<pres>\
+						<r:user where=" where @.alipayID=\''+user_id+'\'" size=1>\
+							{EFun(wCookie("pre_userid","[user:id]"))}\
+							{EFun(wCookie("pre_username","[user:name]"))}\
+							{EFun(wCookie("check_[user:id]","Fun(check_user("'+ran+'"))"))}\
+							<r: tag="sql">update @.user set @.random=\''+ran+'\' where @.id=[user:id]</r:>\
+						</r:user>\
+					</pres>'
+		html=$.ajax({type:"POST",url:"/inc/ajax.aspx/exe.html?"+Math.random(),data:{data:escape(html)},async:false}).responseText;
+		setTimeout("location.href=\"/Default.aspx/user.html\";",500);
+	}
+	
+})
+function getQueryString(name,url){
+	if(url==""){url=window.location.search.substr(1)}
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	var r = url.match(reg);
+	if (r != null) return unescape(r[2]); return null;
+}
+</script>
+

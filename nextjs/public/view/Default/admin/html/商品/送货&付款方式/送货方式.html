@@ -1,0 +1,47 @@
+<load admin/html/头部.html/>
+<table class="tb" id="table">
+<tr><td align="left" colspan="5">
+<select id="Field">
+<option value="and :freid='$1'" {if "<.arr(6)/>".indexOf("freid")!=-1} selected="selected"{/if/>>模板ID</option>
+<option value="and :fromshopid='$1'"  {if "<.arr(6)/>".indexOf("fromshopid")!=-1} selected="selected"{/if/>>来源店铺ID</option>
+</select><input type="text" size="50" id="searchword" value="<.unarr(7)/>" onkeydown="if(event.keyCode==13){fun.Search();/>"><a href="javascript:" class="button" onclick="fun.Search()">搜索</a></td></tr>
+	<tr align="center">
+      <td class="w70">模板ID</td>
+      <td>来源店铺名称 <a href="<r:idorderlink}"><img src="/<.Path/>admin/img/minus.gif" title="按【来源店铺名称】排序" /></a></td>
+      <td align="left">模板信息</td>
+      <td>
+      <select onChange="Tool.open(5,this.options[this.selectedIndex].value)"><option value="0">绑定敦煌账号</option>
+      <r:APIaccount size=50 where=" where @.from='dhgate' and @.hide=0 order by @.sort asc">
+      <option value="<:escape_(and @.binduserid=[APIaccount:fromid])/>" {if "Fun(arr(5))"=="Fun(escape_(and @.binduserid=[APIaccount:fromid]))"} selected="selected"{/if}>([APIaccount:i])[APIaccount:username]</option>
+      </r:APIaccount>
+      </select>
+      </td>
+      <td nowrap="nowrap">采集时间/启用时间</td>
+      <td>操作</td>
+	</tr>
+  <r:freight size=10 page=4 where=" where 1=1 <.unarr(5)/> {r:unarr(6)/> order by @.id desc">
+	<tr align="center">
+    <td class="w70"><a href="https://www.aliexpress.com/item/-/[freight:fromid].html" target="_blank">[freight:freid]</a><br/>(<if "[freight:isdhnew]"=="True">已创建<else/>未创建</if>)</td>
+    <td class="w200">店铺ID：<a href="https://www.aliexpress.com/store/[freight:fromshopid]" target="_blank">[freight:fromshopid]</a>
+    <br/>店铺：<:Db(select count(1) as total from @.freight where @.fromshopid='[freight:fromshopid]',count)/>，正常：<:Db(select count(1) as total from @.product where @.from='aliexpress' and @.shopid='[freight:fromshopid]' and @.hide=0,count)/><br/>非正常：<:Db(select count(1) as total from @.product where @.from='aliexpress' and @.shopid='[freight:fromshopid]' and @.hide>0,count)/>
+    </td>
+    <td align="left"><textarea name="JS" style="display:none">[freight:js]</textarea><img src='<.Path/>admin/img/loading.gif' align='absmiddle'/></td>
+    <td class="w200">
+    <r:APIaccount size=1 where=" where @.fromid=[freight:binduserid]">[APIaccount:username]</r:APIaccount>
+    </td>
+    <td>
+    [freight:time1]<hr/>[freight:time2]
+    </td>
+    <td class="w100"><a href="javascript:" onclick="fun.edit01([freight:id])" class="detail-button">修改</a><a href="javascript:" onclick="fun.edit10([freight:id])" class="detail-button">删除</a></td>
+	</tr>
+  </r:freight>
+	<tr>
+      <td colspan="5">
+      <a href="javascript:" class="button left" onclick="fun.add01()">添加</a><a href="javascript:" onclick="fun.add03()" class="button middle">一键设置模板ID</a><a href="javascript:" onclick="fun.f01()" class="button middle">一键采集【送货方式】</a><a href="javascript:" onclick="fun.i01()" class="button middle">一键获取所有【物流公司】</a><a href="javascript:" onclick="fun.j01()" class="button middle">智能在敦煌[创建/修改]运费模板</a>
+      
+      </td>
+    </tr>
+</table>
+<.load(admin/html/分页通用.html)/>
+
+<script type="text/javascript">let obj={searchlink:"<.arr(1)/>/<.arr(2)/>/<.arr(3)/>/1/%20/"/>;Tool.scriptArr(["{r:Path/>admin/js/商城/送货&付款方式/送货方式.js"]);</script>

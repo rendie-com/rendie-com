@@ -1,0 +1,113 @@
+<table class="tb">
+  <form method='post' action='admin_user.aspx?DoAddMore.html' name='myform'>
+  <tr class='thead'><td colspan='2'>批量生成充值卡</td></tr>
+  <tr> 
+    <td align="right"><strong>充值卡名称：</strong></td>
+    <td><input name='GroupName' type='text' size='20' maxlength='100'> 如:"10元购100点充值卡"等</td>
+  </tr>
+  <tr> 
+    <td align="right"><strong>充值方式：</strong></td>
+    <td>
+      <input type="radio" name="cardtype" value="1" onclick="$('#showother').hide()" id="cardtype-1">
+      <label for="cardtype-1">在线充值购买(会员中心由会员自己购买充值）</label>
+      <br/>
+      <input type="radio" name="cardtype" value="0" onclick="$('#showother').show()" checked="checked" id="cardtype-0">
+      <label for="cardtype-0">线下销售</label>
+	</td>
+  </tr>
+  <tbody id="showother">
+    <tr> 
+      <td align="right"><strong>充值卡数量：</strong></td>
+      <td><input name='Nums' type='text' value='100' size='10' maxlength='10'>&nbsp;张</td>
+    </tr>
+    <tr>
+      <td align="right"><strong>充值卡号码前缀：</strong><br/>例如：2006,KS2006等固定不变的字母或数字</td>
+      <td><input name='CardNumPrefix' type='text' id='CardNumPrefix' value='KS2007' size='10' maxlength='10'></td>
+    </tr>
+    <tr>
+      <td align="right"><strong>充值卡号码位数：</strong><br/>请输入包含前缀字符在内的总位数</td>
+      <td><input name='CardNumLen' type='text' id='CardNumLen' value='12' size='10' maxlength='10'>
+        <font color='#0000FF'>&nbsp;建议设为10--15位</font></td>
+    </tr>
+    <tr>
+      <td align="right"><strong>充值卡密码位数：</strong></td>
+      <td>
+        <input name='PasswordLen' type='text' id='PasswordLen' value='6' size='10' maxlength='10'>
+        <font color='#0000FF'>&nbsp;建议设为6--10位</font>
+      </td>
+    </tr>
+    <tr>
+      <td align="right"><strong>卡密码构成方式：</strong><br/>你可以选择数据或字母的组合</td>
+      <td>
+        <input type="radio" name="zhtype" value="1" checked="checked" id="zhtype-1">
+        <label for="zhtype-1">纯数字</label>
+        <input type="radio" name="zhtype" value="2" id="zhtype-2">
+        <label for="zhtype-2">数字与字母随机组合</label>
+      </td>
+    </tr>
+  </tbody>
+  <tr>
+    <td align="right"><strong>充值卡面值：</strong><br/>即购买人需要花费的实际金额</td>
+    <td><input name='Money' type='text' id='Money' value='50' size='10'> 元</td>
+  </tr>
+  <tr> 
+    <td align="right"><strong>充值卡点数、资金或有效期：</strong><br/>购买人可以得到的点数、资金、有效期和积分 </td>
+      <td>
+        <input name='ValidNum' type='text' id='ValidNum' value='50' size='10' maxlength='10'>
+        <select name='ValidUnit' id='ValidUnit'>
+          <option value='1' selected>点</option>
+          <option value='2'>天</option>
+          <option value='3'>元</option>
+          <option value='4'>积分</option>
+        </select></td>
+    </tr>
+	
+    <tr>
+      <td align="right"><strong>允许使用此充值卡的用户组：</strong><br/> 不限制请留空或全部选中。
+     </td>
+      <td>
+        <input type="checkbox" name="AllowGroupID" value="1" id="AllowGroupID-1">
+        <label for="AllowGroupID-1">网站管理员</label>
+        &nbsp;&nbsp;
+        <input type="checkbox" name="AllowGroupID" value="2" id="AllowGroupID-2">
+        <label for="AllowGroupID-2">个人会员</label>
+        &nbsp;&nbsp;
+        <input type="checkbox" name="AllowGroupID" value="3" id="AllowGroupID-3">
+        <label for="AllowGroupID-3">企业会员</label>
+      </td>
+    </tr>
+    <tr>
+      <td align="right"><strong>充值后自动归入的用户组：</strong></td>
+      <td>
+      <select name="GroupID" id="GroupID">
+	  <option value='0'>---保持原有用户组---</option>
+	  <option value="1">网站管理员</option>
+      <option value="2">个人会员</option>
+      <option value="3">企业会员</option>
+	 </select>
+     </td>
+    </tr>
+    <tr>
+      <td align="right"><strong>到期后自动归入的用户组：</strong></td>
+      <td>
+      <select name="ExpireGroupID" id="ExpireGroupID">
+	  <option value='0'>---保持原有用户组---</option>
+	  <option value="1">网站管理员</option>
+      <option value="2">个人会员</option>
+      <option value="3">企业会员</option>
+	 </select><br/>
+     <span style='color:blue'>指用户选择充值卡为账户充值后,当账户里的点券,有效天数或资金用完后(具体根据该卡是点券卡,有数天数卡或资金卡而定)。<br/>将过期的用户自动归入低一级的用户级别。
+     </span>
+     </td>
+    </tr>
+    <tr>
+      <td align="right"><strong>充值截止期限：</strong><br/>购买人必须在此日期前进行充值，否则自动失效</td>
+      <td><input name='EndDate' type='text' id='EndDate' value='2014/11/29 14:35:26' size='20'></td>
+    </tr>
+    <tr> 
+      <td></td>
+      <td><input  type='submit' class="pn" name='Submit' value='开始生成'></td>
+    </tr>
+    </form>
+  </table>
+

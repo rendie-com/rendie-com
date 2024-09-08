@@ -1,0 +1,15 @@
+<.LoadScript(admin/html/商城/销售数据统计/类目分析.js)/>
+<load admin/html/头部.html/>
+<ul class="table">
+<li><div class="w200 center">来源ID</div><div>分类名称（英文）</div></li>
+<r:type where=" where @.from='aliexpress' and @.upid='0' order by @.sort asc" size=100>
+  <li class="tr">
+  <div class="w200"><a href="javascript:" class="Mo MoA" onclick="ModifiedAB($(this),'<:fromID/>')"></a>&nbsp;<:fromID/></div>
+  <div><:name/>（<:enname/>）<strong>【<:fromID Fun="Fun(run(aliexpressType($1)))"/>】</strong></div>
+  </li>
+</r:type>
+  <div class="w200">&nbsp;</div>
+  <div>合计：<.Db(select count(1) as total from @.product c join @.OrderItem d on c.rd_id=d.rd_pid,count)/></div>
+</ul>
+
+<script type="text/javascript" src="/<.Path/>admin/js/商城/销售数据统计/类目分析.js"></script>

@@ -1,0 +1,135 @@
+<Fun LoadScript(admin/html/数据/商品管理/商品管理.js)/>
+<r:type where=" where @.from='rendie' and @.upid='Fun(arr(3))' order by @.sort asc" size=15><:id Fun="Fun(AddAttr(type$i,$1))"/><:name Fun="Fun(AddAttr(name$i,$1))"/></r:type>
+<div class="m-2 shadow p-2 bg-white rounded">
+  <load admin/html/头部.html/>
+  <table class="tb" id="table">
+    <tr>
+      <td align="right">批量设置商品编码：</td>
+      <td><a href="javascript:" onclick="fun.a01()" class="button" title="(只对aliexpress的空编码有用)">设置编码</a>(只对aliexpress的空编码有用)</td>
+    </tr>
+    <tr>
+      <td align="right">批量设置商品typeID：</td>
+      <td><a href="javascript:fun.a05()" class="button">开始设置typeID</a>(在商品表中记录type表的ID,只对aliexpress的空编码有用)</td>
+    </tr>
+    <tr>
+      <td align="right">修复价格：</td>
+      <td><a href="javascript:repairPrice()" class="button">开始修复</a>（将价格为零，修复最小价格和最大价格和平均价格） </td>
+    </tr>
+    <tr>
+      <td align="right">修复首图：</td>
+      <td><a href="javascript:repairPic1()" class="button">开始修复</a>（将首图为空修复） </td>
+    </tr>
+    <tr>
+      <td align="right">归类操作：</td>
+      <td><a href="javascript:" class="button left" onclick="FunHide8($(this))">找出标题重复</a> <a href="javascript:" class="button middle" onclick="fun.b01($(this))">找出首图重复</a> <a href="javascript:" class="button middle" onclick="FunHide12($(this))">找出有速卖通网址</a> <a href="javascript:" class="button middle" onclick="FunHide5($(this))">找出手动审核不通过</a></td>
+    </tr>
+    <tr>
+      <td align="right">重新采集，更新数据：</td>
+      <td> 将商品表
+        <select id="productHide">
+          <option value="_20">所有商品状态</option>
+          <option value="0">商品管理</option>
+          <option value="1">回收站</option>
+          <option value="2">数据错误</option>
+          <option value="3">审核未通过</option>
+          <option value="4">品牌商投诉</option>
+          <option value="5">疑似侵权</option>
+        </select>
+        且 <a href="javascript:producttype('#AliproductType1','','')" class="button" id="AliproductType1" val="_20">所有分类</a> 且修改时间小于
+        <input type="text" id="datetime" value="2015/10/23" size="25" style="text-align:center">
+        的数据。 <a href="javascript:Tool.main('<.arr(1)/>/list/{rr:attr(type1)/>/time/3.html')" class="button">重新采集，更新数据</a>
+        <hr/>
+        单个商品更新：商品ID
+        <input type="text" id="pre_id" size="15" style="text-align:center">
+        <a href="javascript:gerther2('<.arr(1)/>/list/{rr:attr(type1)/>/true/')" class="button">更新数据</a></td>
+    </tr>
+    <tr>
+      <td align="right">批量更新图片：</td>
+      <td>文件目录为
+        <input type="text"  id="PICborber" value="产品图/">
+        以商品编号(即文件夹名为商品编号)为更新图片。
+        <input type="button" id="UpdatePIC" value="开始更新" class="pn" />
+        (限图片扩展名为："JPG", "PNG", "BMP", "GIF") </td>
+    </tr>
+    <tr>
+      <td align="right">批量生成图片：</td>
+      <td>将数据表
+        <input type="text"  id="tableIDS" value="所有" style="text-align:center" size="40">
+        的ID的图片的
+        <input type="text"  id="PICArr1" value="每"size="3">
+        个图组的中的第
+        <input type="text"  id="PICArr2" value="1"size="3">
+        个图片，生成到
+        <input type="text"  id="PICArr3" value="每" size="3">
+        个图组的中的第
+        <input type="text"  id="PICArr4" value="1"size="3">
+        个图片中，<br>
+        并且生成的大小为:
+        <input type="text" value="800" size="3" id="PhotoW" />
+        X
+        <input type="text" id="PhotoH" size="3" />
+        <input type="checkbox" value="1"  class="checkbox" id="check-pre_wer"/>
+        <label for="check-pre_wer">是否加水印</label>
+        <input type="button" value="开始生成" class="pn" onClick="if(confirm('生成图片不可恢复,确定开始生成吗？')){location.href='ajax/admin_content.aspx?MakePICArr/'+$('#PICArr1').val()+'/'+$('#PICArr2').val()+'/'+$('#PICArr3').val()+'/'+$('#PICArr4').val()+'/'+$('#PhotoW').val()+'/'+$('#PhotoH').val()+'/'+$('#check-pre_wer:checked').val()+'/'+$('#tableIDS').val();return true;}return false;"/></td>
+    </tr>
+    <tr>
+      <td align="right">同名数据检测：</td>
+      <td><input type="button" class="pn" onClick="location.href='?<.arr(0)/>/<.arr(2)/>/1/<.arr(4)/>/{r:arr(5)/>/name/{r:arr(7)/>/name.html';" value="标题相同查询">
+        <input type="button" class="pn" onClick="location.href='?<.arr(0)/>/<.arr(2)/>/1/<.arr(4)/>/{r:arr(5)/>/proid/{r:arr(7)/>/proid.html';" value="编码相同查询"></td>
+    </tr>
+    <tr>
+      <td align="right">下载图片：</td>
+      <td><a href="/<.Config(admin)/>/ajax/admin_content.aspx/DownProductPic.html">下载图片中的网络图片</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="/<.Config(admin)/>/ajax/admin_content.aspx/ProductDesPicDown.html">下载内容中的网络图片</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="/{r:Config(admin)/>/ajax/admin_content.aspx/ProductDesPicWater.html">给内容中的图片加水印</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+        将新闻内容的首张图片导入到图片中的:
+        <input type="text" value="1" size="1" id="photoX" >
+        -
+        <input type="text" value="35" size="1" id="photoY" >
+        <input type="button" value="开始导入" class="pn" id="ImportPhoto" /></td>
+    </tr>
+    <tr>
+      <td align="right">内容中有网址：</td>
+      <td>update @.product set @.hide=5,rd_err='有速卖通的网址' where @.from='aliexpress' and @.des like '%www.aliexpress%'and @.hide=0</td>
+    </tr>
+    <tr>
+      <td align="right" nowrap="nowrap">批量给商品标题加编码：</td>
+      <td>update @.product set @.name=@.name&' '&:proid where @.from='aliexpress' and INSTR(@.name,@.proid)=0</td>
+    </tr>
+    <tr>
+      <td align="right">更新订单退款：</td>
+      <td>update @.order set @.orderRefund=:MoneyTotal,@.CommissionTime=now() where @.status='111000' and @.orderRefund=0 and not(@.paytime is null)</td>
+    </tr>
+    <tr>
+      <td align="right">高级更新：</td>
+      <td>update @.uploadproduct set @.uploadproduct.rd_time='2014/01/01' from @.uploadproduct,rd_product where @.uploadproduct.rd_proid=rd_product.rd_id and @.uploadproduct.rd_uperpid=1 and @.uploadproduct.rd_upuser='lkmwdkawx888'</td>
+    </tr>
+    <tr>
+      <td align="right">更新：</td>
+      <td>update @.product set @.hide=0 where @.from='aliexpress' and @.err like '%3C类产品必须选择售后服务模板%'and @.hide=2</td>
+    </tr>
+    <tr>
+      <td colspan="2"> delete from @.uploadproduct where @.proid in(select @.id from @.product where @.hide=2 and @.err like '请填写产品%') and @.bool=0
+        <hr>
+        update @.product set @.product.rd_hide=0,rd_product.rd_err='' from @.product,rd_uploadproduct where @.product.rd_id=rd_uploadproduct.rd_proID and @.product.rd_hide=2 and @.uploadproduct.rd_bool=0 and @.product.rd_err like '%请填写产品%'
+        <hr/>
+        select @.id,rd_name from @.product where @.aeopAeProductSKUs like '%"}]},{"%'
+        <hr/>
+        update @.product set @.checkPrice=1,rd_hide=2,rd_err='多价格的产品，暂时不要' where @.from='aliexpress' and @.aeopAeProductSKUs like '%"}]},{"%'
+        <hr/>
+        update @.product set @.hide=5,rd_err='价格少于1美元' where @.from='aliexpress' and @.aeopAeProductSKUs like '%skuPrice":"0.%' and @.hide=0
+        <hr/>
+        update @.product set @.hide=5,rd_err='价格少于2美元' where @.from='aliexpress' and @.aeopAeProductSKUs like '%skuPrice":"1.%' and @.hide=0
+        <hr/>
+        update @.product set @.hide=5,rd_err='价格少于3美元' where @.from='aliexpress' and @.aeopAeProductSKUs like '%skuPrice":"2.%' and @.hide=0
+        <hr/>
+        update @.product set @.hide=5 where @.from='aliexpress' and @.err like '%重新绑定类目%'
+        <hr/>
+        update @.product set @.hide=0,rd_err=null where @.from='aliexpress' and @.hide=2 and @.err like '%不允许此操作。"}]},"itemId":null,"itemCode":null}'
+        <hr/>
+        update @.product set @.hide=9,rd_err='首图重复' where @.from='aliexpress' and @.pic1 in (select @.pic1 from @.product where @.from='aliexpress' group by @.pic1 having count(rd_pic1) > 1) and @.id not in (select min(rd_id) from @.product where @.from='aliexpress' group by @.pic1 having count(rd_pic1)>1) </td>
+    </tr>
+  </table>
+</div>
+
+<script type="text/javascript">let obj={isrun:false/></script> 
+ 
+<script type="text/javascript" src="/<.Path/>admin/js/商品/商品管理/商品管理工具.js"></script> <template admin/html/通用模板.html/>

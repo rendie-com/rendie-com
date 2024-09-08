@@ -1,0 +1,46 @@
+<load admin/html/头部.html/>
+<table class="tb">
+  <tr>
+    <td width="74%" valign="top"><table class="tb">
+        <tr class="thead" align="center">
+          <td width="50">编号</td>
+          <td align="left">用户的昵称</td>
+          <td>用户分组</td>
+          <td>地区</td>
+          <td>用户关注时间</td>
+          <td>性别</td>
+        </tr>
+        <tbody id="wenxincount">
+        </tbody>
+        <tr>
+          <td colspan="6"><input type="button" class="pn" value="反选" onClick="checkOthers('input','pre_id')" />
+            <select id="movetype" >
+            </select>
+            <input type="button" value="批量移动" class="pn" id="MassMovement">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="6" id="pagelist" height="40"></td>
+        </tr>
+      </table></td>
+    <td valign="top" width="25%"><table class="tb">
+        <tr class="thead">
+          <td colspan="4">用户分组管理</td>
+        </tr>
+        <tr align="center" height="30">
+          <td width="40">分组ID</td>
+          <td>分组名</td>
+          <td width="50">用户数</td>
+          <td width="70">操作</td>
+        </tr>
+        <tbody id="wenxintype">
+        </tbody>
+        <tr>
+          <td></td>
+          <td colspan="3"><input type="button" value="新建分组" class="pn" id="newGrouping"></td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+<script type="text/javascript" src="/<.Path/>admin/js/weixin.js"></script>
+

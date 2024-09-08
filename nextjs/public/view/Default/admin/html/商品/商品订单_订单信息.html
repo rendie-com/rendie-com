@@ -1,0 +1,207 @@
+﻿
+<r:order where=" where @.orderid='<.arr(4)/>'"/>
+  <table class="tb">
+    <tr class="thead"><th colspan="6">订单信息（订单编号：[order:orderid]）</th></tr>	
+    <tr>
+      <td align="right">用户名：</td>
+      <td>[order:username]</td>
+      <td align="right">下单时间：</td>
+      <td>[order:BeginDate]</td>
+      <td align="right">支付时间：</td>
+      <td>[order:paytime]</td>
+    </tr>
+    <tr>
+      <td align="right">订单状态：</td>
+      <td>
+					<if "[order:status]"=="111000">订单取消
+					<elseif "[order:status]"=="101003"/>等待买家付款
+					<elseif "[order:status]"=="102001"/>买家已付款，等待平台确认
+					<elseif "[order:status]"=="103001"/>
+					<font color=red>等待您发货</font>
+					<elseif "[order:status]"=="105001"/>买家退款中，等待协商结果
+					<elseif "[order:status]"=="105002"/>退款协议已达成
+					<elseif "[order:status]"=="105003"/>部分退款后，等待发货
+					<elseif "[order:status]"=="105004"/>买家取消退款申请
+					<elseif "[order:status]"=="103002"/>已部分发货
+					<elseif "[order:status]"=="101009"/>等待买家确认收货
+					<elseif "[order:status]"=="106001"/>退款/退货协商中，等待协议达成
+					<elseif "[order:status]"=="106002"/>买家投诉到平台
+					<elseif "[order:status]"=="106003"/>协议已达成，执行中
+					<elseif "[order:status]"=="102006"/>已确认收货
+					<elseif "[order:status]"=="102007"/>超过预定期限，自动确认收货
+					<elseif "[order:status]"=="102111"/>交易成功
+					<elseif "[order:status]"=="111111"/>交易关闭
+					<else/>
+					[order:status]
+					</if>
+      </td>
+      <td align="right">支付平台:</td>
+      <td>
+      <r:paymentplat size=1 where=" where @.id=[order:PaymentType]"}
+      [paymentplat:name]
+      </r:paymentplat>
+      </td>
+      <td align="right">订单提交IP：</td>
+      <td>[order:ip]</td>
+    </tr>
+    <tr>
+      <td align="right">收货人姓名：</td>
+      <td>[order:contactman]</td>
+      <td align="right">电话：</td>
+      <td>[order:phone]</td>
+      <td align="right">邮政编码：</td>
+      <td>[order:zip]</td>
+    </tr>
+    <tr>
+      <td align="right">国标收货地址第一级地址：</td>
+      <td>
+      <r:country size=1 where=" where @.countryid='[order:proviceFirstStageName]'"}
+      [country:des]([country:name])
+      </r:country>
+      </td>
+      <td align="right">国标收货地址第二级地址：</td>
+      <td>[order:addressCitySecondStageName]</td>
+      <td align="right">国标收货地址第三级地址：</td>
+      <td>[order:addressCountiesThirdStageName]</td>
+    </tr>
+    <tr>
+      <td align="right">详细地址：</td>
+      <td>[order:address]</td>
+      <td align="right">详细地址2：</td>
+      <td>[order:address2]</td>
+      <td align="right">手机：</td>
+      <td>[order:Mobile]</td>
+    </tr>
+    <tr>
+      <td align="right">联系QQ：</td>
+      <td>[order:qq]</td>
+      <td align="right">备注/留言：</td>
+      <td>[order:remark]</td>
+      <td align="right">实收金额：</td>
+      <td>[order:MoneyTotal f=2]</td>
+      </td>
+    </tr>
+    <tr>
+      <td align="right">订单来源URL：</td>
+      <td colspan="5">[order:refer]</td>
+    </tr>
+    <tr>
+      <td colspan="6">
+				<r:type where=" where @.from='rendie' and @.upid='Fun(arr(3))' order by @.sort asc" size=2}
+				<input type='button' class="pn" value='<:name/>' onClick="window.location.href='<.arr(1)/>/list/<:id/>/{r:arr(4)/>.html'">
+				</r:type>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="6">
+          <table class="tb2"  width="100%">
+	<r:orderitem where=" where @.OrderID='[order:OrderID]'" size=50>
+		<tr>
+			<if "[orderitem:i]"=="1">
+			<th rowspan="3" align="center">
+				<a target="_blank" href="[orderitem:pic]">
+				<img style="margin:2px;padding:1px;border:1px solid #ccc" src="[orderitem:pic]" title="点击预览" border="0" width="50" height="50" align="left">
+				</a>
+			</th>
+			<th style="text-align:left"><a href="[orderitem:fromURL]" target="_blank">[orderitem:name]</a></th>
+			<else/>
+			<td rowspan="3" align="center">
+				<a target="_blank" href="[orderitem:pic]">
+				<img style="margin:2px;padding:1px;border:1px solid #ccc" src="[orderitem:pic]" title="点击预览" border="0" width="50" height="50" align="left">
+				</a>
+			</td>
+			<td style="text-align:left"><a href="[orderitem:fromURL]" target="_blank">[orderitem:name]</a></td>
+			</if>
+		</tr>
+		<tr>
+			<td>
+			编码:<if "[orderitem:proid]"=="">无<else/>[orderitem:proid]</if>
+			&nbsp;&nbsp;
+			数量:[orderitem:Amount]（[orderitem:Unit]）
+			&nbsp;&nbsp;
+			价格:[orderitem:RealPrice f=2]
+			&nbsp;&nbsp;
+			属性:[orderitem:AttributeCart]
+			</td>
+		</tr>
+<tr>
+<td>产品备注:[orderitem:Remark]</td>
+</tr>
+<tr>
+</tr>
+	</r:orderitem>
+</table>
+      </td>
+    </tr>
+          <tr align="center">
+              <td colspan="6" align="right">
+              订单金额：￥0元
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <if "order:couponmoney"!="0"}使用优惠券：<font color=#ff6600>￥0元</font></if>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              应付金额：￥[order:moneytotal f=2]元 <a href="javascript:" onClick="modifytotalprice(event)"><font color=blue>改</font></a>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              已付款：￥<font color="red">[order:moneytotal f=2]</font>元</b>
+              &nbsp;&nbsp;&nbsp;&nbsp;  
+              <if "[order:paytime]"=="">尚欠款：￥<font color="blue">[order:moneytotal f=2]</font>元</if>
+              </td>
+          </tr>
+          {if [order:deliverstatus]!=0}
+          <tr>
+              <td colspan="6">
+            <r:logdeliver where=" where @.OrderID='[order:orderid]'"}
+              <div style='margin:10px;color:blue;padding:10px;margin-top:3px;border:1px solid #f9c943;background:#FFFFF6'>
+              温馨提示:本订单已发货。
+              快递公司：[logdeliver:ExpressCompany]；&nbsp;&nbsp;
+              物流单号：[logdeliver:ExpressNumber] （<a target="_blank" href="/inc/ajax_shop.aspx/ShowDelivery/[logdeliver:ExpressNumber]/<r:Deliverytype size=1 where=" where @.name='[logdeliver:ExpressCompany]'"}[Deliverytype:enname]</r:Deliverytype>.html">快递查询</a>）； 
+              &nbsp;&nbsp;发货日期：[logdeliver:DeliverDate]；&nbsp;&nbsp;发货经手人：[logdeliver:handlername]
+              </div>
+            </r:logdeliver>
+              </td>
+          </tr>
+          </if>             
+    <tr>
+      <td colspan="6">
+      <input type='button' class="pn" value='客户已签收' onClick="window.location.href='/<.Config(admin)/>/ajax/admin_shop.aspx/ClientSignUp/{r:arr(4)/>.html'">
+      <r:type where=" where @.from='rendie' and @.upid='Fun(arr(3))' order by @.sort asc" size=200 start=2}
+      {if <:n/>==1}
+        {if [order:deliverstatus]==0}<!--第一个是发货是且是否发货-->
+        <input type='button' class="pn" value='<:name/>' onClick="window.location.href='<.arr(1)/>/list/<:id/>/{r:arr(4)/>.html'">
+        </if>
+      <else/>
+        <input type='button' class="pn" value='<:name/>'onClick="window.location.href='<.arr(1)/>/list/<:id/>/{r:arr(4)/>.html'">
+      </if>
+      </r:type>
+      
+      <input type='button' class='pn' name='Submit' value='已发货 0 天,结清订单,并赠送88300分积分' onClick="if(confirm('订单一旦结算，该订单就不可进行任何操作，确定结清订单吗?')){window.location.href='KS.ShopOrder.aspx?Action=FinishOrder&ID=8';}">
+      
+      <input type='button' class="pn" value='返回'onclick="location.href='?list/<.arr(2)/>.html';">
+      </td>
+    </tr>
+  </table>
+  <div id="gMenuMap2" class="popdiv" style="position:absolute; display:none; width:200px;z-index:1000;">
+  <div class="poptitie"><img src="/<.Path/>admin/img/btn_close.gif" onClick="$('#gMenuMap2').hide();" />修改订单总价</div>
+  <table class="tb">
+  <form name='rform' action='/<.Config(admin)/>/ajax/admin_shop.aspx/ModifyTotalPrice/[order:id].html' method='post'>
+      <tr>
+        <td>当前价格:￥[order:moneytotal]元</td>
+      </tr>
+      <tr>
+        <td>将订单总价格改为:<input type='text' value='[order:moneytotal]' name='price'>元</td>
+      </tr>
+      <tr>
+        <td><input style='margin-top:7px' class='pn' type='submit' value='确定修改'></td>
+      </tr>
+  </form>
+  </table>
+  </div>
+</r:order>
+<script type="text/javascript">
+function modifytotalprice(e)
+{
+  $("#gMenuMap2").css("left",e.x-100+"px")
+  $("#gMenuMap2").css("top",e.y-100+"px")
+  $("#gMenuMap2").show()
+}
+</script>
+

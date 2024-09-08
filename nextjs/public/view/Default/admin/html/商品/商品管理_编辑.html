@@ -1,0 +1,378 @@
+﻿  <r:product size=1 where=" where @.id=<.arr(4)/>"
+  <script type="text/javascript" src="/<.Path/>admin/js/admin_content_product.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    $("#addproductpic").html(editbig()+addproductpicSkin({area:num}))
+    //$('.basic').jRating({rateMax:10,decimalLength:0,bigStarsPath:'<.Path/>admin/img/stars.png',smallStarsPath:"<.Path/>admin/img/small.png",phpPath:"ajax/admin_ajax.aspx?action=commendProduct"/>);
+    $('.tip').mouseover(function(e){
+        let path=$(this).val()
+        if(path.indexOf("http://"))
+        {
+            path="images/"+path
+        }
+        let $tip=$('<div id="tip" style="position:absolute;left:'+(e.pageX+10)+'px;top:'+(e.pageY+10)+'px;border:solid 5px #A7A7A7;background:#fff;">\
+                      <div class="t_box">\
+                        <div>\
+                          <img width="300" src="'+path+'" />\
+                        </div>\
+                      </div>\
+                  </div>');
+        $('body').append($tip);
+        $('#tip').show('fast');
+     }).mouseleave(function(){$('#tip').remove();})  
+    $("#checkSubmitEdit").click(function(){
+      //document.write(GetFromDate());
+    $.post("/<.Config(admin)/>/ajax/admin_content.aspx/ProductSave/edit.html?rad="+Math.random(),getjson(GetFromDate()),function(result){alert(result);location.reload();/>);
+    }); 
+  });
+  function BatchAddImages(){
+    let Opath=$("#OPath").val();let reg=new RegExp(/\//ig);Opath=Opath.replace(reg,"*");Opath=escape(Opath)  
+    //document.write("ajax/admin_content.aspx?BatchAdd/"+Opath+"/"+$("#Ow").val()+"/"+$("#Oh").val()+"/<.arr(4)/>.html")
+    location.href="/<.Config(admin)/>/ajax/admin_content.aspx/BatchAdd/"+Opath+"/"+$("#Ow").val()+"/"+$("#Oh").val()+"/{r:arr(4)/>.html"
+  }
+  function editbig(){
+      return '<r: tag=<:pic/>}<r: tag=[area:name] pre="[area:i]"}{if [area:i]==1}\
+        <div id="bigpic[area-1list:i]">\
+        <input type="hidden" name="picid" value="[area-1list:i]"/>\
+        <input type="text" size="6" name="bgcolor" <if "[area:name tag=2]"=="">style="border-left:20px #666666 solid;border-right:1px #666666 solid; border-bottom:1px #666666 solid; border-top:1px #666666 solid;"<else/>style="border-left:20px #[area:name tag=2] solid;border-right:1px #[area:name tag=2] solid; border-bottom:1px #[area:name tag=2] solid; border-top:1px #[area:name tag=2] solid;"</if> value="[area:name tag=2]">\
+        <input type="text" class="tip" size="70" name="pic_[area-1list:i]" id="pic<:id/>_[area-1list:i]_1" value="[area:name tag=1]">\
+        <input class="button" type="button" name="Submit" value="选择小图...">\
+		<input class="button" type="button" name="Submit" value="远程抓图...">\
+		<input class="button" type="button" name="Submit" value="裁剪...">\
+        <input type="text"size="2" name="W[area-1list:i]" id="W[area-1list:i]_1" value="[area:name tag=3]"/>x\
+        <input type="text"size="2" name="H[area-1list:i]" id="H[area-1list:i]_1" value="[area:name tag=4]"/>\
+        <input type="button" value="生成" size="2" class="button" onclick="GenerateImages($(\'#pic<:id/>_[area-1list:i]_1\').val(),\'<:id/>_[area-1list:i]_1\',$(\'#W[area-1list:i]_1\').val(),$(\'#H[area-1list:i]_1\').val(),\'product/[area-1list:i]-1_\');"/>\
+        <img onclick="$(\'#bigpic[area-1list:i]\').remove();" src="/<.Path/>admin/img/btn_dec.gif" class="pointer" alt="删除第[area-1list:i]组的所有图片" align="absmiddle"/>(第[area-1list:i]组的1个图片)<else/><div id="smallpic[area-1list:i]-[area:i]">\
+          &nbsp;&nbsp;├<input type="text" size="2" name="W[area-1list:i]" id="W[area-1list:i]_[area:i]" value="[area:name tag=3]"/>x\
+          <input type="text"size="2" name="H[area-1list:i]" id="H[area-1list:i]_[area:i]" value="[area:name tag=4]"/>\
+          <input type="button" value="生成" size="2" class="button" onclick="GenerateImages($(\'#pic<:id/>_[area-1list:i]_1\').val(),\'<:id/>_[area-1list:i]_[area:i]\',$(\'#W[area-1list:i]_[area:i]\').val(),$(\'#H[area-1list:i]_[area:i]\').val(),\'product/[area-1list:i]-[area:i]_\');" />\
+          <input type="text" size="70" class="tip" name="pic_[area-1list:i]" id="pic<:id/>_[area-1list:i]_[area:i]" value="[area:name tag=1]">\
+        <input class="button" type="button" name="Submit" value="选择小图...">\
+		<input class="button" type="button" name="Submit" value="远程抓图...">\
+		<input class="button" type="button" name="Submit" value="裁剪...">\
+          <img onclick="$(\'#smallpic[area-1list:i]-[area:i]\').remove();" src="/<.Path/>admin/img/btn_dec.gif" class="pointer" alt="删除第[area-1list:i]组的[area:i]个图片" align="absmiddle"/>(第[area-1list:i]组的[area:i]个图片)\
+        </div></if></r:>\
+      '+addsmallSkin([area:i],{area:[area:i]num})+'</div>\
+      </r:>\
+      '
+    }
+  function addsmall(j,i)
+  {
+      return '<div id="smallpic'+j+'-'+i+'">\
+				&nbsp;&nbsp;├<input type="text" size="2" name="W'+j+'" id="W'+j+'_'+i+'"/>x\
+				<input type="text"size="2" name="H'+j+'" id="H'+j+'_'+i+'"/>\
+				<input type="button" value="生成" size="2" class="button" onclick="GenerateImages($(\'#pic<:id/>_'+j+'_1\').val(),\'<:id/>_'+j+'_'+i+'\',$(\'#W'+j+'_'+i+'\').val(),$(\'#H'+j+'_'+i+'\').val(),\'product/'+j+'-1_\');" />\
+				<input type="text" size="70" class="tip" name="pic_'+j+'" id="pic<:id/>_'+j+'_'+i+'">\
+				<input class="button" type="button" name="Submit" value="选择小图...">\
+				<input class="button" type="button" name="Submit" value="远程抓图...">\
+				<input class="button" type="button" name="Submit" value="裁剪...">\
+				<img onclick="$(\'#smallpic'+j+'-'+i+'\').remove();" src="'+imagesPath+'img/btn_dec.gif" class="pointer" alt="删除第'+j+'组的'+i+'个图片" align="absmiddle"/>(第'+j+'组的'+i+'个图片)\
+                </div>'
+  }
+  function addbig(j){
+    return '\
+    <div id="bigpic'+j+'">\
+      <input type="hidden" name="picid" value="'+j+'"/>\
+      <input type="text" size="6" name="bgcolor" style="border-left:20px #666666 solid;border-right:1px #666666 solid; border-bottom:1px #666666 solid; border-top:1px #666666 solid;">\
+      <input type="text" class="tip" size="70" name="pic_'+j+'" id="pic<:id/>_'+j+'_1">\
+      <input class="button" type="button" name="Submit" value="选择小图...">\
+	  <input class="button" type="button" name="Submit" value="远程抓图...">\
+	  <input class="button" type="button" name="Submit" value="裁剪...">\
+      <input type="text"size="2"name="W'+j+'"id="W'+j+'_1"/>x\
+      <input type="text"size="2"name="H'+j+'"id="H'+j+'_1"/>\
+      <input type="button" value="生成" size="2" class="button" onclick="GenerateImages($(\'#pic<:id/>_'+j+'_1\').val(),\'<:id/>_'+j+'_1\',$(\'#W'+j+'_1\').val(),$(\'#H'+j+'_1\').val());"/>\
+      <img onclick="$(\'#bigpic'+j+'\').remove();" src="'+imagesPath+'img/btn_dec.gif" class="pointer" alt="删除第'+j+'组的所有图片" align="absmiddle"/>(第'+j+'组的第1个图)'+addsmallSkin(j,1)+'\
+    </div>'
+  }
+  function ShopSpecificationR(val){
+	  $("#cartattr").html($.ajax({url:"ShopSpecificationR/"+val+"/<:attribute/>.html?"+Math.random(),async:false}).responseText)
+  }
+  </script>
+  <style type="text/css">
+    li {list-style:none;}
+    .atcs li{padding:2px;float:left;border:1px #efefef solid;background:#FFFFF6;margin-right:6px}
+    .ttt{background:#FFFFF6;border:1px #F9C943 solid;width:50px;height:20px;line-height:20px;text-align:center}
+  </style>
+	<table class="tb">
+		<input type="hidden" id="pre_commend" value="<:commend/>">
+		<input type="hidden" id="pre_id" value="<:id/>">
+		<tr class="thead"><th>编辑商品(<font color='red'>＊</font>为必填,其它选填)</th></tr>
+		<tr><td>
+		<ul class="makeHtmlTab">
+			<li id="li_1" class="hover">基本信息</li>
+			<li id="li_2">商品介绍</li>
+			<li id="li_3">组图上传</li>
+			<li id="li_4">捆绑销售</li>
+		</ul>
+		<table class="tb" id="li_1tbody">
+			<tr>
+			<td align="right">商品标题:</td>
+			<td>
+			<input type="text" size="150" id="pre_name" name="pre_name" autocomplete="off" value="<:name/>" >
+			<font color='red'>＊</font>
+			</td>
+		</tr>
+	
+		<tr>
+			<td align="right" nowrap="nowrap">类 型:</td>
+			<td>
+			<select name="pre_type" id="pre_type" onChange="ShopSpecificationR(this.value)">
+			<option value="">请选择数据分类</option>
+			<r:type  where=" where @.from='product' and @.upid='0' order by @.sort asc" size=200>
+			<option value='<:id/>'<if "<:id/>"=="<:type/>"} selected="selected"{/if}><:name/></option>
+				<r:type  where=" where @.from='product' and @.upid='<:id/>' order by @.sort asc" size=200>
+				<option value='<:id/>'<if "<:id/>"=="<:type/>"} selected="selected"{/if}>|—<:name/></option>
+					<r:type  where=" where @.from='product' and @.upid='<:id/>' order by @.sort asc" size=200>
+					<option value='<:id/>'<if "<:id/>"=="<:type/>"} selected="selected"{/if}>|—|—<:name/></option>
+						<r:type  where=" where @.from='product' and @.upid='<:id/>' order by @.sort asc" size=200>
+						<option value='<:id/>'<if "<:id/>"=="<:type/>"} selected="selected"{/if}>|—|—|—<:name/></option>
+							<r:type  where=" where @.from='product' and @.upid='<:id/>' order by @.sort asc" size=200>
+							<option value='<:id/>'<if "<:id/>"=="<:type/>"} selected="selected"{/if}>|—|—|—|—<:name/></option>
+							</r:type>
+						</r:type>
+					</r:type>
+				</r:type>
+			</r:type>
+			</select>
+			<font color='red'>＊</font>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td id="cartattr">
+			</td>
+		</tr>
+		<tr>
+		<td align='right'>是否限时限量:</td>
+		<td>
+		<table>
+				<tr>
+					<td align="right">设置模式：</td>
+					<td>
+						<label onClick="$('#LimitBuy').show();$('#LimitBuyTaskID1').show();$('#LimitBuyTaskID2').hide();">
+						<input name="IsLimitbuy" type="radio" value="1"{if <:IsLimitbuy/>==1} checked="checked"{/if}/>限时抢购</label>
+						&nbsp;&nbsp;
+						<label onClick="$('#LimitBuy').show();$('#LimitBuyTaskID1').hide();$('#LimitBuyTaskID2').show();">
+						<input name="IsLimitbuy" type="radio" value="2"{if <:IsLimitbuy/>==2} checked="checked"{/if}/>限量抢购</label>
+						&nbsp;&nbsp;
+						<label onClick="$('#LimitBuy').hide();">
+						<input name="IsLimitbuy" type="radio" value="0" {if <:IsLimitbuy/>==""> checked="checked"{/if}/>关闭</label>
+						<input type="hidden" value="" name="LimitBuyTaskID0"/>
+					</td>
+				</tr>
+			<tbody id="LimitBuy"{if <:IsLimitbuy/>==""> style="display:none"{/if}>
+				<tr align="right">
+					<td>抢购任务：</td>
+					<td align="left">
+					<select name="LimitBuyTaskID1" id="LimitBuyTaskID1"{if <:IsLimitbuy/>!=1} style="display:none"</if> >
+					<option value="">---请选择---</option>
+					<r:shoplimitbuy size=50 where=" where @.TaskType=1">
+					<option value="[shoplimitbuy:id]" <if "<:LimitBuyTaskID/>"=="[shoplimitbuy:id]"} selected="selected"{/if}>[ShopLimitBuy:taskName]</option>
+					</r:shoplimitbuy>
+					</select>
+					<select name="LimitBuyTaskID2" id="LimitBuyTaskID2" <if "<:IsLimitbuy/>"!="2"} style="display:none"</if> >
+					<option value="">---请选择---</option>
+					<r:shoplimitbuy size=50 where=" where @.TaskType=2">
+					<option value="[shoplimitbuy:id]"<if "<:LimitBuyTaskID/>"=="[shoplimitbuy:id]"} selected="selected"{/if}>[ShopLimitBuy:taskName]</option>
+					</r:shoplimitbuy>
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">抢 购 价：</td>
+					<td>
+					<input type="text" style="text-align:center" name="LimitBuyPrice" id="LimitBuyPrice" size="10" value="<:LimitBuyPrice/>" maxlength="8"  onKeyPress="return regInput(this,/^\d*\.?\d{0,2}$/,String.fromCharCode(event.keyCode))" onpaste="return regInput(this,/^\d*\.?\d{0,2}$/,window.clipboardData.getData('Text'))" ondrop="return regInput(this,    /^\d*\.?\d{0,2}$/,event.dataTransfer.getData('Text'))" />元
+					</td>
+				</tr>
+				<tr>
+					<td align="right">抢购数量：</td>
+					<td><input type="text"  style="text-align:center" name="LimitBuyAmount" id="LimitBuyAmount" value="<:LimitBuyAmount/>" size="10" />件 设置允许让抢购的商品数</td>
+				</tr>
+			</tbody>
+		</table>
+		</td>
+		</tr>
+		<tr> 
+			<td align="right" nowrap="nowrap">商品属性:</td>
+			<td>
+			<label><input name='Property' type='radio' value='0' <if "<:Property/>"=="0">checked="checked"{/if}>无</label>
+			<label><input name='Property' type='radio' value='1' <if "<:Property/>"=="1">checked="checked"{/if}>新品</label>
+			<label><input name='Property' type='radio' value='2' <if "<:Property/>"=="2"}checked="checked"{/if}>热卖</label>
+			<label><input name='Property' type='radio' value='3' <if "<:Property/>"=="3"}checked="checked"{/if}>特价</label>
+			<label><input name='Property' type='radio' value='4' <if "<:Property/>"=="4"}checked="checked"{/if}>抢</label>
+			<label><input name='Property' type='radio' value='5' <if "<:Property/>"=="5"}checked="checked"{/if}>首发</label>
+			<label><input name='Property' type='radio' value='6' <if "<:Property/>"=="6"}checked="checked"{/if}>清仓</label>
+			<label><input name='Property' type='radio' value='7' <if "<:Property/>"=="7"}checked="checked"{/if}>独家</label>
+			<label><input name='Property' type='radio' value='8' <if "<:Property/>"=="8"}checked="checked"{/if}>人气</label>
+			<label><input name='Property' type='radio' value='9' <if "<:Property/>"=="9"}checked="checked"{/if}>话费</label>
+			<label><input name='Property' type='radio' value='10' <if "<:Property/>"=="10"}checked="checked"{/if}>惊爆价</label>
+			<label><input name='Property' type='radio' value='11' <if "<:Property/>"=="11"}checked="checked"{/if}>分期优惠</label>
+			<label><input name='Property' type='radio' value='12' <if "<:Property/>"=="12"}checked="checked"{/if}>抢完</label>
+			</td>
+		</tr>
+		<tr> 
+			<td align="right" nowrap="nowrap">上传附件(*.rar):</td>
+			<td>
+			<input type="text" size="70" name="pre_downdata" id="pre_downdata" value="<:downdata/>" >&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td align="right" height="22">来源网址：</td>
+			<td><input type="text" size="104" id="pre_fromUrl" value="<:fromurl/>" ></td>
+		</tr>
+		<tr>
+			<td align="right" height="22">采购网址：</td>
+			<td><input type="text" size="104" id="pre_PurchaseUrl" value="<:PurchaseUrl/>" ></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">市场价(元):</td>
+			<td>
+			<input type="text" size="10" id="Price_Market" value="<:pricemarket f=2/>" >
+			&nbsp;&nbsp;商城价(元):<input type="text" size="10" id="pre_price" value="<:price f=2/>" >
+			&nbsp;&nbsp;商品单位:<input type="text" size="5"  id="Unit" value="<:unit/>" >
+			<< 
+			<select onChange="$('#Unit').val(this.value);" >
+			<option value=''>请选择</option>
+			<option value="包">包</option>
+			<option value="部">部</option>
+			<option value="副">副</option>
+			<option value="件">件</option>
+			<option value="瓶">瓶</option>
+			<option value="双">双</option>
+			<option value="台">台</option>
+			<option value="条">条</option>
+			<option value="支">支</option>
+			<option value="只">只</option>
+			</select>
+			&nbsp;&nbsp;折扣率:<input type="text" size="2" id="Discount" style="text-align:right"value="<:discount/>" />折
+			&nbsp;点击率:<input type="text" size="5" id="pre_hit" maxlength="9" value="<:hit/>" />
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">库存数量:</td>
+			<td><input type="text" size="5" id="pre_totalnum" value="<:totalnum/>">
+				&nbsp;&nbsp;库存报警下限数量:<input id="AlarmNum" type="text" style="width:40px;" value="<:alarmnum/>" maxlength="40" />
+				&nbsp;&nbsp;已销售:<input id="pre_SaleNum" type="text" style="width:40px;" size="10" maxlength="10" value="<:SaleNum/>"/>
+				&nbsp;&nbsp;赚送积分:<input id="pre_score_send" type="text" style="width:40px;" value="<:scoresend/>" size="10" maxlength="10"  />
+				&nbsp;&nbsp;购买所需积分:<input id="pre_score" type="text" style="width:40px;" value="<:score/>" size="10" maxlength="10" /></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">关键词:</td>
+			<td>
+			<input type="text" id="keys" size="50" value="<:keys/>" >
+			&nbsp;品牌:<input id="brand" type="text" style="width:80px;" value="<:brand/>"/>
+			&nbsp;星级:<span id="star0" style="width:190px;display:inline-block"></span>
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">商品编码:</td>
+			<td>
+			<input id="proid" type="text" style="width:120px;" value="<:proid/>"/>
+			&nbsp;&nbsp;长：<input id="length" type="text" style="width:40px;" value="<:length/>"/>米
+			&nbsp;&nbsp;宽：<input id="width" type="text" style="width:40px;" value="<:width/>"/>米
+			&nbsp;&nbsp;高：<input id="height" type="text" style="width:40px;" value="<:height/>"/>米
+			&nbsp;&nbsp;单重量：<input id="Weight" type="text" style="width:40px;" value="<:weight/>" size="10" maxlength="10" />KG
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">商品备注:</td>
+			<td><textarea type="text" rows="4" cols="50" id="pre_note" style='width:500px;height:120px;border:1px solid #999999;float:left;'><:note code=en/></textarea></td>
+		</tr>
+		<tr>
+			<td align="right">购物车属性:</td>
+			<td>
+				<textarea wrap="off" style='width:500px;height:120px;line-height:26px;padding-left:25px;background:url(<.Path/>admin/img/rule1.gif) no-repeat 0 0px;border:1px solid #999999;float:left;' ID="AttributeCart"><:AttributeCart/></textarea>
+						<div style="float:left; padding-left:10px;">
+						<font color=green>一行表示一个属性，属性名称与属性值之间用"|"线隔开，属性值与属性值之间用英文逗号(,)隔开。</font><br/>
+						<font color=blue><b>录入格式如下:</b></font><br/>
+						颜色|红色,白色,蓝色<br/>
+						尺码|29码,30码,32码</div>
+			</TD>
+		</TR>
+	</table>
+	<table id="li_2tbody" style="display:none;" class="tb">
+	<tr>
+			<td>
+			<input type="hidden" id="pre_content" name="pre_content" value="<:des code=en/>" style="display:none" />
+			<input type="hidden" id="pre_content___Config" value="" style="display:none" />
+			<iframe id="pre_content___Frame" src="/<.Config(admin)/>/fckeditor/editor/fckeditor.html?InstanceName=pre_content&amp;Toolbar=rendie" width="960" height="1000" frameborder="0" scrolling="no"></iframe>
+			</td>
+	</tr>	
+	</table>
+	<table id="li_3tbody" style="display:none;" class="tb">
+	<tr> 
+		<td id="addproductpic"></td>
+	</tr>
+	</table>
+	<table id="li_4tbody" class="tb" style="display:none;">
+		<tr>
+			<td align="right">搜索结果:</td>
+		 <td>
+		 快速搜索: <input type="text"   name="key" >
+		&nbsp;分类:
+		<select size='1' name='kbtid' id='kbtid'>
+		<option value=''>--栏目不限--</option>
+			<r:type  where=" where @.from='product' and @.upid='0' order by @.sort asc" size=200>
+			<option value='<:id/>'<if "<:id/>"=="<:type/>"} selected="selected"{/if}><:name/></option>
+				<r:type  where=" where @.from='product' and @.upid='<:id/>' order by @.sort asc" size=200>
+				<option value='<:id/>'<if "<:id/>"=="<:type/>"} selected="selected"{/if}>|—<:name/></option>
+					<r:type  where=" where @.from='product' and @.upid='<:id/>' order by @.sort asc" size=200>
+					<option value='<:id/>'<if "<:id/>"=="<:type/>"} selected="selected"{/if}>|—|—<:name/></option>
+						<r:type  where=" where @.from='product' and @.upid='<:id/>' order by @.sort asc" size=200>
+						<option value='<:id/>'<if "<:id/>"=="<:type/>"} selected="selected"{/if}>|—|—|—<:name/></option>
+							<r:type  where=" where @.from='product' and @.upid='<:id/>' order by @.sort asc" size=200>
+							<option value='<:id/>'<if "<:id/>"=="<:type/>"} selected="selected"{/if}>|—|—|—|—<:name/></option>
+							</r:type>
+						</r:type>
+					</r:type>
+				</r:type>
+			</r:type>
+			</select>
+		<input type='text' name='minPrice' size='5' style='text-align:center' id='minPrice' value='10'> 元
+		<= <select name="PriceType" id="PriceType">
+		<option value=0>--不限制--</option>
+		<option value=1>当前零售价</option>
+		<option value=2>商城价</option>
+		<option value=3>原始零售价</option>
+		</select>
+		<= <input type='text' name='maxPrice' size='5' style='text-align:center' id='maxPrice' value='100' > 元
+		<input type="button" onClick="getProduct()" value="搜索" class="pn" name="s1"><br/><p id="keyarea"></p><br>
+		<select name="prolist" size="5" style="width:90%;height:160px" id="prolist"></select><br/>
+		<input type="button" onClick="addProductIn()" value="将选中的商品加入捆绑销售" class="pn">
+		 </td>
+		 </tr>
+		 <tr>
+		 <td align="right">捆绑商品:</td>
+		 <td>
+		<table class="tb2" id="addKBproduct">
+			<tr> 
+				<td width="70" align="center">商品ID</td>
+				<td>商品名称</td>
+				<td>捆绑销售价（元）</td>
+				<td>操作</td>
+			</tr>
+			<r:ShopBundleSale where=" where @.ProID=<.arr(4)/>"
+			<tr> 
+				<td align="center">[ShopBundleSale:kbproid]</td>
+				<r:product size=1 where=" where @.id=[ShopBundleSale:kbproid]"}
+				<td><:name/></td>
+				</r:product>
+				<td><input name="kbprice" pre_id="[ShopBundleSale:kbproid]" type="text" style="text-align:center;" value="[ShopBundleSale:kbprice f=2]" size="15" /></td>
+				<td><a href="javascript:" onClick="$(this).parent().parent().remove();">删除</a></td>
+			</tr>
+			</r:ShopBundleSale>
+		</table>
+			</td>
+		</tr>
+		</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<input type="button" id="checkSubmitEdit" class="pn" value="确认保存">
+			<input type="button" class="pn" value="复制添加" onClick="$('#editform').attr('action','ajax/admin_content.aspx?ProductSave/add')">
+			<input type="button" class="pn" value="返　回" onClick="javascript:history.go(-1);">
+			</td>
+		</tr>
+	</table>
+	</r:product>
+	

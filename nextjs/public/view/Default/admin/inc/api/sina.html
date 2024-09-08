@@ -1,0 +1,47 @@
+{Fun(AdminReplaceAPI())}
+<script type="text/javascript" src="/plugins/jquery-3.6.3.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	var txt,URL,access_token,html,code=getQueryString("code","")
+	if(code==null)//是否要登陆
+	{		
+		location.href="https://api.weibo.com/oauth2/authorize?client_id=210791877&redirect_uri="+window.location.href+"&response_type=code"
+		//https://api.weibo.com/oauth2/authorize?client_id=210791877&redirect_uri=http://xn--chq825m.cn/&response_type=code
+	}
+	else
+	{
+		URL="https://api.weibo.com/oauth2/access_token?client_id={Fun(attr("API_SinaId"))}&client_secret={Fun(attr("API_SinaKey"))}&grant_type=authorization_code&redirect_uri="+(window.location.href).replace(window.location.search,"")+"&code="+code
+		txt=$.ajax({type:"POST",url:"/inc/api.aspx/httpRequestPost.html?"+Math.random(),data:{URL:URL},async:false}).responseText;
+		//{"access_token":"2.00CWTWgCToyp_Ba8cd70d17aWTcq5B","remind_in":"157679999","expires_in":157679999,"uid":"2460611734"}
+		eval("var obj="+txt)
+		URL="https://api.weibo.com/2/users/show.json?access_token="+obj.access_token+"&uid="+obj.uid
+		txt=$.ajax({type:"POST",url:"/inc/api.aspx/httpRequestGet.html?"+Math.random(),data:{URL:URL},async:false}).responseText;
+		eval("var obj2="+txt)
+		var select1="select top 1 * from @.user where @.SinaId='"+obj.uid+"'"
+		var html='<pres>\
+						<if "Fun(Db('+select1+',count))"=="">\
+						<r: tag="sql">Insert into @.user(:SinaId,:nickname,:face) values(\''+obj.uid+'\',\''+obj2.name+'\',\''+obj2.profile_image_url+'\')</r:>\
+						</if>绑定\
+						</pres>'
+		var ran=Math.random()
+		html=$.ajax({type:"POST",url:"/inc/ajax.aspx/exe.html?"+ran,data:{data:escape(html)},async:false}).responseText;
+		html='<pres>\
+						<r:user where=" where @.SinaId=\''+obj.uid+'\'" size=1>\
+							{EFun(wCookie("pre_userid","[user:id]"))}\
+							{EFun(wCookie("pre_username","[user:name]"))}\
+							{EFun(wCookie("check_[user:id]","Fun(check_user("'+ran+'"))"))}\
+							<r: tag="sql">update @.user set @.random=\''+ran+'\' where @.id=[user:id]</r:>\
+						</r:user>\
+					</pres>'
+		html=$.ajax({type:"POST",url:"/inc/ajax.aspx/exe.html?"+Math.random(),data:{data:escape(html)},async:false}).responseText;
+		setTimeout("location.href=\"/Default.aspx/user.html\";",500);
+	}
+	
+})
+function getQueryString(name,url){
+	if(url==""){url=window.location.search.substr(1)}
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	var r = url.match(reg);
+	if (r != null) return unescape(r[2]); return null;
+}
+</script>

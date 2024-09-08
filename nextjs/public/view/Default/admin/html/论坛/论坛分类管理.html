@@ -1,0 +1,95 @@
+
+<script type="text/javascript">
+function DelGuestBoard(id)
+{
+ if(confirm('如果有子版块将同时被删除,真的要执行删除操作吗?'))
+ location.href="ajax/admin_club.aspx?GuestBoardDel-"+id;
+}
+</script>
+<table class="tb">
+  <tr class="thead">          
+    <td colspan="5">版面分类管理&nbsp;
+    <r:type type=<.arr(2)/> size=1 by=manager/>
+    (&nbsp;<a href="<:id/>"><:name/></a>&nbsp;)
+    </r:type>
+    </td>          
+  </tr>
+  <tr align="center">          
+    <td>版块名称</td>          
+    <td>版主</td>          
+    <td>帖子数</td>          
+    <td>排序</td>          
+    <td align="left">管理操作</td>
+  </tr>
+  <r:guestboardlist size=100>
+  <tr align="center">  
+    <td align="left">
+    <input type="checkbox" value="" name="m_id"  class="checkbox" id="check-[guestboardlist:id]"/>
+    <label for="check-[guestboardlist:id]">[guestboardlist:id].&nbsp;[guestboardlist:name]</label>
+    </td>  
+    <td>&nbsp;</td>  
+    <td>&nbsp;</td>  
+    <td>[guestboardlist:orderid]</td>  
+    <td align="left">
+      <r:type type=<.arr(2)/> size=3 start=2 by=manager/>
+      <a href='ajax/admin_club.aspx?list-<:id/>-[guestboardlist:id].html'><:name/></a>&nbsp;|&nbsp;
+      </r:type>
+      <r:type type=<.arr(2)/> size=2 start=1 by=manager/>
+      <a href='ajax/admin_club.aspx?list-<:id/>-[guestboardlist:id].html'>修改</a>&nbsp;|&nbsp;
+      </r:type>
+      <a href="javascript:DelGuestBoard([guestboardlist:id])">删除</a> 
+    </td>
+  </tr>
+  <r:guestboardsmalllist size=100 type=[guestboardlist:id]}
+  <tr align='center'>  
+    <td align="left">
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="checkbox" value="" name="m_id"  class="checkbox" id="check-[guestboardsmalllist:id]"/>
+      <label for="check-[guestboardsmalllist:id]">[guestboardsmalllist:id].&nbsp;[guestboardsmalllist:name]</label>
+    </td> 
+    <td><if "[guestboardsmalllist:master]"=""}无<else/>[guestboardsmalllist:master]</if></td>
+    <td>主题:<font Color=red>[guestboardsmalllist:topicnum]</font> 总数:<font Color=red>[guestboardsmalllist:postnum]</font></td>
+    <td>[guestboardsmalllist:orderid]</td>
+    <td align="left">
+      <a href='javascript:' disabled="disabled">添加分版</a>&nbsp;|&nbsp;
+      <r:type type=<.arr(2)/> start=3 size=4 by=manager/>
+      <a href='ajax/admin_club.aspx?list-<:id/>-[guestboardsmalllist:id].html'>修改</a>&nbsp;|&nbsp;
+      </r:type>
+      <a href='javascript:DelGuestBoard([guestboardsmalllist:id])'>删除</a>&nbsp;|&nbsp;
+      <a href='#'>清空</a>
+    </td>
+  </tr>
+  </r:guestboardsmalllist}
+  </r:guestboardlist}
+    <tr>
+    <td colspan="5">
+        <input type="button" class="pn" value="反选" onclick="checkOthers('input','pre_id')" />  
+    </td>
+    </tr>
+  </table>
+<table class="tb mt20">
+<tr class="thead"><th>合并分类</th></tr>
+<form method="post" action="ajax/admin_club.aspx?action=merge">
+<tr><td width="100%">
+将分类：<select name='leftSelect'>
+<option value=''>请选择文章分类</option>
+  <r:guestboardlist size=100>
+  <option value='[guestboardlist:id]'>&nbsp;|—[guestboardlist:name]</option>
+  <r:guestboardsmalllist size=100 type=[guestboardlist:id]}
+  <option value='[guestboardsmalllist:id]'>&nbsp;&nbsp;&nbsp;|—[guestboardsmalllist:name]</option>
+  </r:guestboardsmalllist}
+  </r:guestboardlist}
+</select>
+的数据合并到：<select name='rightSelect'>
+<option value=''>请选择文章分类</option>
+  <r:guestboardlist size=100>
+  <option value='[guestboardlist:id]'>&nbsp;|—[guestboardlist:name]</option>
+  <r:guestboardsmalllist size=100 type=[guestboardlist:id]}
+  <option value='[guestboardsmalllist:id]'>&nbsp;&nbsp;&nbsp;|—[guestboardsmalllist:name]</option>
+  </r:guestboardsmalllist}
+  </r:guestboardlist}
+</select>
+<input type="submit" value="确认合并" class="pn" /><br/><font color=#FF0000>注意，程序将前面的分类数据合并到后面分类后会删除之前分类生成的HTML,但不会删除该分类。</font></td></tr>
+</form>
+</table>
+

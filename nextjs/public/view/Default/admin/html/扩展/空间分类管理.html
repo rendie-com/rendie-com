@@ -1,0 +1,131 @@
+
+<table class="tb">
+<form method="post" name="editform" id="editform">
+<tr class="thead"><th colspan="10">专题分类管理(<font color='red'>＊</font>为必填,其它选填)</th></tr>	
+	<tr align="center">
+      <td align="left">ID.分类名称</td>
+      <td width="100">中文名</td>
+      <td width="100">英文名</td>
+      <td width="100">频道模板</td>
+      <td width="100">内容模板</td>
+      <td width="100">关键词</td>
+      <td width="100">描述</td>
+      <td width="100">图片/URL/变量</td>
+      <td width="25">排序</td>
+      <td width="120">操作</td>
+	</tr>
+      <r:type where=" where @.fromID=10 and @.upid='0' order by @.sort asc" size=200>
+      <tr>
+      <td class="Mo">
+          <if "<:isid/>"!=""}
+          <a href="javascript:" Modified="<:id/>" class="Modified ModifiedA" ></a>
+          <else/>
+          <a class="Modified"></a>
+          </if>
+          <input type="checkbox" value="<:id/>" name="pre_id"  class="checkbox" id="check-<:id/>"/>
+          <label for="check-<:id/>"><:id/>.</label>
+          <a href="<:id/>" target="_blank"><:name/></a>
+        </td>
+        <td><input type="text" size="13" id="pre_name<:id/>" value="<:name/>"></td>
+        <td><input type="text" size="13" id="pre_enname<:id/>" value="<:enname/>"></td>
+        <td><input type="text" size="13" id="pre_template<:id/>" value="<:template/>"></td>
+        <td><input type="text" size="13" id="pre_subtemplate<:id/>" value="<:subtemplate/>"></td>
+        <td><input type="text" size="13" id="pre_keyword<:id/>" value="<:keyword/>"></td>
+        <td><input type="text" size="13" id="pre_des<:id/>" value="<:des/>"></td>
+        <td><input type="text" size="13" id="pre_pic<:id/>" value="<:pic/>"></td>
+        <td><input type="text" size="1" id="pre_sort<:id/>" value="<:sort/>" style="text-align:center"></td>
+        <td>
+          &nbsp;
+          <a href="ajax/admin_content.aspx?TemplateDel/<:id/>.html">删除</a>
+        &nbsp;|&nbsp;  <if "<:hide/>"=="True"}
+          <a href="ajax/admin_content.aspx?TemplateNohide/<:id/>.html">取消隐藏</a>
+          <else/>
+          <a href="ajax/admin_content.aspx?TemplateHide/<:id/>.html">隐藏</a>
+          </if>
+        </td>
+      </tr>
+      </r:type>
+  <tr>
+    <td colspan="10">
+      <input type="button" class="pn" value="反选" onclick="checkOthers('input','pre_id')" />  
+      <input type="button" value="批量修改选中分类" class="pn" id="TemplateSpaceEdit"/>
+      <input type="submit" value="批量隐藏" onclick="editform.action='ajax/admin_content.aspx?TemplateHide.html';" class="pn"  />
+      <input type="submit" value="批量取消隐藏" onclick="editform.action='ajax/admin_content.aspx?TemplateNoHide.html';" class="pn"  />
+      <input type="submit" value="批量删除" onclick="if(confirm('确定要删除吗')){editform.action='ajax/admin_content.aspx?TemplateDelAll';}else{return false}" class="pn"  />
+       &nbsp;&nbsp;&nbsp;移动到
+      <select name="pre_upid_to">
+      <option value="0">顶级分类</option>
+      <rendiload admin/html/空间/空间分类_option.html}
+      </select>
+      <input type="submit" value="批量移动分类" name="Submit" class="pn" onclick="editform.action='ajax/admin_space.aspx?TemplateSpaceMove.html';"/>
+    </td>
+  </tr>
+</form>
+</table>
+<table class="tb">
+  <tr class="thead"><th colspan="10">添加分类</th></tr>	
+  <form method="post" action="ajax/admin_space.aspx?TemplateSpaceAdd.html" name="addform">
+  <tr align="center">
+    <td align="left">选择层级<font color='red'>＊</font><br/><select name="pre_upid"><option value="0">顶级分类</option><rendiload admin/html/空间/空间分类_option.html}</select></td>
+    <td width="100">中文名<font color='red'>＊</font><br/><input type="text"name="pre_name" size="13"></td>
+    <td width="100">英文名<font color='red'>＊</font><br/><input type="text"name="pre_enname" size="13"></td>
+    <td width="100">频道模板<br /><input type="text"name="pre_template" size="13"></td>
+    <td width="100">内容模板<br/><input type="text"name="pre_subtemplate" size="13"></td>
+    <td width="100">关键词<br/><input type="text"maxlength="255"name="pre_keyword" size="13"></td>
+    <td width="100">描述<br/><input type="text"maxlength="255"name="pre_description" size="13"></td>
+    <td width="100">图片<br/><input type="text"maxlength="255"name="pre_pic" size="13"></td>
+    <td width="25">排序<br/><input type="text"name="pre_sort" size="1" style="text-align:center"></td>
+    <td width="120"><br/><input type="submit" value="添 加" name="Submit" class="pn" style="width:90%;"/></td>
+  </tr>
+  </form>
+</table>
+<script type="text/javascript">
+$(function(){
+  $('[Modified]').live('click',function(){
+	if ($(this).attr("Class")=="Modified ModifiedB")
+	{
+	  $(this).attr("Class","Modified ModifiedA");
+	  let id=$(this).attr("Modified")
+	  $(".Mo"+id).parent().hide()
+	}
+	else
+	{
+	  $(this).attr("Class","Modified ModifiedB")
+	  let id=$(this).attr("Modified")
+	  if($(".Mo"+id).css("padding-left"))
+	  {
+		 $(".Mo"+id).parent().show() 
+	  }
+	  else
+	  {
+		let html=$.ajax({url:'?Modified/10//'+id,async:false}).responseText;
+		$(this).parent().parent().after(html)
+		let pl=20+parseInt($(this).parent().css("padding-left"))
+		$(".Mo"+id).css("padding-left",pl+"px")
+	  }
+	}
+  });
+  
+  $('#TemplateSpaceEdit').live('click',function(){
+	  
+    let pre_id,pre_name,pre_enname,pre_template,pre_subtemplate,pre_keyword,pre_des,pre_pic,pre_sort,id
+    $("input[type='checkbox'][name='pre_id']:checked").each(function()
+	{
+	  id=$(this).val();
+	  pre_id=pre_id+","+id;
+	  pre_name=pre_name+"|,|"+$("#pre_name"+id).val()
+	  pre_enname=pre_enname+"|,|"+$("#pre_enname"+id).val()
+	  pre_template=pre_template+"|,|"+$("#pre_template"+id).val()
+	  pre_subtemplate=pre_subtemplate+"|,|"+$("#pre_subtemplate"+id).val()
+	  pre_keyword=pre_keyword+"|,|"+$("#pre_keyword"+id).val()
+	  pre_des=pre_des+"|,|"+$("#pre_des"+id).val()
+	  pre_pic=pre_pic+"|,|"+$("#pre_pic"+id).val()
+	  pre_sort=pre_sort+"|,|"+$("#pre_sort"+id).val()
+  });
+  $.post("ajax/admin_space.aspx?TemplateSpaceEdit.html",{pre_id:pre_id,pre_name:pre_name,pre_enname:pre_enname,pre_template:pre_template,pre_subtemplate:pre_subtemplate,pre_keyword:pre_keyword,pre_des:pre_des,pre_pic:pre_pic,pre_sort:pre_sort},function(result){
+		  location.reload();
+	});
+  });
+})
+</script>
+
