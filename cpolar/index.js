@@ -16,10 +16,9 @@
   while (Enable) {
     count++
     console.log('已运行：' + ((count * 5) / 60).toFixed(2) + '（分钟）');
-    await timeout(5000);//5秒    
-    let content = await page.$eval('title', ele => ele.innerHTML);
+    await timeout(5000);//5秒       
     if (count < 60 * 5 / 5) {//最多运行5分钟
-      Enable = content == "已完成所有任务。" ? false : true;
+      Enable = true;
     }
     else {
       Enable = false;
