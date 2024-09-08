@@ -9,8 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:   
     
-    - name: 准备完成
-      uses: actions/checkout@main
+    - name: 安装Node.js     
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
       
     - name: 运行 nextjs       
       run: |                 
