@@ -8,7 +8,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:   
-    
+    - name: 下载当前项目
+      uses: actions/checkout@v4 
+      
     - name: 安装Node.js     
       uses: actions/setup-node@v4
       with:
