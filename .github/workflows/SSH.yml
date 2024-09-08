@@ -20,8 +20,17 @@ jobs:
       
     - name: 运行       
       run: | 
-         mv sqlite3/ad.jpg sqlite3/ad.db
-         mv sqlite3/main.jpg sqlite3/main.db
+        mv sqlite3/采集箱/店铺/br.jpg sqlite3/采集箱/店铺/br.db
+        mv sqlite3/采集箱/店铺/my.jpg sqlite3/采集箱/店铺/my.db
+        mv sqlite3/采集箱/店铺/tw.jpg sqlite3/采集箱/店铺/tw.db
+        
+        mv sqlite3/采集箱/粉丝/br.jpg sqlite3/采集箱/粉丝/br.db
+        mv sqlite3/采集箱/粉丝/my.jpg sqlite3/采集箱/粉丝/my.db
+        mv sqlite3/采集箱/粉丝/tw.jpg sqlite3/采集箱/粉丝/tw.db
+        
+        mv sqlite3/采集箱/商品/br.jpg sqlite3/采集箱/商品/br.db
+        mv sqlite3/采集箱/商品/my.jpg sqlite3/采集箱/商品/my.db
+        mv sqlite3/采集箱/商品/tw.jpg sqlite3/采集箱/商品/tw.db
         
          
           # wget -O 1 https://github.com/rendie-com/rendie-com/releases/download/1/1.zip          
