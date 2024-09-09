@@ -21,8 +21,8 @@ jobs:
           npm install
           npm run dev & 
       env:
-          NEXTJS_CONFIG_PG01: aaaaaaaaaa
-          NEXTJS_CONFIG_PG02: bbbbbbbbbbbbbbb
+          NEXTJS_CONFIG_PG01: ${{ secrets.NEXTJS_CONFIG_PG01 }}  
+          NEXTJS_CONFIG_PG02: ${{ secrets.NEXTJS_CONFIG_PG02 }}  
 
     - name: 运行 cpolar       
       run: |      
