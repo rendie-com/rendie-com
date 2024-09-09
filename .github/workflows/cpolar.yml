@@ -21,8 +21,8 @@ jobs:
           npm install
           npm run dev & 
       env:
-          nextjs_aaaaaaaaaEMAIL: aaaaaaaaaa
-          nextjs_aaabbbbbbbbbbbbbMAIL: bbbbbbbbbbbbbbb
+          NEXTJS_CONFIG_PG01: aaaaaaaaaa
+          NEXTJS_CONFIG_PG02: bbbbbbbbbbbbbbb
 
     - name: 运行 cpolar       
       run: |      
