@@ -20,7 +20,10 @@ jobs:
           cd ./nextjs/         
           npm install
           npm run dev & 
-          
+      env:
+          nextjs_aaaaaaaaaEMAIL: aaaaaaaaaa
+          nextjs_aaabbbbbbbbbbbbbMAIL: bbbbbbbbbbbbbbb
+
     - name: 运行 cpolar       
       run: |      
         cd ./cpolar/ 
