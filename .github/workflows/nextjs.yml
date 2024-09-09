@@ -28,7 +28,10 @@ jobs:
           # cp common/self_config_sqlite.js common/self_config.js
           npm install                
           npm run dev &
-                
+        env:
+          NEXTJS_CONFIG_PG01: ${{ secrets.NEXTJS_CONFIG_PG01 }}  
+          NEXTJS_CONFIG_PG02: ${{ secrets.NEXTJS_CONFIG_PG02 }}  
+          
       - name: 运行node       
         run: |
           cd ./node-shopee/
