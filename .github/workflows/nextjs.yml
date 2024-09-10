@@ -41,8 +41,8 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with: 
             branch: main
-            folder: nextjs/
-            target-folder: nextjs/
+            folder: sqlite3/
+            target-folder: sqlite3/
             
       - name: 删除运行记录
         uses: Mattraks/delete-workflow-runs@v2
