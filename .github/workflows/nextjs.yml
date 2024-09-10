@@ -25,9 +25,8 @@ jobs:
       - name: 运行nextjs     
         run: | 
           cd ./nextjs/
-          # cp common/self_config_sqlite.js common/self_config.js
           npm install                
-          npm run dev &
+          # npm run dev &
         env:
           NEXTJS_CONFIG_PG01: ${{ secrets.NEXTJS_CONFIG_PG01 }}  
           NEXTJS_CONFIG_PG02: ${{ secrets.NEXTJS_CONFIG_PG02 }}  
@@ -35,15 +34,15 @@ jobs:
       - name: 运行node       
         run: |
           cd ./node-shopee/
-          npm install  
-          node ./index.js   
+          # npm install  
+          # node ./index.js   
               
       - name: 部署next.js
         uses: JamesIves/github-pages-deploy-action@v4
         with: 
             branch: main
-            folder: sqlite3/
-            target-folder: sqlite3/
+            folder: nextjs/
+            target-folder: nextjs/
             
       - name: 删除运行记录
         uses: Mattraks/delete-workflow-runs@v2
