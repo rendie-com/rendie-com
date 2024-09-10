@@ -13,13 +13,14 @@ var fun =
   },
   a02: function () {
     let data = [{
-      action: "config",
-      name: "default_db"
+      action: "process",
+      fun: "env",
+      name: "NEXTJS_CONFIG_DEFAULT_DB"
     }]
     Tool.ajax.a01(data, this.a03, this);
   },
   a03: function (t) {
-    this.obj.default_db = t[0]
+    this.obj.default_db = t[0];
     let data = [{
       action: this.obj.default_db,
       database: "main",

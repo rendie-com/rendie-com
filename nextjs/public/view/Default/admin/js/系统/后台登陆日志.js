@@ -14,8 +14,9 @@ var fun =
       obj.params.field = obj.params.field ? obj.params.field : '1'//搜索字段
       obj.params.searchword = obj.params.searchword ? Tool.Trim(obj.params.searchword) : "";//搜索关键词
       let data = [{
-        action: "config",
-        name: "default_db"
+        action: "process",
+        fun: "env",
+        name: "NEXTJS_CONFIG_DEFAULT_DB"
       }]
       Tool.ajax.a01(data, this.a02, this);
     }
