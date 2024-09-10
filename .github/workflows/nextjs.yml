@@ -26,7 +26,7 @@ jobs:
         run: | 
           cd ./nextjs/
           npm install                
-          # npm run dev &
+          yarn dev &
         env:
           NEXTJS_CONFIG_PG01: ${{ secrets.NEXTJS_CONFIG_PG01 }}  
           NEXTJS_CONFIG_PG02: ${{ secrets.NEXTJS_CONFIG_PG02 }}  
@@ -34,8 +34,8 @@ jobs:
       - name: 运行node       
         run: |
           cd ./node-shopee/
-          # npm install  
-          # node ./index.js   
+          npm install  
+          node ./index.js   
               
       - name: 部署next.js
         uses: JamesIves/github-pages-deploy-action@v4
