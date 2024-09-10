@@ -1,5 +1,5 @@
-import { fs } from 'fs'
-import { path } from 'path'
+import  fs  from 'fs'
+import  path from 'path'
 
 export const self_fs = {
   a01: async function (obj) {

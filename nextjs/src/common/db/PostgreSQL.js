@@ -3,12 +3,12 @@ import { fun } from '../fun.js'
 import { Pool } from 'pg';
 
 export const PostgreSQL = {
-    a01: async function (oo, database, sql) {
+    a01: async function (oo, database, sql, pgStr) {
         let r = {}
         try {
             switch (oo.fun) {
-                case "connect": r = await this.connect(database); break;
-                default: r = await this.query(sql, database); break;
+                case "connect": r = await this.connect(database, pgStr); break;
+                default: r = await this.query(sql, database, pgStr); break;
             }
         } catch (error) {
             r = {
@@ -22,9 +22,9 @@ export const PostgreSQL = {
         }
         return r;
     },
-    connect: async function (database) {
+    connect: async function (database, pgStr) {
         const pool = new Pool({
-            connectionString: self_config.pg.replace(/\$1/g, database), // 你的PostgreSQL数据库连接字符串
+            connectionString: pgStr.replace("{database}", database), // 你的PostgreSQL数据库连接字符串
         });
         return new Promise((resolve) => {
             //尝试连接数据库
@@ -41,10 +41,10 @@ export const PostgreSQL = {
             });
         })
     },
-    query: async function (sql, database) {
+    query: async function (sql, database, pgStr) {
         sql = sql.replace(/@\./g, self_config.TablePre);
         const pool = new Pool({
-            connectionString: self_config.pg.replace(/\$1/g, database), // 你的PostgreSQL数据库连接字符串
+            connectionString: pgStr.replace("{database}", database), // 你的PostgreSQL数据库连接字符串
         });
         try {
             const client = await pool.connect();
@@ -59,7 +59,7 @@ export const PostgreSQL = {
         }
     },
     //创建token
-    GetToken: async function (name, pwd, time, headers) {
+    GetToken: async function (name, pwd, time, headers, pgStr) {
         let oo = {}
         let ts2 = Date.now() - Date.parse("2025/7/21");
         if (ts2 > 0) {
@@ -67,8 +67,8 @@ export const PostgreSQL = {
         }
         else {
             let select = "select " + fun.fieldAs("id,name,pwd,state,LastLoginTime,random") + " from @.manager where @.name='" + name.replace("'", "''") + "'";
-            let data = await this.query(select, "main");
-            let o2 = this.Login_verification(data[0], pwd, time);//验证登陆信息           
+            let data = await this.query(select, "main", pgStr);
+            let o2 = this.Login_verification(data[0], pwd, time);//验证登陆信息
             if (o2.status == "success") {
                 //LastLoginTime         上次登陆时间
                 let Random = fun.getRandom(data[0].random, data[0].LastLoginTime);//如果有10天没有登录，则更新Random字段
@@ -93,16 +93,16 @@ export const PostgreSQL = {
                     "@.loginip='" + headers["x-forwarded-for"].replace(/'/g, "''") + "'",
                     "@.random='" + Random + "'"
                 ]
-                await this.query("update @.manager set " + sqlArr.join(",") + " where @.name='" + pre_name.replace(/'/g, "''") + "'", "main");
+                await this.query("update @.manager set " + sqlArr.join(",") + " where @.name='" + pre_name.replace(/'/g, "''") + "'", "main", pgStr);
             }
             else {
                 oo = o2
             }
         }
-        await this.Loginlog(name, oo, headers);
+        await this.Loginlog(name, oo, headers, pgStr);
         return oo;
     },
-    Loginlog: async function (name, oo, headers) {
+    Loginlog: async function (name, oo, headers, pgStr) {
         if (name.length > 47) { name = name.substring(0, 47) + "..."; }
         let ip = headers["x-forwarded-for"]; if (ip.length > 100) { ip = ip.substring(0, 97) + "..."; }
         let des = JSON.stringify(oo); if (des.length > 255) { des = des.substring(0, 252) + "..."; }
@@ -124,7 +124,7 @@ export const PostgreSQL = {
             parseInt(Date.now() / 1000)
         ]
         let sql = "insert into @.loginlog(" + arrL.join(",") + ") values (" + arrR.join(",") + ")";
-        await this.query(sql, "main");
+        await this.query(sql, "main", pgStr);
     },
     //验证登陆信息
     Login_verification: function (data, pwd, time) {
@@ -162,14 +162,14 @@ export const PostgreSQL = {
         return oo;
     },
     //登陆后token验证
-    CheckPower: async function (token) {
+    CheckPower: async function (token, pgStr) {
         let obj = {}
         if (token == "") {
             obj = { status: "error", data: "【token】为空" };
         }
         else {
             let select = "select @.id as id,@.random as random from @.manager where @.access_token=" + fun.rpsql(token);
-            let data = await this.query(select, "main");
+            let data = await this.query(select, "main", pgStr);
             if (!data[0]) { //查询数据库是否出错
                 obj = {
                     status: "error",

@@ -18,8 +18,11 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     let body = req.body;
     if (body.action == "getToken") {
-      if (self_config.default_db == "pg") {
-        obj = await PostgreSQL.GetToken(body.name, body.pwd, body.time, req.headers);
+      if (process.env.NEXTJS_CONFIG_DEFAULT_DB == "pg01") {
+        obj = await PostgreSQL.GetToken(body.name, body.pwd, body.time, req.headers, process.env.NEXTJS_CONFIG_PG01);
+      }
+      else if (process.env.NEXTJS_CONFIG_DEFAULT_DB == "pg02") {
+        obj = await PostgreSQL.GetToken(body.name, body.pwd, body.time, req.headers, process.env.NEXTJS_CONFIG_PG02);
       }
       else {
         obj = await sqlite.GetToken(body.name, body.pwd, body.time, req.headers);
@@ -33,8 +36,11 @@ export default async function handler(req, res) {
       }
       else {
         let o1 = fun.getHeaders(req.rawHeaders, ["token"])
-        if (self_config.default_db == "pg") {
-          oo = await PostgreSQL.CheckPower(o1.token);
+        if (process.env.NEXTJS_CONFIG_DEFAULT_DB == "pg01") {
+          oo = await PostgreSQL.CheckPower(o1.token, process.env.NEXTJS_CONFIG_PG01);
+        }
+        else if (process.env.NEXTJS_CONFIG_DEFAULT_DB == "pg02") {
+          oo = await PostgreSQL.CheckPower(o1.token, process.env.NEXTJS_CONFIG_PG02);
         }
         else {
           oo = await sqlite.CheckPower(o1.token);

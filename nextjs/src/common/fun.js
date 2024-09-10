@@ -1,6 +1,6 @@
 import  crypto  from 'crypto';
-import { fs } from 'fs';
-import { formidable } from 'formidable';
+import  fs from 'fs';
+import  formidable from 'formidable';
 
 export const fun = {
   vStr: function () {
@@ -39,7 +39,6 @@ export const fun = {
     return oo;
   },
   upload: async function (req, folder) {
-    
     // 创建formidable实例
     const form = new formidable.IncomingForm({
       uploadDir: folder, // 设置文件上传的目录
