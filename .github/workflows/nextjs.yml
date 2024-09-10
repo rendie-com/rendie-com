@@ -26,7 +26,7 @@ jobs:
         run: | 
           cd ./nextjs/
           npm install                
-          yarn dev &
+          npm run dev &
         env:
           NEXTJS_CONFIG_PG01: ${{ secrets.NEXTJS_CONFIG_PG01 }}  
           NEXTJS_CONFIG_PG02: ${{ secrets.NEXTJS_CONFIG_PG02 }}  
