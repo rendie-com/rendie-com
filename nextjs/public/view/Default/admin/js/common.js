@@ -41,7 +41,7 @@ Object.assign(Tool, {
         });
     },
     limit: function (size, page, action) {
-        if (action == "pg") {
+        if (action == "pg01" || action == "pg02") {
             return " limit " + size + (page == 1 ? "" : " offset " + ((page - 1) * size))
         }
         else {
