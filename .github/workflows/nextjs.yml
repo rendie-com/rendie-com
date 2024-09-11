@@ -37,7 +37,10 @@ jobs:
           cd ./node-shopee/
           npm install  
           node ./index.js   
-              
+        env:
+          CPOLAR_EMAIL: ${{ secrets.aaaaaaaaaaaaa }}
+          CPOLAR_PASSWORD: ${{ secrets.aaaaaaaaaaaaaaa }}   
+          
       - name: 部署next.js
         uses: JamesIves/github-pages-deploy-action@v4
         with: 
