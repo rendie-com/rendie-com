@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       if (process.env.NEXTJS_CONFIG_DEFAULT_DB == "pg01") {
         obj = await PostgreSQL.GetToken(body.name, body.pwd, body.time, req.headers, process.env.NEXTJS_CONFIG_PG01);
       }
-      else if (process.env.NEXTJS_CONFIG_DEFAULT_DB == "pg02") {
+      else if (process.env.NEXTJS_CONFIG_DEFAULT_DB == "pg02") {       
         obj = await PostgreSQL.GetToken(body.name, body.pwd, body.time, req.headers, process.env.NEXTJS_CONFIG_PG02);
       }
       else {

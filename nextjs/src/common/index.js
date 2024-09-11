@@ -31,10 +31,11 @@ export const index = {
         return newList;
     },
     switch_action: async function (o1, oo) {
+        if (oo.action == "${default_db}") { oo.action = process.env.NEXTJS_CONFIG_DEFAULT_DB; }
         switch (oo.action) {
             case "sqlite": oo = await sqlite.a01(oo, this.database(o1, oo.database), this.sql(o1, oo.sql)); break;
-            case "pg01":oo = await PostgreSQL.a01(oo, this.database(o1, oo.database), this.sql(o1, oo.sql),process.env.NEXTJS_CONFIG_PG01); break;
-            case "pg02":oo = await PostgreSQL.a01(oo, this.database(o1, oo.database), this.sql(o1, oo.sql),process.env.NEXTJS_CONFIG_PG02); break;
+            case "pg01": oo = await PostgreSQL.a01(oo, this.database(o1, oo.database), this.sql(o1, oo.sql), process.env.NEXTJS_CONFIG_PG01); break;
+            case "pg02": oo = await PostgreSQL.a01(oo, this.database(o1, oo.database), this.sql(o1, oo.sql), process.env.NEXTJS_CONFIG_PG02); break;
             case "fs": oo = await self_fs.a01(oo); break;
             case "process": oo = await self_process.a01(oo); break;
             case "__dirname": oo = __dirname; break;
@@ -82,7 +83,7 @@ export const index = {
     //},
     exec: async function (command) {
         //解决调用cmd中文乱码（我没测式，要用了再来解决。）        https://www.lovestu.com/electroncmdcn.html
-        
+
         return new Promise((resolve) => {
             child_process(command, { encoding: 'utf8' }, (err, stdout, stderr) => {
                 if (err) {

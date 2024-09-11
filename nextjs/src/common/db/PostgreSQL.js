@@ -4,6 +4,7 @@ import { Pool } from 'pg';
 
 export const PostgreSQL = {
     a01: async function (oo, database, sql, pgStr) {
+        if (database.indexOf("/") != -1) { database = database.replace(/\//g, "_"); }
         let r = {}
         try {
             switch (oo.fun) {
@@ -30,10 +31,7 @@ export const PostgreSQL = {
             //尝试连接数据库
             pool.connect((err, client, done) => {
                 if (err) {
-                    resolve({
-                        status: "error",
-                        data: '数据库连接失败:' + err.stack
-                    });
+                    resolve('数据库连接失败');
                 } else {
                     done();// 释放连接
                     resolve('数据库连接成功');
@@ -52,6 +50,7 @@ export const PostgreSQL = {
             client.release();
             return result.rows;
         } catch (error) {
+            console.log("出错111：", error)
             return {
                 status: "error",
                 data: error
