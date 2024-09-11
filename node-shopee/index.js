@@ -39,11 +39,11 @@ import path from 'path';
   //通过page.evaluate进行localStorage 设置
   await page.evaluate(() => {
     localStorage.setItem("expires_in", 1722844755);
-    if (typeof process !== 'undefined') {
+    
         localStorage.setItem("refresh_token", process.env.NODE_SHOPEE_REFRESH_TOKEN);
         localStorage.setItem("access_token", process.env.NODE_SHOPEE_ACCESS_TOKEN);
         localStorage.setItem("name", process.env.NODE_SHOPEE_NAME);
-    }
+    
     localStorage.setItem("menuList", '{"top1":1,"top2":{"18":{"name":"任务","id":"18","isbool":true,"url":"http://localhost:3000/view/Default/admin/html/Shopee/%E4%BB%BB%E5%8A%A1.html?jsFile=js02&return=%2Fview%2FDefault%2Fadmin%2Fhtml%2FShopee%2F%25E4%25BB%25BB%25E5%258A%25A1.html%3FjsFile%3Djs04"}}}');
   });
   /////////////////////////////////// 
