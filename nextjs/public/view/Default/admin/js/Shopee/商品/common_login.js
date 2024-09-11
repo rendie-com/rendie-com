@@ -11,7 +11,7 @@ Object.assign(Tool, {
         a02: function (t, oo) {
             $("#state").html("正在获得配置参数");
             let data = [{
-                action: "sqlite",
+                action: "${default_db}",
                 database: "shopee/卖家账户",
                 sql: "select " + Tool.fieldAs("username,password,cookies,config,localstorage") + " FROM @.table limit 1",
             }]
