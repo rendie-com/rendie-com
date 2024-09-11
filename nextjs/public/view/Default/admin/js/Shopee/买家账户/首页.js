@@ -3,8 +3,11 @@ var fun =
 {
   a01: function () {
     //obj.params.jsFile     选择JS文件  
-    obj.params.page = obj.params.page ? parseInt(obj.params.page) : 1;//翻页  
+    obj.params.page = obj.params.page ? parseInt(obj.params.page) : 1;//翻页
+
+    
     this.a02();
+
   },
   a02: function () {
     let data = [{

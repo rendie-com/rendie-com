@@ -53,13 +53,13 @@ var fun =
         $("#runtime").html(Tool.js_date_time2(this.obj.runtime))
         $("#state").html("正在获取任务信息。。。");
         let data = [{
-            action: "sqlite",
+            action: "${default_db}",
             database: "shopee/任务/定时任务",
             sql: "select " + Tool.fieldAs("jsfile,name,id,cycle,remark") + " FROM @.table where @.nexttime<" + this.obj.runtime + " and @.isenable=1 order by @.priority asc limit 1",
         }]
         if (this.obj.A2 == 0) {
             data.push({
-                action: "sqlite",
+                action: "${default_db}",
                 database: "shopee/任务/定时任务",
                 sql: "select count(1) as total FROM @.table where @.nexttime<" + this.obj.runtime + " and @.isenable=1",
             })
@@ -78,7 +78,7 @@ var fun =
         let oo = this.obj.Aobj
         $("#name").html(oo.name);
         $("#remark").html(oo.remark);
-        $("#cycle").html(oo.cycle+" 分钟");
+        $("#cycle").html(oo.cycle + " 分钟");
         Tool.jsArr(JSON.parse(oo.jsfile), this.e01, this);
     },
     /////////////////////////////////////////
@@ -97,7 +97,7 @@ var fun =
     f01: function () {
         let oo = this.obj.Aobj
         let data = [{
-            action: "sqlite",
+            action: "${default_db}",
             database: "shopee/任务/定时任务",
             sql: "update @.table set @.runtime=" + this.obj.runtime + ",@.nexttime=" + (this.obj.runtime + oo.cycle * 60) + " where @.id=" + oo.id,
         }]

@@ -13,7 +13,7 @@
         case "js12": Tool.scriptArr([path + '更多/common.js,', path + '更多/删除【马来西亚】店铺中的商品.js']); break;
         case "js18": Tool.scriptArr([path + '更多/common.js,', path + '更多/【删除】非正常的商品.js']); break;
         case "js20": Tool.scriptArr([path + '更多/common.js,', path + '更多/删除10个【马来西亚】店铺中【不活跃】的商品.js']); break;
-        case "js21":Tool.scriptArr(['admin/js/Shopee/任务/定时任务/更多/把该表同步到【PostgreSQL】数据库.js']); break;
+        case "js21":Tool.scriptArr(['admin/js/Shopee/任务/定时任务/更多/把【sqlite】数据库该表同步到【PostgreSQL】数据库.js']); break;
         default: Tool.scriptArr([loginUrl, path + 'common.js', path + '首页.js']);
     }
 }();

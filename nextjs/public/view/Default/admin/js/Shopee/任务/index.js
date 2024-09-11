@@ -10,7 +10,7 @@
             'admin/js/Shopee/买家账户/common_登录.js',           
             path + '定时任务/启动定时任务/index.js'
         ])); break;
-        case "js03": Tool.scriptArr([path + '定时任务/更多/把该表同步到【PostgreSQL】数据库.js']); break;
+        case "js03": Tool.scriptArr(['admin/js/Shopee/任务/定时任务/更多/把【sqlite】数据库该表同步到【PostgreSQL】数据库.js']); break;
         case "js04": Tool.scriptArr([path + 'common.js', path + '定时任务/index.js']); break;
         case "js05": Tool.scriptArr(['admin/js/Shopee/通用/把旧表复制到新表.js']); break;      
         default: Tool.scriptArr([path + 'common.js', path + '日常任务/index.js']);

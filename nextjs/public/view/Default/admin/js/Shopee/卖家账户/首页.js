@@ -7,7 +7,7 @@ var fun =
     },
     a02: function () {
         let data = [{
-            action: "sqlite",
+            action: "${default_db}",
             database: "shopee/卖家账户",
             sql: "select " + Tool.fieldAs("sort,id,note,name,company,phone,username,password") + " FROM @.table order by @.sort asc,@.id asc limit 50"
         }]
@@ -80,7 +80,8 @@ var fun =
             <button title="操作" class="menu-button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdown0"><div></div><div></div><div></div></button>\
             <ul class="dropdown-menu" aria-labelledby="dropdown0">\
               <li><a class="dropdown-item pointer" onClick="fun.c01()">添加</a></li>\
-              <li onClick="Tool.openR(\'?jsFile=js21&table=seller&database=shopee\');"><a class="dropdown-item pointer">*把该表同步到【PostgreSQL】数据库</a></li>\
+              <li onClick="Tool.openR(\'?jsFile=js21&table=table&database=shopee/卖家账户&toaction=pg01\');"><a class="dropdown-item pointer">*把【sqlite】数据库该表同步到【PostgreSQL】【pg01】数据库</a></li>\
+              <li onClick="Tool.openR(\'?jsFile=js21&table=table&database=shopee/卖家账户&toaction=pg02\');"><a class="dropdown-item pointer">*把【sqlite】数据库该表同步到【PostgreSQL】【pg02】数据库</a></li>\
               <li onClick="Tool.openR(\'?jsFile=js03&table=seller&database=shopee&newdatabase=shopee/seller\');"><a class="dropdown-item pointer">把旧表复制到新表</a></li>\
            </ul>\
           </th>\
@@ -94,7 +95,8 @@ var fun =
     },
     c01: function () {
         let html = '"ok"<r: db="sqlite.shopee">INSERT into @.seller(@.addtime)VALUES(' + Tool.gettime("") + ')</r:>'
-        Tool.ajax.a01(html, 1, Tool.reload)
+        Tool.at(html)
+        //Tool.ajax.a01(html, 1, Tool.reload)
     },
     c02: function (t) {
 
@@ -102,14 +104,16 @@ var fun =
     c03: function (id) {
         if (confirm('确定要删除吗？')) {
             let html = "\"ok\"<r: db=\"sqlite.shopee\">delete from @.seller where @.id=" + id + "</r:>"
-            Tool.ajax.a01(html, 1, Tool.reload)
+            Tool.at(html)
+            //Tool.ajax.a01(html, 1, Tool.reload)
         }
     },
     ///////////////////////////////////////////////////////////////////////////////////
     c42: function (This, id, v) {
         This.attr("disabled", true);
         let html = "<r: db=\"sqlite.shopee\">update @.seller set @.hide=" + v + " where @.id=" + id + "</r:>"
-        Tool.ajax.a01(html, 1, this.c43, this, 1, [This, v]);
+        Tool.at(html)
+        //Tool.ajax.a01(html, 1, this.c43, this, 1, [This, v]);
     },
     c43: function (t, arr) {
         if (t == "") {
@@ -122,7 +126,8 @@ var fun =
         if (val != V && !This.attr("disabled")) {
             This.attr("disabled", true);
             This.val("加载加...");
-            Tool.ajax.a01(html, 1, this.c45, this, [This, val, L]);
+            Tool.at(html)
+            //Tool.ajax.a01(html, 1, this.c45, this, [This, val, L]);
         }
     },
     c45: function (t, oo) {
