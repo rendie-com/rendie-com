@@ -66,6 +66,9 @@ import path from 'path';
     }
   }
   ///////////////////////
+  await page.screenshot({
+        path: '../sqlite3/screenshot.png'
+    });
   await page.close()
   await browser.close()
   console.log('已完成所有任务。');
