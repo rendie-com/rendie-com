@@ -3,7 +3,6 @@ import path from 'path';
 ////////////////////////////
 (async () => {
   const pathToExtension = path.join(process.cwd(), 'rendie.com');
-  
   const browser = await puppeteer.launch({
     args: [
       `--disable-extensions-except=${pathToExtension}`,
@@ -13,8 +12,8 @@ import path from 'path';
       // '--disable-setuid-sandbox'
     ],
     ignoreDefaultArgs: ["--enable-automation"],//如何避免Puppeteer被前端JS检测  https://segmentfault.com/a/1190000019539509
-    //headless: 'new',//'new':表示后台运行
-    headless: false,//false:表示打开窗口  
+    headless: 'new',//'new':表示后台运行
+    //headless: false,//false:表示打开窗口  
   });
   ////////////////////////////////////////
   let timeout = function (delay) {
