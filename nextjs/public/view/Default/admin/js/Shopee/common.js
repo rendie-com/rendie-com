@@ -129,7 +129,7 @@
     fixedPrice: {
         //已知1688的信息开始定价
         a01: function (_1688_maxPrice, scale, _1688_MinimumOrder, _1688_freight, siteObj, unitWeight, logistics, discount) {
-            let oo = {}
+        let oo = {}
             if (unitWeight) {
                 let str = "1688最高单价 = " + _1688_maxPrice + "（人民币）\n\
 1688单件够买量 = " + scale + "（件倍数）\n\
@@ -267,7 +267,7 @@
         b05: function (price, _1688_MinimumOrder, _1688_freight) {
             let maxLimit = 0;
             for (let i = _1688_MinimumOrder + 1; i < _1688_MinimumOrder + 1000; i++) {
-                if (price * 0.5 * i >= _1688_freight) {
+                if (price * i >= _1688_freight) {
                     maxLimit = i;
                     break;
                 }
