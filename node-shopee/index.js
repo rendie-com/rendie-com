@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 import path from 'path';
 ////////////////////////////
 (async () => {
-  const pathToExtension = path.join(process.cwd(), 'rendie.c00om');
+  const pathToExtension = path.join(process.cwd(), 'rendie.com/');
   
    console.log(process.cwd())
    console.log(pathToExtension)
