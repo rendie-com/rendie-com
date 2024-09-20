@@ -2,14 +2,9 @@ import puppeteer from 'puppeteer';
 import path from 'path';
 ////////////////////////////
 (async () => {
-  const pathToExtension = path.join(process.cwd(), 'rendie.com/');
-  
-   console.log(process.cwd())
-   console.log(pathToExtension)
+  const pathToExtension = path.join(process.cwd(), 'rendie.com');
   
   const browser = await puppeteer.launch({
-    //executablePath: 'D:\\project\\vscode\\node-shopee\\chrome\\win64-128.0.6613.119\\chrome-win64\\chrome.exe',
-    //executablePath: '/root/.cache/puppeteer/chrome/linux-127.0.6533.88/chrome-linux64/chrome',
     args: [
       `--disable-extensions-except=${pathToExtension}`,
       `--load-extension=${pathToExtension}`,
