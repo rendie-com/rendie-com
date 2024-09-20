@@ -62,6 +62,11 @@ var task = {
             $("#state").html("已经【置顶推广】过了。");
             this.a06(oo)
         }
+        else if (t.code == 217) {
+            // "message": "reached shop's bump slot limit",
+            $("#state").html("已经【置顶推广】过了。");
+            this.a06(oo)
+        }
         else if (t.code == 1000100217) {
             $("#state").html("置顶完成。");
             this.d01(oo)
