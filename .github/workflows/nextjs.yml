@@ -22,8 +22,10 @@ jobs:
         id: date
         run: |
           sudo timedatectl set-timezone "$TZ"
-          sudo apt-get install locales
-          sudo dpkg-reconfigure locales
+          sudo apt install locales-all
+          sudo apt-get install language-pack-zh-hans language-pack-zh-hans-base
+          sudo update-locale LANG=zh_CN.UTF-8
+          sudo locale-gen zh_CN.UTF-8
   
       - name: 运行nextjs     
         run: | 
