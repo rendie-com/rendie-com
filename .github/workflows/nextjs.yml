@@ -17,10 +17,13 @@ jobs:
     steps:
       - name: 下载当前项目
         uses: actions/checkout@v4     
-             
+            
       - name: 更新时区
         id: date
-        run: sudo timedatectl set-timezone "$TZ"
+        run: |
+          sudo timedatectl set-timezone "$TZ"
+          sudo apt-get install locales
+          sudo dpkg-reconfigure locales
   
       - name: 运行nextjs     
         run: | 
