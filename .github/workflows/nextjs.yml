@@ -22,12 +22,12 @@ jobs:
         id: date
         run: |
           sudo timedatectl set-timezone "$TZ"       
-          npm install -g pnpm
+          npm i -g pnpm
           
       - name: 运行nextjs     
         run: | 
           cd ./nextjs/
-          pnpm install                
+          pnpm i                
           pnpm run dev &
         env:
           NEXTJS_CONFIG_DEFAULT_DB: ${{ secrets.NEXTJS_CONFIG_DEFAULT_DB }}  
@@ -37,7 +37,7 @@ jobs:
       - name: 运行node       
         run: |
           cd ./node-shopee/
-          pnpm install  
+          pnpm i  
           node ./index.js   
         env:
           NODE_SHOPEE_NAME: ${{ secrets.NODE_SHOPEE_NAME }}
