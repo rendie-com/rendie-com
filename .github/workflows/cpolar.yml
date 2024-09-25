@@ -16,14 +16,16 @@ jobs:
       uses: actions/checkout@v4 
 
     - name: 运行 nextjs       
-      run: |                 
+      run: |     
+          npm i -g pnpm
           cd ./nextjs/         
-          npm install
-          npm run dev & 
+          pnpm i
+          pnpm run dev & 
       env:
           NEXTJS_CONFIG_DEFAULT_DB: ${{ secrets.NEXTJS_CONFIG_DEFAULT_DB }}  
           NEXTJS_CONFIG_PG01: ${{ secrets.NEXTJS_CONFIG_PG01 }}  
           NEXTJS_CONFIG_PG02: ${{ secrets.NEXTJS_CONFIG_PG02 }}  
+          NEXTJS_CONFIG_SQLITE: ${{ secrets.NEXTJS_CONFIG_SQLITE }} 
 
     - name: 运行 cpolar       
       run: |      
@@ -42,10 +44,10 @@ jobs:
         pkill cpolar
         # pkill node
         
-    - name: 部署 sqlite3
-      uses: JamesIves/github-pages-deploy-action@v4
-      with: 
-          branch: main
-          folder: sqlite3/
-          target-folder: sqlite3/
+    # - name: 部署 sqlite3
+    #   uses: JamesIves/github-pages-deploy-action@v4
+    #   with: 
+    #       branch: main
+    #       folder: sqlite3/
+    #       target-folder: sqlite3/
           
