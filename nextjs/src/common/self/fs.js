@@ -80,6 +80,9 @@ export const self_fs = {
     const directoryPath = path.join(filePath, '..'); // 相对于当前文件的上级目录
     return new Promise((resolve) => {
       fs.mkdir(directoryPath, { recursive: true }, (err1) => {
+        if (err1) {
+          resolve("创建目录失败:" + err1);
+        } else {
         //下载 
         axios({
           url,
@@ -107,6 +110,7 @@ export const self_fs = {
             console.error('Error:', error);
             // 这里可以处理下载失败的情况
           });
+        }
       })
     })
   },
