@@ -21,17 +21,11 @@ jobs:
     - name: 运行       
       run: | 
         # mkdir ./releases/
-        if [ -f "./sqlite3/shopee/采集箱/粉丝/br.db" ]; then
-            cp ./sqlite3/shopee/采集箱/粉丝/br.db ./releases/shopee_gather_fans_br.db 
-        fi
-        #       
-        # mv ./sqlite3/shopee/采集箱/粉丝/my.db ./releases/shopee_gather_fans_my.db
-        # mv ./sqlite3/shopee/采集箱/粉丝/tw.db ./releases/shopee_gather_fans_tw.db
-
-        # mkdir ./releases/s/shopee/采集箱/粉丝/
+        
         # mv ./sqlite3/shopee/采集箱/粉丝/br.db ./releases/shopee/采集箱/粉丝/br.db
         
         # 7z x nextjs.7z
+        7z x node-shopee.7z
         # mv ./nextjs/plugins/ ./nextjs/public/plugins/
         # unzip ./nextjs.zip
         # unzip ./plugins.zip ./nextjs/
