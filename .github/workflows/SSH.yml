@@ -25,7 +25,7 @@ jobs:
         # mv ./sqlite3/shopee/采集箱/粉丝/br.db ./releases/shopee/采集箱/粉丝/br.db
         
         # 7z x nextjs.7z
-        7z x node-shopee.7z
+        # 7z x node-shopee.7z
         # mv ./nextjs/plugins/ ./nextjs/public/plugins/
         # unzip ./nextjs.zip
         # unzip ./plugins.zip ./nextjs/
