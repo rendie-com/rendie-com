@@ -20,7 +20,8 @@ jobs:
       
     - name: 运行       
       run: | 
-        # mv ./sqlite3/shopee/采集箱/粉丝/br.db ./releases/shopee_采集箱_粉丝_br.db
+        mkdir ./releases/
+        mv ./sqlite3/shopee/采集箱/粉丝/br.db ./releases/shopee_采集箱_粉丝_br.db
         # 7z x nextjs.7z
         # mv ./nextjs/plugins/ ./nextjs/public/plugins/
         # unzip ./nextjs.zip
