@@ -7,7 +7,7 @@ on:
       ssh:
         description: 'SSH connection to Actions'
         required: false
-        default: false
+        default: true
 jobs:
   build:
     runs-on: ubuntu-latest   
@@ -28,7 +28,7 @@ jobs:
         # mkdir ./releases/s/shopee/采集箱/粉丝/
         # mv ./sqlite3/shopee/采集箱/粉丝/br.db ./releases/shopee/采集箱/粉丝/br.db
         
-        7z x nextjs.7z
+        # 7z x nextjs.7z
         # mv ./nextjs/plugins/ ./nextjs/public/plugins/
         # unzip ./nextjs.zip
         # unzip ./plugins.zip ./nextjs/
