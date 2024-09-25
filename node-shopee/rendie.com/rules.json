@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "action": {
+      "type":"modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "sec-ch-ua",
+          "operation": "set",
+          "value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Google Chrome\";v=\"128\""
+        }       
+      ]
+    },
+    "condition": {
+      "urlFilter": "*"
+    }
+  }
+]
