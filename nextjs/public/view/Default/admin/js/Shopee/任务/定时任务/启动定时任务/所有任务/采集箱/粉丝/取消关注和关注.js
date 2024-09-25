@@ -19,25 +19,40 @@ var task = {
         this.a02(oo);
     },
     a02: function (oo) {
+        let data = [{
+            action: "fs",
+            fun: "access_sqlite",
+            database: "shopee/采集箱/粉丝/" + oo.site,
+            mode: 0,
+            elselist: [{
+                action: "fs",
+                fun: "download_sqlite",
+                url: "https://github.com/rendie-com/rendie-com/releases/download/1/shopee_gather_fans_" + oo.site + ".db",
+                database: "shopee/采集箱/粉丝/" + oo.site,
+            }]
+        }]
+        Tool.ajax.a01(data, this.a03, this, oo);
+    },
+    a03: function (t, oo) {
         //@.is_my_following=1      表示被我关注的用户
         let data = [{
             action: "sqlite",
             database: "shopee/采集箱/粉丝/" + oo.site,
             sql: "select count(1) as total FROM @.table where @.is_my_following=1"
         }]
-        Tool.ajax.a01(data, this.a03, this, oo);
+        Tool.ajax.a01(data, this.a04, this, oo);
     },
-    a03: function (t, oo) {
+    a04: function (t, oo) {
         this.obj.C2 = t[0][0].total
         this.obj.C1 = this.obj.C2
-        this.a04(oo)
+        this.a05(oo)
     },
-    a04: function (oo) {
+    a05: function (oo) {
         Tool.x1x2("C", this.obj.C1, this.obj.C2, this.d01, this, null, oo)
     },
     ////////////////////
     d01: function (oo) {
-        if (this.obj.C1 <= 4950) {
+        if (this.obj.C1 <= 4900) {
             $("#state").html("不用取关了")
             this.e01(oo)
         }

@@ -59,8 +59,8 @@ var task = {
         Tool.ajax.a01(data, this.a04, this, oo);
     },
     a04: function (t, oo) {
-        //一次执行只获取前1个店铺的粉丝
-        if (this.obj.C2 == 0) { this.obj.C2 = t[1][0].total > 3 ? 3 : t[1][0].total; }
+        //一次执行只获取前5个店铺的粉丝
+        if (this.obj.C2 == 0) { this.obj.C2 = t[1][0].total > 5 ? 5 : t[1][0].total; }
         this.obj.Cobj = t[0][0];
         Tool.x1x2("C", this.obj.C1, this.obj.C2, this.a05, this, this.e03, oo)
     },
