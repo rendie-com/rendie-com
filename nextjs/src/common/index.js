@@ -14,8 +14,7 @@ export const index = {
         let newList = []
         for (let i = 0; i < list.length; i++) {
             newList[i] = await this.switch_action(oo, list[i]);
-            if (list[i].list && newList[i].length != 0) {
-                console.log("aaaaaaaaaaaaaaaaa")
+            if (list[i].list && newList[i].length != 0) {                
                 //返回结果有数据，运行list内的参数。 
                 for (let j = 0; j < newList[i].length; j++) {
                     newList[i][j].list = await this.for_list(newList[i][j], list[i].list)
