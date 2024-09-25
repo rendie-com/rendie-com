@@ -74,7 +74,7 @@ var task = {
     },
     d03: function (oo) {
         this.obj.C1--;
-        this.a04(oo);
+        this.a05(oo);
     },
     ///////////////////////////////////////////////////////////////////
     e01: function (oo) {
@@ -93,6 +93,7 @@ var task = {
             database: "shopee/采集箱/粉丝/" + oo.site,
             sql: "select @.userid as userid FROM @.table where @.is_my_following=0 and @.follow_count=0 and @.is_following=0 order by @.last_active_time desc limit 1"
         }]
+        
         Tool.ajax.a01(data, this.e04, this, oo);
     },
     e04: function (t, oo) {
