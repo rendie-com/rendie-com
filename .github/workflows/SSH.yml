@@ -22,9 +22,9 @@ jobs:
       run: | 
         mkdir ./releases/
         
-        mv ./sqlite3/shopee/采集箱/粉丝/br.db ./releases/shopee_gather_shop_br.db
-        mv ./sqlite3/shopee/采集箱/粉丝/my.db ./releases/shopee_gather_shop_my.db
-        mv ./sqlite3/shopee/采集箱/粉丝/tw.db ./releases/shopee_gather_shop_tw.db
+        mv ./sqlite3/shopee/采集箱/店铺/br.db ./releases/shopee_gather_shop_br.db
+        mv ./sqlite3/shopee/采集箱/店铺/my.db ./releases/shopee_gather_shop_my.db
+        mv ./sqlite3/shopee/采集箱/店铺/tw.db ./releases/shopee_gather_shop_tw.db
         
         # 7z x nextjs.7z
         # 7z x node-shopee.7z
