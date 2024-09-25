@@ -1,0 +1,49 @@
+
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>jQuery BZoom Plugin Example</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+
+	<h1 style="margin:150px auto 30px auto;">jQuery BZoom Plugin Example</h1>
+	<div class="bzoom_wrap">
+		<ul id="bzoom">
+			<li>
+				<img class="bzoom_thumb_image" src="https://unsplash.it/375/500?image=201" title="first img" />
+				<img class="bzoom_big_image" src="https://unsplash.it/750/1000?image=201" />
+			</li>
+			<li>
+				<img class="bzoom_thumb_image" src="https://unsplash.it/375/500?image=203" />
+				<img class="bzoom_big_image" src="https://unsplash.it/750/1000?image=203" />
+			</li>
+			<li>
+				<img class="bzoom_thumb_image" src="https://unsplash.it/375/500?image=212" />
+				<img class="bzoom_big_image" src="https://unsplash.it/750/1000?image=212" />
+			</li>
+			<li>
+				<img class="bzoom_thumb_image" src="https://unsplash.it/375/500?image=220" />
+				<img class="bzoom_big_image" src="https://unsplash.it/750/1000?image=220" />
+			</li>
+			<li>
+				<img class="bzoom_thumb_image" src="https://unsplash.it/375/500?image=223" />
+				<img class="bzoom_big_image" src="https://unsplash.it/750/1000?image=223" />
+			</li>
+		</ul>
+	</div>
+</body>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="jqzoom.js"></script>
+<script type="text/javascript">
+	$("#bzoom").zoom({
+		zoom_area_width: 300,
+		autoplay_interval: 3000,
+		small_thumbs: 4,
+		autoplay: false
+	});
+</script>
+</html>

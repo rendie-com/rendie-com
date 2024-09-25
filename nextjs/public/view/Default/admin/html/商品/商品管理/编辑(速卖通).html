@@ -1,0 +1,106 @@
+<r:product size=1 where=" where @.fromid=Fun(arr(4))">
+<ul class="m-2 shadow p-2 bg-white rounded">
+  <li class="thead">修改【速卖通】商品</li>
+  <ul class="Tul">
+    <li class="w150 right">商品编码：</li>
+    <li class="w100 txtli"><:proid/></li>
+  </ul>
+  <ul class="Tul">
+    <li class="w150 right">商品标题：</td>
+    <li class="txtli"><:name/></li>
+  </ul>
+  <ul class="Tul">
+    <li class="w150 right">来源网址：</td>
+    <li><a href="<:fromurl/>" target="_blank"><:fromurl/></a></li>
+  </ul>
+  <ul class="Tul">
+    <li class="w150 right">平均价：</li>
+    <li class="w350"><:price f=2/></li>
+  </ul>
+  <ul class="Tul">
+    <li class="w150 right">搜索关键词：</li>
+    <li class="w350 txtli"><:keys/></li>
+  </ul>
+  <ul class="Tul">
+    <li class="w150 right">更多关键词一：</li>
+    <li class="w350 txtli"><:keys1/></li>
+  </ul>
+  <ul class="Tul">
+    <li class="w150 right">更多关键词二：</li>
+    <li class="w350 txtli"><:keys2/></li>
+  </ul>
+  <ul class="Tul">
+    <li class="w150 right">长：</li>
+    <li class="w100 txtli"><:length/> cm</li>
+    <li class="w150 right">宽：</li>
+    <li class="w100 txtli"><:width/> cm</li>
+    <li class="w150 right">高：</li>
+    <li class="w100 txtli"><:height/> cm</li>
+    <li class="w150 right">单重量：</li>
+    <li class="w100 txtli"><:weight/> KG</li>
+  </ul>
+  <ul class="Tul">
+    <li class="w150 right">运费模板：</li>
+    <li class="w150 txtli"><:freightTemplateId/></li>
+    <li class="w150 right">服务模板：</li>
+    <li class="w150 txtli"><:promiseTemplateId/></li>
+  </ul>
+  <ul class="Tul">
+    <li class="w150 right">备货期：</li>
+    <li class="w150 txtli"><:deliveryTime/></li>
+    <li class="w150 right">商品有效天数：</li>
+    <li class="w150 txtli"><:wsValidNum/></li>
+    <li class="w150 right">已销售数量：</li>
+    <li class="w150 txtli"><:SaleNum/></li>
+  </ul>
+	<ul class="Tul">
+		<li class="w150 right">商品主图图片类型：</li>
+		<li class="w150 txtli"><:isImageDynamic/></li>
+		<li class="w150 right">图片是否加水印的标识：</li>
+		<li class="w150 txtli"><:isImageWatermark/></li>
+	</ul>
+  <ul class="Tul">
+    <li class="w150 right">类型：</li>
+    <li class="w350 txtli">
+		<r:type where=" where @.from='aliexpress' and @.fromid='<:type/>'" size=1>
+			<r:type where=" where @.from='aliexpress' and @.fromid='<:upid/>'" size=1>
+				<r:type where=" where @.from='aliexpress' and @.fromid='<:upid/>'" size=1>
+					<r:type where=" where @.from='aliexpress' and @.fromid='<:upid/>'" size=1>
+					<:name/>&nbsp;&nbsp;&raquo;&nbsp;&nbsp;
+					</r:type>
+				<:name/>&nbsp;&nbsp;&raquo;&nbsp;&nbsp;
+				</r:type>
+			<:name/>&nbsp;&nbsp;&raquo;&nbsp;&nbsp;
+			</r:type>
+			<:name/>
+		</r:type>
+		</li>
+  </ul>
+<table class="tb2">
+	<tr>
+    <td align="right" nowrap="nowrap">价格属性:</td>
+    <td id="aeopAeProductSKUs"><:aeopAeProductSKUs/></td>
+	</tr>
+	<tr>
+    <td align="right" nowrap="nowrap">自定义属性:</td>
+    <td id="aeopAeProductPropertys"><:aeopAeProductPropertys/></td>
+	</tr>
+	<tr>
+    <td align="right" nowrap="nowrap">图片URL:</td>
+    <td id="pic"><:pic/></td>
+	</tr>
+	<tr>
+    <td align="right" nowrap="nowrap">系统属性:</td>
+    <td id="getAttributesResultByCateId">
+    
+    </TD>
+	</TR>   
+	<tr>
+	<td align="right">详情:</td>
+	<td><:des/><hr><textarea style="margin: 0px; width: 1155px; height: 94px;"><:des/></textarea></TD>
+	</tr>   
+</table>
+</ul>
+</r:product>
+
+<script type="text/javascript" src="/<.Path/>admin/js/数据/商品管理/商品管理/编辑(速卖通).js"></script>

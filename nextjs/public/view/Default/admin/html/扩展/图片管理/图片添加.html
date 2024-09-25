@@ -1,0 +1,67 @@
+  <load admin/html/头部.html/>
+  <table class="tb">
+<form action="ajax/admin_content.aspx?PhotoSave/add.html" method="post" name="addform" id="addform">
+  <input type="hidden" id="pre_commend" name="pre_commend" value="0">
+      <tr>
+        <td align="right" height="22">标 题：</td>
+        <td>
+          <input type="text" size="50" id="pre_name" name="pre_name" autocomplete="off">&nbsp;<font color='red'>＊</font>
+          类 型：<select name="pre_type" id="pre_type"  ><option value="">请选择数据分类</option></select>
+        </td>
+      </tr>
+      <tr> 
+      <td height="22" align="right">图片地址：</td>
+      <td id="addnewspic"></td>
+    </tr>
+      <tr>
+        <td align="right" height="22">点击率：</td>
+        <td><input type="text" size="10" name="pre_hit" id="pre_hit" maxlength="9" value="0">&nbsp;&nbsp;来源:<input type="text" size="10" name="pre_from">
+        &nbsp;日期/时间:<input size="10" name="pre_addtime" id="pre_addtime" value="<.now/>" >
+        &nbsp;星级：<span id="star0" style="width:170px;display:inline-block"><script>//starView(0,0)</script></span>
+        </td>
+      </tr>
+      <tr>
+	 <td align="right" height="22">图片属性:</td>
+	 <td>
+	  <input type="checkbox" class="checkbox" name="pre_note" value="1" id="pre_note-1">
+	  <label for="pre_note-1">[推荐]&nbsp;</label>	  
+	  <input type="checkbox" name="pre_note" class="checkbox" value="2" id="pre_note-2">
+	  <label for="pre_note-2">[滚动]&nbsp;</label>
+	  <input type="checkbox" class="checkbox" name="pre_note" value="3" id="pre_note-3">
+	  <label for="pre_note-3">[头条]&nbsp;</label>
+	  <input type="checkbox" class="checkbox" name="pre_note" value="4" id="pre_note-4">
+	  <label for="pre_note-4">[热门]&nbsp;</label>
+	  <input type="checkbox" class="checkbox" name="pre_note" value="5" id="pre_note-5">
+	  <label for="pre_note-5">[固顶]&nbsp;</label>
+	  <input type="checkbox" class="checkbox" name="pre_note" value="6" id="pre_note-6">
+	  <label for="pre_note-6">[允许评论]&nbsp;</label>
+	  <input type="checkbox" class="checkbox" name="pre_note" value="7" id="pre_note-7">
+	  <label for="pre_note-7">[幻灯]&nbsp;</label>
+	 </td>
+	</tr>
+      <tr>
+        <td align="right" height="22">关键词：</td>
+        <td><input type="text" name="keyword" size="30">
+        &nbsp;作者：<input type="text" size="30" name="pre_author">
+        </td>
+      </tr>
+      <tr>
+        <td align="right" height="22">来源网址：</td>
+        <td><input type="text" size="104" name="pre_fromUrl"></td>
+      </tr>
+      <tr>
+        <td align="right" height="22">内&nbsp;&nbsp;容：</td>
+         <td>
+          <input type="hidden" id="pre_content" name="pre_content" value="" style="display:none" />
+          <input type="hidden" id="pre_content___Config" value="" style="display:none" />
+          <iframe id="pre_content___Frame" src="/<.Config(admin)/>/fckeditor/editor/fckeditor.html?InstanceName=pre_content&amp;Toolbar=rendie" width="640" height="250" frameborder="0" scrolling="no"></iframe>
+         </td>
+      </tr>
+       <tr>
+     <td></td><td class="forumRow"><input type="submit" class="pn" value="确认添加" name="submit"><input type="button" class="pn" value="返　回" onClick="javascript:history.go(-1);"></td>
+    </tr>
+</form>
+  </table>
+<link rel="stylesheet" href="/<.Path/>admin/css/datepicker.css" type="text/css" />
+<script type="text/javascript" src="/<.Path/>admin/js/datepicker.js"></script>
+

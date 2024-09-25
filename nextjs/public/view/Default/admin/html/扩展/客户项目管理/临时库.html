@@ -1,0 +1,143 @@
+
+<script type="text/javascript"> 
+	$(function(){
+	  let searchword
+	$('#selectBtn').click(function(){
+	  searchword=$("#searchword").val()
+	  searchword=searchword.replace("/",'*')
+	  searchword=escape(searchword)
+	  location.href="?<.arr(0)/>/<.arr(2)/>/{r:arr(3)/>/"+searchword
+	});
+ });
+</script>
+   <load admin/html/头部.html/>
+ <table class="tb">
+	<tr>
+      <th colspan="8">
+      &nbsp;管理临时库： 
+      <a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/{r:arr(6)/>/1.html">显示已入库的</a>&nbsp|&nbsp
+      <a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/{r:arr(6)/>/0.html">显示未入库的</a>&nbsp|&nbsp
+      <a href="ajax/admin_gathersoft.aspx?TempNewsDelAll-all" onClick="if(confirm('确定要删除所有吗')){return true;}else{return false;}">清空临时库</a>
+      </th>
+    </tr>
+    <tr>
+        <td align="left" colspan="8">
+        关键字<input type="text" id="searchword" size="50" value="<.unarr(4)/>">
+        <input type="button" value="查 询..." class="pn" id="selectBtn" />
+        </td>
+    </tr>
+    <tr align="center">
+      <td width="70">编号<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/id.html"><img src="/{r:Path/>admin/img/minus.gif" title="按ID排序" /></a></td>
+      <td>联系人<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/contact.html"><img src="/{r:Path/>admin/img/minus.gif" title="按ID排序" /></a></td>
+      <td>邮箱<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/email.html"><img src="/{r:Path/>admin/img/minus.gif" title="按ID排序" /></a></td>
+      <td>移动电话<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/Fixed.html"><img src="/{r:Path/>admin/img/minus.gif" title="按ID排序" /></a></td>
+      <td>固定电话<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/mobile.html"><img src="/{r:Path/>admin/img/minus.gif" title="按ID排序" /></a></td>
+      <td>状态<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/inbase.html"><img src="/{r:Path/>admin/img/minus.gif" title="按状态排序" /></a></td>
+      <td>公司网址<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/CompanyWeb.html"><img src="/{r:Path/>admin/img/minus.gif" title="按ID排序" /></a></td>
+      <td>来源网址<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/fromurl.html"><img src="/{r:Path/>admin/img/minus.gif" title="按时间排序" /></a></td>
+      <td>时间<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/time.html"><img src="/{r:Path/>admin/img/minus.gif" title="按时间排序" /></a></td>
+      <td align="center">操作</td>
+    </tr>
+    <form method="post">
+    <r:tempclient size=20 page=4>
+    <tr align="center">
+      <td align="left"><input type="checkbox" value="[tempclient:id]" name="pre_id"  class="checkbox" id="check-[tempclient:id]"/><label for="check-[tempclient:id]">[tempclient:id]</label></td>
+      <td align="left">[tempclient:contact]</td>
+      <td>[tempclient:email]</td>
+      <td>[tempclient:Fixed]</td>
+      <td>[tempclient:mobile]</td>
+      <td>{if [tempclient:inbase]==0}<font color="red">未入库</font><else/>已入库</if></td>
+      <td><a href="[tempclient:CompanyWeb]" target="_blank">[tempclient:CompanyWeb len=20]</a></td>
+      <td><a href="[tempclient:fromurl]" target="_blank">[tempclient:fromurl len=20]</a></td>
+      <td>[tempclient:time]</td>
+      <td align="center">
+        <a href="[tempclient:id]">编辑</a>&nbsp;|&nbsp;
+        <a href="ajax/admin_gathersoft.aspx?TempClientDelAll/[tempclient:id].html" onClick="return confirm('确定要删除吗')">删除</a>
+      </td>
+    </tr>
+    </r:tempclient>
+    <tr>
+      <td colspan="8">
+      <input type="button" class="pn" value="反选" onClick="checkOthers('input','pre_id')" />  
+      <input type="submit" value="批量删除" onClick="if(confirm('确定要批量删除吗')){this.form.action='ajax/admin_gathersoft.aspx?TempClientDelAll'}else{return false}" class="pn" />
+      <input type="submit" value="全部删除" onClick="if(confirm('确定要全部删除吗')){this.form.action='ajax/admin_gathersoft.aspx?TempClientDelAll/all'}else{return false}" class="pn" />
+      <input type="submit" value="导入选中数据" onClick="this.form.action='ajax/admin_gathersoft.aspx?TempClientImport.html';" class="pn"/>
+      <input type="submit" value="导入全部数据" onClick="this.form.action='ajax/admin_gathersoft.aspx?TempClientImport/all.html';" class="pn"/>
+      <input type="submit" value="导入未入库数据" onClick="this.form.action='ajax/admin_gathersoft.aspx?TempClientImport/noinbase.html';" class="pn"/>
+      </td>
+    </tr>
+  </form>
+  </table><.load(admin/html/分页通用.html)/>
+  <table class="tb">
+  <tr class="thead">
+  <td colspan="2">自由采集</td>
+  </tr>
+  <tr>
+    <td align="right">采集来源：</td>
+    <td>
+    <input type="radio" class="radio" name="fromurl" value="0" id="fromurl-0" checked="checked"/><label for="fromurl-0">【公司网址】字段</label>
+    <input type="radio" class="radio" name="fromurl" value="1" id="fromurl-1"/><label for="fromurl-1">【来源网址】字段</label>
+    </td>
+  </tr>
+  <tr>
+  <td align="right">网页编码：</td>
+  <td><input type="text" id="charset" value="UTF-8" style="width: 85px" />&nbsp;&nbsp;<font color="#0000FF">请选择编码→</font><select onChange="$('#charset').val(this.value)"><option value="">请选择编码</option><option value="GB2312">GB2312</option><option value="GBK">GBK</option><option value="BIG5">BIG5</option><option value="UTF-8">UTF-8</option></select></td>
+  </tr> 
+  <tr>
+    <td align="right">入库字段：</td>
+    <td>
+    <input type="radio" value="contact" name="radios" id="radio-contact"/><label for="radio-contact">联系人</label>
+    <input type="radio" value="email" name="radios" id="radio-email" checked="checked"/><label for="radio-email">邮箱</label>
+    <input type="radio" value="mobile" name="radios" id="radio-mobile"/><label for="radio-mobile">移动电话</label>
+    <input type="radio" value="Fixed" name="radios" id="radio-Fixed"/><label for="radio-Fixed">固定电话</label>
+    <input type="radio" value="CompanyWeb" name="radios" id="radio-CompanyWeb"/><label for="radio-CompanyWeb">公司网址</label>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">使用采集方式：</td>
+    <td>
+    <input type="radio" class="radio" name="methods" value="0" id="methods-0" onClick="$('#methods0').show();$('#methods1').hide();"/><label for="methods-0">截取字符串采集</label>
+    <input type="radio" class="radio" name="methods" value="1" id="methods-1" onClick="$('#methods0').hide();$('#methods1').show();" checked="checked"/><label for="methods-1">正则表式采集</label>
+    </td>
+  </tr>
+  <tbody style="display:none" id="methods0">
+  <tr>
+    <td align="right">截取字符串开始：</td>
+    <td><textarea name="strA" rows="4" cols="80">公司网址：</th><td colspan='3'><a target='_blank' href='</textarea></td>
+  </tr>
+  <tr>
+    <td align="right">截取字符串结束：</td>
+    <td><textarea name="strB" rows="4" cols="80">'</textarea></td>
+  </tr>
+  </tbody>
+  <tr id="methods1">
+    <td align="right">正则表式：</td>
+    <td><textarea name="Regexp" rows="4" cols="80">\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*</textarea></td>
+  </tr>
+  <tr id="methods1">
+    <td align="right">SQL查询条件：</td>
+    <td>
+    <input type="text" value="where :CompanyWeb like '%58.com.cn%' and @.email=''" id="sqlwhere" size="80" /><br/>
+    例如：where :CompanyWeb like '%wltlist.58.com.cn%'（采集公司网址）<br/>
+    例如：where :CompanyWeb like '%58.com.cn%' and @.email=''（采集邮件）<br/>
+    例如：where :email=''（来源网址中采集邮件）<br/>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><input type="button" class="pn" value="开始采集" id="FreeGather"/></td>
+  </tr>
+</table>
+<script language="javascript">
+  $("#FreeGather").click(function()
+  {
+	  let fromurl=$("[name='fromurl']:checked").val(),radios=$("[name='radios']:checked").val(),methods=$("[name='methods']:checked").val()
+	  let strA=$("[name='strA']").val(),strB=$("[name='strB']").val(),Regexp=$("[name='Regexp']").val(),charset=$("#charset").val(),sqlwhere=$("#sqlwhere").val()
+	  strA=strA.replace("/","<r:*}")
+	  strB=strB.replace("/","<r:*}")
+	  Regexp=Regexp.replace("/","<r:*}")
+	  sqlwhere=sqlwhere.replace("/","<r:*}")
+	  location.href="ajax/admin_gathersoft.aspx?FreeGather/"+fromurl+"/1/"+radios+"/"+methods+"/"+escape(Regexp)+"/"+escape(strA)+"/"+escape(strB)+"/"+charset+"/"+escape(sqlwhere)
+  });
+</script>
+

@@ -1,0 +1,150 @@
+  <r:product size=1 where=" where @.fromid=<.arr(4)/>">
+  <script type="text/javascript" src="/<.Path/>admin/js/admin_content_product.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    $("#checkSubmitEdit").click(function(){
+			let pre_name,pre_fromUrl,pre_pic,html,pre_PurchaseUrl
+			pre_name=($("#pre_name").val()).replace(/\'/ig,"''")
+			pre_fromUrl=$("#pre_fromUrl").val()
+			pre_pic=$("#pre_pic").val()
+			pre_PurchaseUrl=$("#pre_PurchaseUrl").val()
+			html="update @.product set @.name='"+pre_name+"',:fromUrl='"+pre_fromUrl+"',:pic='"+pre_pic+"',:PurchaseUrl='"+pre_PurchaseUrl+"' where @.fromID=<.arr(4)/> and @.from='dhgate'"
+			html="{ren"+"die:area tag=\"sql\">"+html+"{/ren"+"die:area}操作成功"
+			html=$.ajax({type:"POST",url:"exe.html?"+Math.random(),data:{data:escape(html)},async:false}).responseText;
+			alert(html)
+			location.reload();
+    }); 
+  });
+  </script>
+  <style type="text/css">
+    li {list-style:none;}
+    .atcs li{padding:2px;float:left;border:1px #efefef solid;background:#FFFFF6;margin-right:6px}
+    .ttt{background:#FFFFF6;border:1px #F9C943 solid;width:50px;height:20px;line-height:20px;text-align:center}
+  </style>
+<table class="tb">
+  <input type="hidden" id="pre_commend" value="<:commend/>">
+  <input type="hidden" id="pre_id" value="<:id/>">
+  <tr class="thead"><th>编辑敦煌网商品(<font color='red'>＊</font>为必填,其它选填)</th></tr>
+  <tr><td>
+  <ul class="makeHtmlTab">
+    <li id="li_1" class="hover">基本信息</li>
+    <li id="li_2">商品介绍</li>
+  </ul>
+  <table class="tb" id="li_1tbody"  >
+  <tr>
+    <td align="right" nowrap="nowrap">来源ID:</td>
+    <td><.arr(4)/></td>
+  </tr>
+  <tr>
+    <td align="right" nowrap="nowrap">商品标题:</td>
+    <td>
+		<input type="text" size="150" id="pre_name" name="pre_name" autocomplete="off" value="<:name/>" >
+    <font color='red'>＊</font>&nbsp;
+    </td>
+  </tr>
+  <tr>
+	  <td align="right" height="22">来源网址:</td>
+	  <td><input type="text" size="150" id="pre_fromUrl" value="<:fromurl/>" ></td>
+	</tr>
+  <tr>
+	  <td align="right" height="22">采购网址:</td>
+	  <td><input type="text" size="150" id="pre_PurchaseUrl" value="<:PurchaseUrl/>" ></td>
+	</tr>
+  <tr> 
+    <td align="right" nowrap="nowrap">图片:</td>
+    <td>
+    <input type="text" size="150" name="pre_pic" id="pre_pic" value="<:pic tag=1-1-1/>" >&nbsp;(*.rar)
+    </td>
+  </tr>
+  <tr> 
+    <td align="right" nowrap="nowrap">上传附件:</td>
+    <td>
+    <input type="text" size="150" name="pre_downdata" id="pre_downdata" value="<:downdata/>" >&nbsp;(*.rar)
+    </td>
+  </tr>
+  <tr>
+    <td align="right" nowrap="nowrap">市场价(元):</td>
+    <td>
+    <input type="text" size="10" id="Price_Market" value="<:pricemarket f=2/>" >
+    &nbsp;&nbsp;商城价(元):<input type="text" size="10" id="pre_price" value="<:price f=2/>" >
+    &nbsp;&nbsp;商品单位:<input type="text" size="2"  id="Unit" value="<:unit/>" >
+    << 
+    <select onChange="$('#Unit').val(this.value);" >
+    <option value=''>请选择</option>
+    <option value="包">包</option>
+    <option value="部">部</option>
+    <option value="副">副</option>
+    <option value="件">件</option>
+    <option value="瓶">瓶</option>
+    <option value="双">双</option>
+    <option value="台">台</option>
+    <option value="条">条</option>
+    <option value="支">支</option>
+    <option value="只">只</option>
+    </select>
+    &nbsp;&nbsp;折扣率:<input type="text" size="2" id="Discount" style="text-align:right"value="<:discount/>" />折
+    &nbsp;点击率:<input type="text" size="5" id="pre_hit" maxlength="9" value="<:hit/>" />
+  </tr>
+  <tr>
+    <td align="right" nowrap="nowrap">库存数量:</td>
+    <td><input type="text" size="5" id="pre_totalnum" value="<:totalnum/>">
+      &nbsp;&nbsp;库存报警下限数量:<input id="AlarmNum" type="text" style="width:40px;" value="<:alarmnum/>" maxlength="40" />
+      &nbsp;&nbsp;已销售:<input id="pre_SaleNum" type="text" style="width:40px;" size="10" maxlength="10" value="<:SaleNum/>"/>
+      &nbsp;&nbsp;赚送积分:<input id="pre_score_send" type="text" style="width:40px;" value="<:scoresend/>" size="10" maxlength="10"  />
+      &nbsp;&nbsp;购买所需积分:<input id="pre_score" type="text" style="width:40px;" value="<:score/>" size="10" maxlength="10" /></td>
+  </tr>
+  <tr>
+    <td align="right" nowrap="nowrap">关键词:</td>
+    <td>
+    <input type="text" id="keyword" size="50" value="<:keys/>" >
+    &nbsp;品牌:<input id="brand" type="text" style="width:80px;" value="<:brand/>"/>
+    &nbsp;星级:<span id="star0" style="width:190px;display:inline-block"></span>
+    </td>
+  </tr>
+  <tr>
+    <td align="right" nowrap="nowrap">商品编码:</td>
+    <td>
+    <input id="proid" type="text" style="width:80px;" value="<:proid/>"/>
+    &nbsp;&nbsp;长：<input id="length" type="text" style="width:40px;" value="<:length/>"/>米
+    &nbsp;&nbsp;宽：<input id="width" type="text" style="width:40px;" value="<:width/>"/>米
+    &nbsp;&nbsp;高：<input id="height" type="text" style="width:40px;" value="<:height/>"/>米
+    &nbsp;&nbsp;单重量：<input id="Weight" type="text" style="width:40px;" value="<:weight/>" size="10" maxlength="10" />KG
+    </td>
+  </tr>
+  <tr>
+    <td align="right" nowrap="nowrap">商品备注:</td>
+    <td><textarea type="text" rows="4" cols="50" id="pre_note" style='width:500px;height:120px;border:1px solid #999999;float:left;'><:note code=en/></textarea></td>
+  </tr>
+  <tr>
+    <td align="right">购物车属性:</td>
+    <td>
+      <textarea wrap="off" style='width:500px;height:120px;line-height:26px;padding-left:25px;background:url(<.Path/>admin/img/rule1.gif) no-repeat 0 0px;border:1px solid #999999;float:left;' ID="AttributeCart"><:AttributeCart/></textarea>
+          <div style="float:left; padding-left:10px;">
+          <font color=green>一行表示一个属性，属性名称与属性值之间用"|"线隔开，属性值与属性值之间用英文逗号(,)隔开。</font><br/>
+          <font color=blue><b>录入格式如下:</b></font><br/>
+          颜色|红色,白色,蓝色<br/>
+          尺码|29码,30码,32码</div>
+    </TD>
+  </TR>
+</table>
+<table id="li_2tbody" style="display:none;" class="tb">
+<tr>
+    <td>
+    <input type="hidden" id="pre_content" name="pre_content" value="<:des code=en/>" style="display:none" />
+    <input type="hidden" id="pre_content___Config" value="" style="display:none" />
+    <iframe id="pre_content___Frame" src="/<.Config(admin)/>/fckeditor/editor/fckeditor.html?InstanceName=pre_content&amp;Toolbar=rendie" width="960" height="1000" frameborder="0" scrolling="no"></iframe>
+    </td>
+</tr>	
+</table>
+
+    </td>
+  </tr>
+  <tr>
+    <td>
+    <input type="button" id="checkSubmitEdit" class="pn" value="确认保存">
+    <input type="button" class="pn" value="复制添加" onClick="$('#editform').attr('action','ajax/admin_content.aspx?ProductSave/add')">
+    <input type="button" class="pn" value="返　回" onClick="javascript:history.go(-1);">
+    </td>
+  </tr>
+</table>
+</r:product>

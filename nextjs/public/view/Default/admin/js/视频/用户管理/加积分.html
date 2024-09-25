@@ -1,0 +1,67 @@
+<table class="tb nobdt">
+    <TR class="thead">
+      <TD colspan="2">给用户加积分</TD>
+    </TR>
+    <r:user where=" where @.id=Fun(arr(4))">
+    <TR>
+      <TD align="right">用户名：</TD>
+      <TD><if "[user:name]"=="">[user:email]<input id="UserName" type="hidden" value="[user:email]"><else/>[user:name]<input id="UserName" type="hidden" value="[user:name]"></if></TD>
+    </TR>
+    <TR>
+      <TD align="right">用户组：</TD>
+      <TD>
+      	<if "[user:GroupID]"=="0">
+        无用户组
+        <else/>
+      	<r:usergroup size=50>
+        {if <:id/>==[user:GroupID]}<:name/></if>
+        </r:usergroup>
+        </if>
+      </TD>
+    </TR>
+    <TR>
+      <TD align="right">当前积分：</TD>
+      <TD>[user:score]<input type="hidden" id="CurrScore" value="[user:score]"> 分</TD>
+    </TR>
+    <TR>
+      <TD align="right">追加积分：</TD>
+      <TD><input type="text" id="Score" value="100" size="10" maxlength="10" >
+        分</TD>
+    </TR>
+    <TR>
+      <TD align="right">请输入原因：</TD>
+      <TD><input type="text" id="Reason" value="积分奖励" size="50" ></TD>
+    </TR>
+    <TR>
+      <TD align="right">站内通知：</TD>
+      <TD><textarea name="message" cols="50" rows="3">您好[user:Name],本站管理员手工给您增加了{$Score}分积分奖励!</textarea>
+        <br/>
+        <input name="MTF" type="checkbox" value="1" checked="checked" id="checked-MTF">
+        <label for="checked-MTF">发送短消息通知用户</label></TD>
+    </TR>
+    </r:user>
+    <TR>
+      <TD></TD>
+      <TD><input class="pn"  type="button" id="SaveAddScore" value="确定追加积分" >
+        <input type="button" value="返回" class="pn" onClick="javascript:history.go(-1)" /></TD>
+    </TR>
+</TABLE>
+<script type="text/javascript">
+$(function(){
+	$('#SaveAddScore').click(function(){
+		let obj=Object(),sql,str
+		obj.name=$("#UserName").val()
+		obj.Score=$("#Score").val()
+		obj.CurrScore=parseInt($("#CurrScore").val())+parseInt(obj.Score)
+		obj.Reason=$("#Reason").val()
+		sql="Insert into @.LogScore(@.name,:InOrOutFlag,:Score,:CurrScore,:User,:IP,:Descript)values('"+obj.name+"',1,"+obj.Score+","+obj.CurrScore+",'Fun(adminID)','Fun(getIp)','"+obj.Reason+"')"
+		str='{ren'+'die:area tag="sql">'+sql+'{/ren'+'die:area}'
+		sql="update @.User set @.score=:score+"+obj.Score+" where @.id=<.arr(4)/>"
+		str+='{ren'+'die:area tag="sql">'+sql+'{/ren'+'die:area}添加成功！'
+		str=$.ajax({type:"POST",url:"exe.html?"+Math.random(),data:{data:escape(str)},async:false}).responseText;
+		alert(str)
+		window.location.reload();
+	})
+})
+</script> 
+

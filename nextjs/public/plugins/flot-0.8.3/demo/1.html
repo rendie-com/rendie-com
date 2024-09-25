@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+<script language="javascript" type="text/javascript" src="../../jquery-3.6.3.min.js"></script>
+<script language="javascript" type="text/javascript" src="../jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="../jquery.flot.pie.js"></script>
+<style type="text/css">
+
+		div.graph
+		{
+			height: 300px;
+			border: 1px dashed gainsboro;
+		}
+		
+	</style>
+<body>
+	<div id="graph1" class="graph"></div>
+<script type="text/javascript">
+$(function () {
+	var data = [
+		{ label: "Series1",  data: [[1,10]]},
+		{ label: "Series2",  data: [[1,30]]},
+		{ label: "Series3",  data: [[1,90]]},
+		{ label: "Series4",  data: [[1,70]]},
+		{ label: "Series5",  data: [[1,80]]},
+		{ label: "Series6",  data: [[1,0]]}
+	];
+
+
+//////////////////////////////////////////////////////////////
+	$.plot($("#graph1"), data, 
+	{
+		series: {
+			pie: { 
+				show: true
+			}
+		},
+		legend: {
+			show: false
+		}
+	});
+	
+	
+	
+	
+	
+	});
+	</script>
+</body>
+</html>

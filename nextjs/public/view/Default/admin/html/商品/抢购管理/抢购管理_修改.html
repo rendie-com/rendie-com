@@ -1,0 +1,80 @@
+
+  <script type="text/javascript">
+  function CheckForm()
+  {
+  if ($('#TaskName').val()=='')
+    {
+     alert('请输入任务名称!');
+     $('#TaskName').focus();
+     return false;
+    }
+  
+  $("#myform").submit();
+    
+  }
+  </script>
+<ul class="makeHtmlTab">
+	<r:type where=" where @.from='rendie' and @.id=Fun(arr(3))"}
+  <r:type where=" where @.from='rendie' and @.upid='<:upid/>' order by @.sort asc" size=2}
+  <li{if <.arr(2)/>==<:id/>/> class="hover"</if> onclick="location.href='?list/<:id/>.html';">
+  <:name/>
+  </li>
+  </r:type>
+  </r:type>
+</ul>
+<table class="tb">
+  <form name="myform" id="myform" action="ajax/admin_shop.aspx?LimitBuySave/<.arr(3)/>.html" method="post">
+  <r:shoplimitbuy where=" where @.id=<.arr(3)/>">
+  <tr>
+	<td align="right">任务名称：</td>
+	<td>
+      <input type='text' name='TaskName' id='TaskName'  value='[shoplimitbuy:taskName]' size="50" />
+	  <font color=red>*</font> 如:7天限时抢购活动
+    </td>
+	</tr>
+	<tr>
+	  <td align="right">任务类型：</td>
+	  <td>
+		<label><input type='radio' name='TaskType' onclick="$('#limitbuytime').show();" value='1' {if [shoplimitbuy:TaskType]==1} checked{/if}>限时抢购</label>
+        <label>
+        <input type='radio' name='TaskType' onclick="$('#limitbuytime').hide();" value='2' {if [shoplimitbuy:TaskType]==2} checked{/if}>限量抢购</label>
+	  </td>
+	</tr>
+	<tr>
+	  <td align="right">抢购时间限制：</td>
+	  <td>
+	    <input type='text'  name='LimitBuyBeginTime' id='LimitBuyBeginTime' value='[shoplimitbuy:LimitBuyBeginTime]' size='30'>
+        至
+        <input  type='text' name='LimitBuyEndTime' id='LimitBuyEndTime' value='[shoplimitbuy:LimitBuyEndTime]' size='30'>
+        <font color=red>在此时间内才能享受抢购价</font>
+	  </td>
+	</tr>
+	<tr>
+	  <td align="right">最迟付款时间：</td>
+	  <td>
+		下单后<input type='text'  name='LimitBuyPayTime' id='LimitBuyPayTime' style='text-align:center' value='[shoplimitbuy:LimitBuyPayTime]' size='6'>小时内没有付款,视为抢购无效。如果不限制请录入"0"。</font>
+	  </td>
+	</tr>
+	<tr>
+	  <td align='right'>任务介绍：</td>
+	  <td><input type="hidden" id="Intro" name="Intro" value="[shoplimitbuy:Intro]" style="display:none" /><input type="hidden" id="Intro___Config" value="" style="display:none" /><iframe id="Intro___Frame" src="fckeditor/editor/fckeditor.html?InstanceName=Intro&amp;Toolbar=rendie" width="800" height="400" frameborder="0" scrolling="no"></iframe></td>
+	</tr>
+	<tr>
+	  <td align='right'>任务添加时间：</td>
+	  <td><input type='text'  name='AddDate' id='AddDate' value='[shoplimitbuy:AddDate]' size='30'></td>
+    </tr>
+    <tr>
+      <td align='right'>任务状态：</td>
+      <td>
+       <label><input type="radio" name="Status" value="1"{if [shoplimitbuy:Status]==1} checked{/if}>正常</label>
+       <label><input type="radio" name="Status" value="0"{if [shoplimitbuy:Status]==0} checked{/if}>关闭</label>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><input type="submit"  value="确认保存" class="pn"></td>
+    </tr>
+    </r:shoplimitbuy>
+    </form>
+	</table>
+
