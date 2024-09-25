@@ -70,7 +70,7 @@ import path from 'path';
   }
   ///////////////////////
   await page.screenshot({
-    path: 'screenshot.png'
+    path: '../releases/screenshot.png'
   });
   await page.close()
   await browser.close()
