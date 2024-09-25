@@ -136,7 +136,7 @@ var task = {
         if (t[0].length == 0) {
             this.obj.C1++; this.obj.Cobj = {};
             this.obj.D1 = 1; this.obj.D2 = 1;
-            this.a03("",oo);
+            this.e03(oo);
         }
         else {
             Tool.pre(["出错11", t])
