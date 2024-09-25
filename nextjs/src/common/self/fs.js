@@ -75,21 +75,38 @@ export const self_fs = {
       })
     });
   },
-  download: async function (url, filename) {
-    const directoryPath = path.join(filename, '..'); // 相对于当前文件的上级目录
+  download: async function (url, filePath) {
+    //使用Axios下载超过80MB的数据     https://cloud.tencent.com/developer/information/%E4%BD%BF%E7%94%A8Axios%E4%B8%8B%E8%BD%BD%E8%B6%85%E8%BF%8780MB%E7%9A%84%E6%95%B0%E6%8D%AE
+    const directoryPath = path.join(filePath, '..'); // 相对于当前文件的上级目录
     return new Promise((resolve) => {
       fs.mkdir(directoryPath, { recursive: true }, (err1) => {
         //下载 
         axios({
-          method: 'get',
-          url: url,
-          responseType: 'stream'
-        }).then(response => {
-          response.data.pipe(fs.createWriteStream(filename));
-          resolve("下载完成");
-        }).catch(error => {
-          console.error('下载时发生错误:', error);
-        });
+          url,
+          method: 'GET',
+          responseType: 'stream',
+        }).then((response) => {
+            const writer = fs.createWriteStream(filePath);
+            response.data.pipe(writer);      
+            // let loaded = 0;
+            // const total = parseInt(response.headers['content-length'], 10);      
+            // response.data.on('data', (chunk) => {
+            //   loaded += chunk.length;
+            //   const progress = Math.floor((loaded * 100) / total);
+            //   console.log(`Downloading ${progress}%`);
+            //   // 这里可以更新进度条的UI
+            // });      
+            response.data.on('end', () => {
+              resolve("下载完成");
+              // 这里可以进行下载完成后的操作
+            });      
+            writer.on('finish', () => {
+              writer.close();
+            });
+          }).catch((error) => {
+            console.error('Error:', error);
+            // 这里可以处理下载失败的情况
+          });
       })
     })
   },
