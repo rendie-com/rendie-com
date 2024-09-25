@@ -51,7 +51,14 @@ jobs:
          if [ -f "./sqlite3/shopee/采集箱/粉丝/tw.db" ]; then
            cp ./sqlite3/shopee/采集箱/粉丝/tw.db ./releases/shopee_gather_fans_tw.db 
          fi
-        
+    - name: 自动发布固件到 Releases
+      uses: softprops/action-gh-release@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        name: sqlite3 文件发布
+        tag_name: 1
+        files: ./releases/* 
     # - name: 部署 sqlite3
     #   uses: JamesIves/github-pages-deploy-action@v4
     #   with: 
