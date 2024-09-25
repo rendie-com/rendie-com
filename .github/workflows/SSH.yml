@@ -21,7 +21,10 @@ jobs:
     - name: 运行       
       run: | 
         mkdir ./releases/
-        mv ./sqlite3/shopee/采集箱/粉丝/br.db ./releases/shopee_gather_fans_br.db        
+        # mv ./sqlite3/shopee/采集箱/粉丝/br.db ./releases/shopee_gather_fans_br.db       
+        mv ./sqlite3/shopee/采集箱/粉丝/my.db ./releases/shopee_gather_fans_my.db
+        mv ./sqlite3/shopee/采集箱/粉丝/tw.db ./releases/shopee_gather_fans_tw.db
+
         
         # mkdir ./releases/s/shopee/采集箱/粉丝/
         # mv ./sqlite3/shopee/采集箱/粉丝/br.db ./releases/shopee/采集箱/粉丝/br.db
