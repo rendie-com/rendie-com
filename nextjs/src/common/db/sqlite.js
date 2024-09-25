@@ -66,7 +66,7 @@ export const sqlite = {
     },
     SqliteAsync: async function (database, sql) {
         sql = sql.replace(/@\./g, self_config.TablePre);
-        let connStr = self_config.sqlite.replace("{database}", database);        
+        let connStr = process.env.NEXTJS_CONFIG_SQLITE.replace("{database}", database);        
         const db =new sqlite3.Database(connStr);// 创建一个新的SQLite数据库实例           
         return new Promise((resolve, reject) => {
             //查询所有的用户数据
