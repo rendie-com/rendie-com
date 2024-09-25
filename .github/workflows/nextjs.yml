@@ -44,12 +44,12 @@ jobs:
           NODE_SHOPEE_ACCESS_TOKEN: ${{ secrets.NODE_SHOPEE_ACCESS_TOKEN }}  
           NODE_SHOPEE_REFRESH_TOKEN: ${{ secrets.NODE_SHOPEE_REFRESH_TOKEN }}
           
-      - name: 部署next.js
-        uses: JamesIves/github-pages-deploy-action@v4
-        with: 
-            branch: main
-            folder: sqlite3/
-            target-folder: sqlite3/
+      # - name: 部署next.js
+      #   uses: JamesIves/github-pages-deploy-action@v4
+      #   with: 
+      #       branch: main
+      #       folder: sqlite3/
+      #       target-folder: sqlite3/
             
       - name: 删除运行记录
         uses: Mattraks/delete-workflow-runs@v2
