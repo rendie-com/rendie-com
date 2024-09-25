@@ -38,6 +38,17 @@ var task = {
                 url: "https://github.com/rendie-com/rendie-com/releases/download/1/shopee_gather_fans_" + oo.site + ".db",
                 database: "shopee/采集箱/粉丝/" + oo.site,
             }]
+        }, {
+            action: "fs",
+            fun: "access_sqlite",
+            database: "shopee/采集箱/店铺/" + oo.site,
+            mode: 0,
+            elselist: [{
+                action: "fs",
+                fun: "download_sqlite",
+                url: "https://github.com/rendie-com/rendie-com/releases/download/1/shopee_gather_shop_" + oo.site + ".db",
+                database: "shopee/采集箱/店铺/" + oo.site
+            }]
         }]
         Tool.ajax.a01(data, this.a03, this, oo);
     },

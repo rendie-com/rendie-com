@@ -10,6 +10,21 @@ var fun =
         this.a02()
     },
     a02: function () {
+        let data = [{
+            action: "fs",
+            fun: "access_sqlite",
+            database: "shopee/采集箱/商品/" + obj.params.site,
+            mode: 0,
+            elselist: [{
+                action: "fs",
+                fun: "download_sqlite",
+                url: "https://github.com/rendie-com/rendie-com/releases/download/1/shopee_gather_product_" + obj.params.site + ".db",
+                database: "shopee/采集箱/商品/" + obj.params.site
+            }]
+        }]
+        Tool.ajax.a01(data, this.a03, this);
+    },
+    a03: function () {
         let where = " order by @.addtime desc";
         let data = [{
             action: "sqlite",
@@ -20,9 +35,9 @@ var fun =
             database: "shopee/采集箱/商品/" + obj.params.site,
             sql: "select " + Tool.fieldAs("itemid,shopid,name,image,shop_location,currency,price,addtime") + " FROM @.table" + this.b03() + where + Tool.limit(10, obj.params.page, "sqlite"),
         }]
-        Tool.ajax.a01(data, this.a03, this);
+        Tool.ajax.a01(data, this.a04, this);
     },
-    a03: function (t) {
+    a04: function (t) {
         let html1 = "", arr = t[1]
         for (let i = 0; i < arr.length; i++) {
             html1 += '\

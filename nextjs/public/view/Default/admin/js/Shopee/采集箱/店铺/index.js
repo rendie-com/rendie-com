@@ -11,6 +11,21 @@ var fun =
     },
     a02: function () {
         let data = [{
+            action: "fs",
+            fun: "access_sqlite",
+            database: "shopee/采集箱/店铺/" + obj.params.site,
+            mode: 0,
+            elselist: [{
+                action: "fs",
+                fun: "download_sqlite",
+                url: "https://github.com/rendie-com/rendie-com/releases/download/1/shopee_gather_shop_" + obj.params.site + ".db",
+                database: "shopee/采集箱/店铺/" + obj.params.site
+            }]
+        }]
+        Tool.ajax.a01(data, this.a03, this);
+    },
+    a03: function () {
+        let data = [{
             action: "sqlite",
             database: "shopee/采集箱/店铺/" + obj.params.site,
             sql: "select count(1) as total FROM @.table" + this.b03(),
@@ -19,9 +34,9 @@ var fun =
             database: "shopee/采集箱/店铺/" + obj.params.site,
             sql: "select " + Tool.fieldAs("shopname,follower_count,get_follower_time,following_count,is_official_shop,last_login_time,nickname,portrait,products,response_rate,response_time,shop_rating,shopee_verified_flag,show_official_shop_label,show_shopee_verified_label,userid,shopid,username,is_in_fss,ps_plus,rating_good,rating_normal,rating_bad,is_shopee_choice,shop_location") + " FROM @.table" + this.b03() + " order by @.get_follower_time desc" + Tool.limit(10, obj.params.page),
         }]
-        Tool.ajax.a01(data, this.a03, this);
+        Tool.ajax.a01(data, this.a04, this);
     },
-    a03: function (t) {
+    a04: function (t) {
         let html1 = "", arr = t[1]
         for (let i = 0; i < arr.length; i++) {
             html1 += '\
