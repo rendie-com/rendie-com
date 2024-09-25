@@ -57,6 +57,7 @@ jobs:
            if [ -f "./sqlite3/shopee/采集箱/粉丝/tw.db" ]; then
              cp ./sqlite3/shopee/采集箱/粉丝/tw.db ./releases/shopee_gather_fans_tw.db 
            fi
+           cp ./node-shopee/screenshot.png  ./releases/screenshot.png
       # - name: 部署next.js
       #   uses: JamesIves/github-pages-deploy-action@v4
       #   with: 
