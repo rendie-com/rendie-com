@@ -63,7 +63,16 @@ jobs:
       #       branch: main
       #       folder: sqlite3/
       #       target-folder: sqlite3/
-            
+      
+      - name: 自动发布固件到 Releases
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: sqlite3 文件发布
+          tag_name: 1
+          files: ./releases/* 
+          
       - name: 删除运行记录
         uses: Mattraks/delete-workflow-runs@v2
         with:
