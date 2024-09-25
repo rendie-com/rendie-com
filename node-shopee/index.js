@@ -1,13 +1,3 @@
-// process.env.NODE_SHOPEE_REFRESH_TOKEN = "0cee4a4acbd473a53b4faffb007751287070e2ea117f82b4b83913100954176b"
-// process.env.NODE_SHOPEE_ACCESS_TOKEN = "2ff68998b46cded1119bb2fa1406b7f84fdc988bd8bdef2374a379490eefc717"
-// process.env.NODE_SHOPEE_NAME = "gather"
-///////////////////本地gather登陆 开始//////////////////////////////////////////////////////
-process.env.NODE_SHOPEE_REFRESH_TOKEN = "a800dac18ea0bce3ea46bcd533e9b47898d9515bf2bcbaabac68251a6df19367"
-process.env.NODE_SHOPEE_ACCESS_TOKEN = "ddc3c04977f7209511538f727c62250caee5513eb4bd3e6221cabd66c15c33d3"
-process.env.NODE_SHOPEE_NAME = "gather"
-///////////////////本地gather登陆 结束///////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
 import puppeteer from 'puppeteer';
 import path from 'path';
 (async () => {
