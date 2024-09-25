@@ -20,9 +20,9 @@ jobs:
       
     - name: 运行       
       run: | 
-        # mkdir ./releases/
+        mkdir ./releases/
         
-        # mv ./sqlite3/shopee/采集箱/粉丝/br.db ./releases/shopee/采集箱/粉丝/br.db
+        mv ./sqlite3/shopee/采集箱/粉丝/br.db ./releases/shopee/采集箱/粉丝/br.db
         
         # 7z x nextjs.7z
         # 7z x node-shopee.7z
