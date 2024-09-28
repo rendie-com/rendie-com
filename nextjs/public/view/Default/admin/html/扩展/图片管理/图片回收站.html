@@ -1,0 +1,51 @@
+<script type="text/javascript"> 
+$(function(){
+	$('#selectBtn').click(function(){
+	  searchword=$("#searchword").val()
+	  searchword=searchword.replace("-",'<r:|}')
+	  searchword=escape(searchword)
+	  location.href="?<.arr(0)/>/{r:arr(2)/>/1-"+searchword
+	});
+});
+</script>
+  <load admin/html/头部.html/>
+<table class="tb">
+<tr>
+<td align="left" colspan="8">
+关键字&nbsp;<input type="text" id="searchword"  value="<.unarr(4)/>">
+<input type="button" id="selectBtn" value="搜 索" class="pn" />
+<select onChange="self.location.href='?<.arr(0)/>/<.arr(2)/>/{r:arr(3)/>/{r:arr(4)/>/'+this.options[this.selectedIndex].value" >
+<option value="">按数据分类查看</option></select>
+</td>
+</tr>
+	<if ""!="<.arr(4)/>"
+	<tr><td colspan="8">关键字<font color=red><.unarr(4)/></font>的记录如下</td></tr>
+	</if>
+    <tr align="center">
+      <td width="60">ID<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/id.html"><img src="/{r:Path/>admin/img/minus.gif" title="按ID排序" /></a></td>
+      <td align="left">标题</td>
+      <td width="60">人气<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/hit.html"><img src="/{r:Path/>admin/img/minus.gif" title="按人气排序" /></a></td>
+      <td width="200">数据类别</td>
+      <td width="120">推荐星级<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/commend.html"><img src="/{r:Path/>admin/img/minus.gif" title="按推荐星级排序" /></a></td>
+      <td width="140">时间<a href="?<.arr(0)/>/<.arr(2)/>/<.arr(3)/>/<.arr(4)/>/{r:arr(5)/>/AddDate.html"><img src="/{r:Path/>admin/img/minus.gif" title="按时间排序" /></a></td>
+      <td width="120">操作</td>
+    </tr>
+    <form method="post" name="photoform">
+    <r:photo size=20 page=4>
+    <tr align="center">
+      <td align="left"><input type="checkbox" value="[photo:id]" name="pre_id"  class="checkbox" id="check-[photo:id]"/><label for="check-[photo:id]">[photo:id]</label></td>
+      <td align="left"><a href="[photo:id]" target="_blank">[photo:name]</a><if "[photo:fromurl]"!=""}&nbsp;（<a href="[photo:fromurl]" target="_blank">查看来源</a>）</if></td>
+      <td>[photo:hit]</td>
+      <td></td>
+      <td align="left"><div class="basic" data="[photo:commend]_[photo:id]"></div></td>
+      <td><span title="[photo:addtime]">[photo:addtime]</span></td>
+      <td>
+        <a href="[photo:id]">编辑</a>&nbsp;|&nbsp;
+        <a href="ajax/admin_content.aspx?PhotoDel/[photo:id].html" onClick="return confirm('确定要删除吗')">删除</a>&nbsp;|&nbsp;
+        <a href="ajax/admin_content.aspx?PhotoRestore/[photo:id].html">还原</a>
+      </td>
+    </tr>
+    </r:photo>
+    </form>
+</table><.load(admin/html/分页通用.html)/>
+	

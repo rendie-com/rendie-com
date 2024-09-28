@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>llqrcode识别二维码</title>
+    <script src="llqrcode.js"></script>
+    <script>
+        function getUrl(e, param) {
+            analyticCode.getUrl(
+                param, e, function (url, param) {
+                    document.querySelector("#uploadQrcode").style.display = "none";
+                    document.querySelector("#uploadQrcode_preview").innerHTML = "<img src='" + param + "' />";
+                    document.querySelector("#qrcodeUrl").innerHTML = "识别内容：" + url;
+                    document.querySelector("#rescan").style.display = "block";
+                }
+            )
+        }
+
+        let getObjectURL = function (file) {
+            let url = null;
+            if (window.createObjectURL != undefined) {
+                url = window.createObjectURL(file);
+            } else if (window.URL != undefined) {
+                url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) {
+                url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+        }
+        window.analyticCode = {
+            getUrl: function (type, elem, fn) {
+                let url = null, src = null;
+
+                if (type === 'img-url') {
+                    url = elem.src;
+                } else if (type === 'file-url' && elem.files.length > 0) {
+                    url = getObjectURL(elem.files[0]);
+                }
+                qrcode.decode(url);
+                qrcode.callback = function (imgMsg) {
+                    fn(imgMsg, url);
+                }
+            }
+        }
+    </script>
+    <style>
+        h3 {
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        #uploadQrcode {
+            width: 80px;
+            height: 80px;
+            margin: 20px auto 0;
+            border: 2px dashed #ccc;
+            border-radius: 20px;
+            font-size: 25px;
+            line-height: 80px;
+            text-align: center;
+            color: #ccc;
+            position: relative;
+            cursor: pointer;
+        }
+
+        #selectQrcode {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        #qrcodeUrl {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        #uploadQrcode_preview {
+            width: 80px;
+            height: 80px;
+            margin: 20px auto 0;
+        }
+
+            #uploadQrcode_preview img {
+                width: 80px;
+                height: 80px;
+            }
+
+        #rescan {
+            text-align: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h3>选择一张二维码图片</h3>
+    <div id="uploadQrcode">
+        <span>+</span>
+        <input type="file" id="selectQrcode" onChange="getUrl(this,'file-url')" />
+    </div>
+    <!-- 图片预览 -->
+    <div id="uploadQrcode_preview"></div>
+    <!-- 识别结果 -->
+    <p id="qrcodeUrl"></p>
+    <a href="" id="rescan">重新识别</a>
+</body>
+</html>

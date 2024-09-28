@@ -1,0 +1,221 @@
+<r:news where=" where @.id=<.arr(4)/>" size=1>
+  <script type="text/javascript">
+  $(function(){
+    $('.tip').focus(function(){
+        let $tip=$('<div id="tip"><div class="t_box"><div><s><i></i></s><img width="300" src="/<.Config(sitePath)/>'+this.value+'" /></div></div></div>');
+        $('body').append($tip);
+        $('#tip').show('fast');
+     }).blur(function(){
+        $('#tip').remove();
+     }).focus(function(e){
+        $('#tip').css({"top":(e.pageY-60)+"px","left":(e.pageX+30)+"px"})
+     })
+     
+    $("#addnewspic").html(editbig()+addnewspicSkin({area:num}))
+  })
+  function editbig(){
+    return '<r: tag=[news:pic]}<r: tag=[area:name] pre="[area:i]"}{if [area:i]==1}\
+      <div id="bigpic[area-1list:i]">\
+      <input type="hidden" name="picid" value="[area-1list:i]"/>\
+      <input type="text" size="6" name="bgcolor" <if "[area:name tag=2]"=="">style="border-left:20px #666666 solid;border-right:1px #666666 solid; border-bottom:1px #666666 solid; border-top:1px #666666 solid;"<else/>style="border-left:20px #[area:name tag=2] solid;border-right:1px #[area:name tag=2] solid; border-bottom:1px #[area:name tag=2] solid; border-top:1px #[area:name tag=2] solid;"</if> value="[area:name tag=2]">\
+      <input type="text" class="tip" size="40" name="pic[area-1list:i]" id="pic[news:id]_[area-1list:i]_1" value="[area:name tag=1]">\
+      <input type="text"size="2" name="W[area-1list:i]" id="W[area-1list:i]_1" value="[area:name tag=3]"/>x\
+      <input type="text"size="2" name="H[area-1list:i]" id="H[area-1list:i]_1" value="[area:name tag=4]"/>\
+      <input type="button" value="生成" size="2" class="pn" onclick="GenerateImages($(\'#pic[news:id]_[area-1list:i]_1\').val(),\'pic[news:id]_[area-1list:i]_1\',$(\'#W[area-1list:i]_1\').val(),$(\'#H[area-1list:i]_1\').val(),\'product/\');"/>\
+      <img onclick="$(\'#bigpic[area-1list:i]\').remove();" src="/<.Path/>admin/img/btn_dec.gif" class="pointer" alt="删除第[area-1list:i]组的所有图片" align="absmiddle"/>(第[area-1list:i]组的1个图片)<else/><div id="smallpic[area-1list:i]-[area:i]">\
+        &nbsp;&nbsp;├<input type="text" size="2" name="W[area-1list:i]" id="W[area-1list:i]_[area:i]" value="[area:name tag=3]"/>x\
+        <input type="text"size="2" name="H[area-1list:i]" id="H[area-1list:i]_[area:i]" value="[area:name tag=4]"/>\
+        <input type="button" value="生成" size="2" class="pn" onclick="GenerateImages($(\'#pic[news:id]_[area-1list:i]_1\').val(),\'pic[news:id]_[area-1list:i]_[area:i]\',$(\'#W[area-1list:i]_[area:i]\').val(),$(\'#H[area-1list:i]_[area:i]\').val(),\'product/\');" />\
+        <input type="text" size="30" class="tip" name="pic_[area-1list:i]" id="pic[news:id]_[area-1list:i]_[area:i]" value="[area:name tag=1]">\
+        <img onclick="$(\'#smallpic[area-1list:i]-[area:i]\').remove();" src="/<.Path/>admin/img/btn_dec.gif" class="pointer" alt="删除第[area-1list:i]组的[area:i]个图片" align="absmiddle"/>(第[area-1list:i]组的[area:i]个图片)\
+      </div></if></r:>\
+    '+addsmallSkin([area:i],{area:[area:i]num})+'</div>\
+    </r:>\
+    '
+  }
+  function addbig(j){
+    return '\
+    <div id="bigpic'+j+'">\
+      <input type="hidden" name="picid" value="'+j+'"/>\
+      <input type="text" size="6" name="bgcolor" style="border-left:20px #666666 solid;border-right:1px #666666 solid; border-bottom:1px #666666 solid; border-top:1px #666666 solid;">\
+      <input type="text" class="tip" size="40" name="pic'+j+'" id="pic[news:id]_'+j+'_1">\
+      <input type="text"size="2"name="W'+j+'"id="W'+j+'_1"/>x\
+      <input type="text"size="2"name="H'+j+'"id="H'+j+'_1"/>\
+      <input type="button" value="生成" size="2" class="pn" onclick="GenerateImages($(\'#pic[news:id]_'+j+'_1\').val(),\'pic[news:id]_'+j+'_1\',$(\'#W'+j+'_1\').val(),$(\'#H'+j+'_1\').val(),\'news/\');"/>\
+      <img onclick="$(\'#bigpic'+j+'\').remove();" src="/<.Path/>admin/img/btn_dec.gif" class="pointer" alt="删除第'+j+'组的所有图片" align="absmiddle"/>(第'+j+'组的第1个图)'+addsmallSkin(j,1)+'\
+    </div>'
+  }
+  function addbigend(j){
+    $("#addnewspicSkin_"+j).before(addbig(j+1)+addnewspicSkin(j+1));	
+    $("#addnewspicSkin_"+j).remove()
+  }
+  function addnewspicSkin(j){
+    return '<div id="addnewspicSkin_'+j+'">\
+               <img src="/<.Path/>admin/img/btn_add.gif" style="cursor:pointer" onclick="addbigend('+j+')"/>&nbsp;&nbsp;\
+               <font color="red">您可以单击前面的按钮添加一组图片</font>\
+             </div>'
+  }
+  function addsmallSkin(j,i){
+    return '<div id="addsmallSkin'+j+'-'+i+'">\
+              &nbsp;&nbsp;└<img src="/<.Path/>admin/img/btn_add.gif" style="cursor:pointer" onclick="addsmallend('+j+','+i+');"/>&nbsp;&nbsp;\
+              <font color="red">您可以单击前面的按钮添加一个"子图片"，也可以按大小生成"子图片"或上传"子图片"</font>\
+            </div>'
+  }
+  function addsmall(j,i)
+  {
+      return '<div id="smallpic'+j+'small'+i+'">\
+                  &nbsp;&nbsp;├<input type="text" size="2" name="W'+j+'" id="W'+j+'_'+i+'"/>x\
+                  <input type="text"size="2" name="H'+j+'" id="H'+j+'_'+i+'"/>\
+                  <input type="button" value="生成" size="2" class="pn" onclick="GenerateImages($(\'#pic[news:id]_'+j+'_1\').val(),\'pic[news:id]_'+j+'_'+i+'\',$(\'#W'+j+'_'+i+'\').val(),$(\'#H'+j+'_'+i+'\').val(),\'news/\');" />\
+                  <input type="text" size="30" class="tip" name="pic'+j+'" id="pic[news:id]_'+j+'_'+i+'">\
+                  <img onclick="$(\'#smallpic'+j+'small'+i+'\').remove();" src="/<.Path/>admin/img/btn_dec.gif" class="pointer" alt="删除第'+j+'组的'+i+'个图片" align="absmiddle"/>(第'+j+'组的'+i+'个图片)\
+                </div>'
+  }
+  function addsmallend(j,i){
+    $("#addsmallSkin"+j+"-"+i).before(addsmall(j,i+1)+addsmallSkin(j,i+1));	
+    $("#addsmallSkin"+j+"-"+i).remove()
+  }
+  </script>
+<input type="hidden" id="pre_commend" value="[news:commend]">
+<input type="hidden" id="pre_id" value="[news:id]">
+<table class="tb">
+<tr class="thead"><th colspan="2">修改新闻(<font color='red'>＊</font>为必填,其它选填)</th></tr>
+	<tr>
+	  <td align="right" height="22">标 题：</td>
+		<td>
+        <input type="text" size="50" id="pre_name" autocomplete="off" value="[news:name]"/>
+        <input type="text" size="50" id="pre_enname" value="[news:enname]" style="display:none" onChange="this.value=this.value.replace(/[^\w]+/ig,'')">&nbsp;<font color='red'>＊</font>颜色：
+		<select id="pre_color" >
+		<option value="" <if "[news:color]"=="" }selected="selected"{/if}>无色</option> 
+		<option style="background-color:#FF0000;color: #FF0000" value="#FF0000"<if "[news:color]"=="FF0000" }selected="selected"{/if}>红色</option> 
+		<option style="background-color:#FF33CC;color: #FF33CC" value="#FF33CC"<if "[news:color]"=="FF33CC" }selected="selected"{/if}>粉红</option>  
+		<option style="background-color:#00FF00;color: #00FF00" value="#00FF00"<if "[news:color]"=="00FF00" }selected="selected"{/if}>绿色</option>
+		<option style="background-color:#0000CC;color: #0000CC" value="#0000CC"<if "[news:color]"=="0000CC" }selected="selected"{/if}>深蓝</option>
+		<option style="background-color:#FFFF00;color: #FFFF00" value="#FFFF00"<if "[news:color]"=="FFFF00" }selected="selected"{/if}>黄色</option>
+		<option style="background-color:#660099;color: #660099" value="#660099"<if "[news:color]"=="660099" }selected="selected"{/if}>紫色</option>
+		</select>
+        类 型：<select id="pre_type">
+        <option value="">请选择数据分类</option>
+<r:type  where=" where @.from='news' and @.upid='0' order by @.sort asc" size=200>
+<option value='<:id/>'{if <:id/>==[news:type]} selected="selected"{/if}><:name/></option>
+  <r:type  where=" where @.from='news' and @.upid='<:id/>' order by @.sort asc" size=200>
+  <option value='<:id/>'{if <:id/>==[news:type]} selected="selected"{/if}>|—<:name/></option>
+    <r:type  where=" where @.from='news' and @.upid='<:id/>' order by @.sort asc" size=200>
+    <option value='<:id/>'{if <:id/>==[news:type]} selected="selected"{/if}>|—|—<:name/></option>
+      <r:type  where=" where @.from='news' and @.upid='<:id/>' order by @.sort asc" size=200>
+      <option value='<:id/>'{if <:id/>==[news:type]} selected="selected"{/if}>|—|—|—<:name/></option>
+        <r:type  where=" where @.from='news' and @.upid='<:id/>' order by @.sort asc" size=200>
+        <option value='<:id/>'{if <:id/>==[news:type]} selected="selected"{/if}>|—|—|—|—<:name/></option>
+        </r:type>
+      </r:type>
+    </r:type>
+  </r:type>
+</r:type>
+        </select>
+        &nbsp;&nbsp;<font color='red'>＊</font>&nbsp;
+        <input type="checkbox" name="isuppingyin" value="1" class="checkbox" onClick="if(this.checked){view('pre_enname');hide('pre_name')}else{view('pre_name');hide('pre_enname')}" id="isuppingyin-1"/><label for="isuppingyin-1">更改拼音</label>
+        </td>
+	</tr>
+	<tr> 
+		<td height="22" align="right">图片地址：</td>
+		<td id="addnewspic"></td>
+   </tr>
+	<tr>
+	 <td align="right" height="22">点击率:</td>
+	 <td>
+     <input type="text" size="10" id="pre_hit" maxlength="9" value="[news:hit]">
+	 &nbsp;来源：<input type="text" size="10" id="pre_from" value="[news:from]">
+	 &nbsp;日期/时间:<input size="30" id="pre_addtime"  type="text" value="[news:addtime]">
+	 &nbsp;星级：<span id="star0" style="width:250px;display:inline-block"><script>//starView([news:commend],0)</script></span>
+	 </td>
+	</tr>
+	<tr>
+		<td align="right" height="22">关键词:</td>
+	  <td><input type="text" id="keyword" size="30" value="[news:keyword]">&nbsp;
+	  作者:<input type="text" size="30" id="pre_author" value="[news:author]">
+      &nbsp;属性：<input type="checkbox" class="checkbox" name="pre_note" value="7" id="pre_note-7"<if "[news:note]"=="64"}checked="checked"{/if}>
+	  <label for="pre_note-7">[荐]&nbsp;</label>	  
+	  <input type="checkbox" name="pre_note" class="checkbox" value="8" id="pre_note-8"<if "[news:note]"=="128"}checked="checked"{/if}>
+	  <label for="pre_note-8">[图]&nbsp;</label>
+	  <input type="checkbox" class="checkbox" name="pre_note" value="6" id="pre_note-6"<if "[news:note]"=="32"}checked="checked"{/if}>
+	  <label for="pre_note-6">[视]&nbsp;</label>
+	  </td>
+	</tr>
+	<tr>
+	  <td align="right" height="22">来源网址：</td>
+	  <td><input type="text" size="104" id="pre_fromUrl" value="[news:fromurl]"></td>
+	</tr>
+	<tr>
+		<td align="right" height="22">简&nbsp;&nbsp;述：</td>
+		<td><textarea id="pre_outline" rows="3" cols="103">[news:outline]</textarea></td>
+	</tr>
+	<tr>
+		<td align="right" height="22">内&nbsp;&nbsp;容：</td>
+		<td>
+		<input type="hidden" id="pre_content" name="pre_content" value="[news:des code=en]" style="display:none" />
+		<input type="hidden" id="pre_content___Config" value="" style="display:none" />
+		<iframe id="pre_content___Frame" src="/<.Config(admin)/>/fckeditor/editor/fckeditor.html?InstanceName=pre_content&amp;Toolbar=maxcmsar" width="640" height="250" frameborder="0" scrolling="no"></iframe>
+  		</td>
+	</tr>
+	<tr>
+	<td></td>
+    <td class="forumRow">
+	<input type="button" id="checkSubmitEdit" class="pn" value="确认保存">
+    <input type="button" id="checkSubmitAdd" class="pn" value="确认添加">
+    <input type="button" class="pn" value="返　回" onClick="javascript:history.go(-1);">
+    </td>
+  </tr>
+</table>
+</form>
+</r:news>
+<link rel="stylesheet" href="/<.Path/>admin/css/datepicker.css" type="text/css" />
+<script type="text/javascript" src="/<.Path/>admin/js/datepicker.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#pre_addtime').DatePicker({
+		format:'Y/m/d',
+		date: $('#pre_addtime').val(),
+		current: $('#pre_addtime').val(),
+		starts: 1,
+		onBeforeShow:function(){$('#pre_addtime').DatePickerSetDate($('#pre_addtime').val(), true);},
+		onChange:function(formated, dates){$('#pre_addtime').val(formated);}
+	});
+	$("#checkSubmitEdit").click(function(){
+		$.post("/<.Config(admin)/>/ajax/admin_content.aspx/NewsSave/edit.html",getjson(GetFromDate()),function(result){alert(result);location.reload();/>);
+   }); 
+  $("#checkSubmitAdd").click(function(){
+		$.post("/<.Config(admin)/>/ajax/admin_content.aspx/NewsSave/add.html",getjson(GetFromDate()),function(result){alert(result);location.reload();/>);
+   }); 
+})
+function GetFromDate()
+{
+	let str,val,pre_content
+	str="{"
+	let arr1 = ["pre_commend","pre_id","pre_name","pre_enname","pre_color","pre_type","pre_hit","pre_from","pre_addtime","keyword","pre_author","pre_fromUrl","pre_outline"]; 
+	for(let i=0;i<arr1.length;i++)
+	{ 
+	  val=arr1[i]
+	  str=str + "\""+val+"\":\"" + $("#"+val).val() +"\","
+	}
+	let oEditor = FCKeditorAPI.GetInstance("pre_content");
+	pre_content=escape(oEditor.GetXHTML(true))
+	let picstr,smallpicArr,pic;
+	let test = $("input[name^='picid']");
+	let bgcolor = $("input[name^='bgcolor']");
+    let arr = new Array();pic=""
+    for(let i=0;i<test.length;i++){
+		smallpicArr = $("input[name^='pic"+test[i].value+"']");
+		WArr = $("input[name^='W"+test[i].value+"']");
+        HArr = $("input[name^='H"+test[i].value+"']");
+		picstr = "";
+		for(let j=0;j<smallpicArr.length;j++)
+		{
+            picstr = picstr + smallpicArr[j].value + "<1/>" +bgcolor[i].value + "<1/>" + WArr[j].value + "<1/>" + HArr[j].value + "[rendie:2]"
+		}
+		 pic = pic + picstr + "[rendie:3]"
+       }
+	str=str+ "pic:\""+pic+"\",pre_content:\""+pre_content+"\"}"
+	return str
+  }
+</script>
+

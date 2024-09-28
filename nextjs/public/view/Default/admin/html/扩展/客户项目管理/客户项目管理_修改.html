@@ -1,0 +1,529 @@
+
+<style type="text/css">
+input{height:12px;}
+.txt{width:250px;}
+.tb2 td{padding:2px 5px 2px 5px;height:25px}
+.tb2 .thc{text-align:center;line-height:30px; background-color: #F5F7F8;font-size:18px;font-weight:bold;color:#000}
+.tb2 .thr{text-align:center;height:20px}
+.label{padding:0;width:150px;text-align:right;border-right:1px solid #DEEFFA;}
+.btn{height:22px}
+.red{color:red}
+.blue{color:blue}
+.gray{color:gray}
+</style>
+<script type="text/javascript">
+function show()
+{
+  let arg=arguments;
+  for(let i=0;i<arg.length;i++)
+  {
+	S(arg[i]).style.display="";
+  }
+}
+
+function hide()
+{
+  let arg=arguments;
+  for(let i=0;i<arg.length;i++)
+  {
+	S(arg[i]).style.display="none";
+  }
+}
+</script>
+  <load admin/html/头部.html/>
+<table class="tb">
+  <tbody>
+    <tr>
+      <td>
+      1.通过本向导将传统的采集规则转换成采集规则文件
+      1.修改采集规则文件：<span class="red">{Fun(unarr(3))}</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="tb2">
+    <tr>
+      <th colspan="2" height="20"><span id="showurl"></span></th>
+    </tr>
+  <thead>
+    <tr id="htmltable" style="display:none">
+      <th colspan="2">
+      <textarea id="htmlcode" style="width:900px;height:200px;font-family:Fixedsys" wrap="off" readonly></textarea>
+      </th>
+    </tr>
+    <tr>
+      <th colspan="2" class="thc">使用采集规则向导生成采集规则文件</th>
+    </tr>
+    <tr>
+      <th colspan="2" class="thr">
+        <font id="stephit1" color="red">１. 设置基本参数</font>&nbsp;&nbsp;
+        <font id="stephit2">２. 采集列表连接设置</font>&nbsp;&nbsp;
+        <font id="stephit3">３. 采集内容与数据地址设置</font>&nbsp;&nbsp;
+        <font id="stephit4">４. 预览结果</font>&nbsp;&nbsp;
+        <font id="stephit5">５. 完成向导并真实演示</font>
+      </th>
+    </tr>
+  </thead>
+</table>
+<form name="wizardform" id="wizardform" method="post" action="ajax/admin_gathersoft.aspx?CollectClientWizard2Save/..*<.arr(3)/>.html" enctype="application/x-www-form-urlencoded">
+<table class="tb2" id="step1">
+  <tbody>
+  <tr>
+    <td class="label">站点名称：</td>
+    <td><input type="text" class="txt" name="itemname" value="{Fun(gES("itemname"))}" /></td>
+  </tr>
+  <tr>
+      <td class="label">入库方式：</td>
+      <td>
+      <input type="radio" class="radio" name="into" value="0" {if {Fun(Fun.Str2Num(gES("into")))}==0}checked="checked"{/if}/>
+      <span class="red">临时库</span>
+      <input type="radio" class="radio" name="into" value="1" {if {Fun(Fun.Str2Num(gES("into")))}==1}checked="checked"{/if}/>直接入库(不建议使用，会损成数据库很大 或 损坏)</td>
+  </tr>
+  <tr>
+    <td class="label">只采集最近：</td>
+    <td>
+    <select name="getherday" onChange="if(this.value=='0'){hide('Fixedbody')}else{show('Fixedbody')}">
+    <option value="0">不限</option>
+      <r: areatype=tag tag=1[,]2[,]3[,]4[,]5[,]6[,]7[,]8[,]9[,]10[,]11[,]12[,]13[,]14[,]15[,]16[,]17[,]18[,]19[,]20[,]21[,]22[,]23[,]24[,]25[,]26[,]27[,]28[,]29[,]30[,]31}
+      <option value="[area:name]" <if "[gatherURL:getherday]"=="[area:name]"}selected="selected"{/if}>[area:name]</option>
+      </r:>
+    </select> 天 * 选择天数还要填写第3步的 <span class="red">数据固定电话 开始 和 结束</span>才有效
+    </td>
+  </tr>
+		<tr>
+			<td class="label">目标站点网址：</td>
+			<td><input type="text" class="txt" name="siteurl" value="{Fun(gES("siteurl"))}" /></td>
+		</tr>
+		<tr>
+			<td class="label">网页编码：</td>
+			<td><input type="text" name="charset" value="{Fun(gES("charset"))}" style="width: 85px" />&nbsp;&nbsp;<font color="#0000FF">请选择编码→</font><select onChange="this.form.charset.value=this.value"><option value="">请选择编码</option><option value="GB2312">GB2312</option><option value="GBK">GBK</option><option value="BIG5">BIG5</option><option value="UTF-8">UTF-8</option></select></td>
+		</tr>
+		<tr>
+			<td class="label">预设文章来源：</td>
+			<td><input type="text" name="playfrom" class="txt" value="<if "{Fun(gES("playfrom"))}"=="">sitename<else/>{Fun(gES("playfrom"))}{/if}" maxlength="255"/></td>
+		</tr>
+		<tr>
+			<td class="label">分页设置：</td>
+			<td>
+			<input type="radio" class="radio" name="pageset" value="0" onClick="hide('page_0','page_1','page_2','page_3','page_4');show('page_0');"{if {Fun(gES("pageset"))}==0}checked="checked"{/if}/>不分页
+			<input type="radio" class="radio" name="pageset" value="1" onClick="hide('page_0','page_1','page_2','page_3','page_4');show('page_1','page_3');"{if {Fun(gES("pageset"))}==1}checked="checked"{/if}/>批量分页
+			<input type="radio" class="radio" name="pageset" value="2" onClick="hide('page_0','page_1','page_2','page_3','page_4');show('page_2');"{if {Fun(gES("pageset"))}==2}checked="checked"{/if}/>手动分页
+			<input type="radio" class="radio" name="pageset" value="3" onClick="hide('page_0','page_1','page_2','page_3','page_4');show('page_1','page_3');"{if {Fun(gES("pageset"))}==3}checked="checked"{/if}/>直接采集内容页
+			<input type="radio" class="radio" name="pageset" value="4" onClick="hide('page_0','page_1','page_2','page_3','page_4');show('page_4','page_1','page_3');" {if {Fun(gES("pageset"))}==4}checked="checked"{/if}/>提交分页
+			</td>
+		</tr>
+		<tr id="page_0" {if {Fun(gES("pageset"))}!=0}style="display:none"{/if}>
+			<td class="label">采集网址：</td>
+			<td><input type="text" class="txt" name="pageurl0" value="{Fun(gES("pageurl0"))}" /></td>
+		</tr>
+		</tbody>
+		<tbody id="page_1" {if {Fun(gES("pageset"))}==1 || {Fun(gES("pageset"))}==3 || {Fun(gES("pageset"))}==4}<else/>style="display:none"{/if}>
+		<tr id="page_3">
+			<td class="label">批量生成采集网址：</td>
+			<td><input type="text" class="txt" name="pageurl1" value="{Fun(gES("pageurl1"))}" />&nbsp;ID变量<font color="red">{$ID}</font></td>
+		</tr>
+		<tr id="page_4" {if {Fun(gES("pageset"))}!=4}style="display:none"{/if}>
+			<td class="label">提交表单代码：</td>
+			<td><textarea name="pageurl3" rows="6" cols="80">{Fun(HTMLEncode(gESCrlf("pageurl3")))}</textarea>&nbsp;ID变量<font color="red">{$ID}</font></td>
+		</tr>
+		<tr>
+			<td class="label">起始ID：</td>
+			<td>标准格式：Http://www.rendie.com/list/list_{$ID}.html<br />
+            开始：<input type="text" name="istart" value="{if {Fun(Fun.Str2Num(gES("istart")))}<1}<else/>{Fun(Fun.Str2Num(gES("istart")))}{/if}" style="width: 60px"/> - 
+            结束：<input type="text" name="iend" value="{if {Fun(Fun.Str2Num(gES("iend")))}<1}<else/>{Fun(Fun.Str2Num(gES("iend")))}{/if}" style="width: 60px" />&nbsp;            步长：<input type="text" name="step" value="{if {Fun(Fun.Str2Num(gES("iend")))}<1}<else/>{Fun(Fun.Str2Num(gES("step")))}{/if}" style="width:60px;text-align:center;" />&nbsp;
+例如：1 - 10 或者 10 - 1</td>
+		</tr>
+		</tbody>
+		<tbody id="page_2" style="{if {Fun(gES("pageset"))}==2}<else/>display:none{/if}">
+		<tr>
+			<td class="label">手动分页：</td>
+			<td><textarea name="pageurl2" rows="6" cols="80">{Fun(HTMLEncode(gESCrlf("pageurl2")))}</textarea></td>
+		</tr>
+		</tbody>
+		<tbody>
+		<tr>
+			<td class="label">采集方式：</td>
+			<td><input type="checkbox" class="checkbox" name="reverse" value="1"<if "{Fun(gES("reverse"))}"=="True"}checked="checked"{/if}/>倒序采集</td>
+		</tr>
+		<tr>
+			<td class="label">内容过滤设置：</td>
+			<td>
+			<r: areatype=tag tag=IFRAME[,]OBJECT[,]BUTTON[,]CLASS[,]HTML[,]SPAN[,]DIV[,]P[,]SCRIPT[,]APPLET[,]STRONG[,]STYLE[,]TABLE[,]FONT[,]IMG[,]A}	
+            
+            <input type="checkbox" class="checkbox" name="removecode" value="[area:name]" <if "{Fun("|"&trimAll(gES("removecode"))&"|")}".indexOf("|[area:name]|")!=-1}checked="checked"{/if}/>[area:name]
+            
+            {if [area:i]==8}<br/></if>
+            </r:>
+			</td>
+		</tr>
+		</tbody>
+	</tbody>
+</table>
+<table class="tb2" id="step2" style="display:none">
+	<tbody>
+		<tr>
+          <td class="label">列表开始：</td>
+          <td><textarea name="listA" rows="6" cols="80">{Fun(HTMLEncode(gESCrlf("listA")))}</textarea></td>
+		</tr>
+		<tr>
+          <td class="label">列表结束：</td>
+          <td><textarea name="listB" rows="6" cols="80">{Fun(HTMLEncode(gESCrlf("listB")))}</textarea></td>
+		</tr>
+		<tbody>
+		<tr>
+			<td class="label">链接开始：</td>
+			<td><textarea name="mlinkA" rows="6" cols="80">{Fun(HTMLEncode(gESCrlf("mlinkA")))}</textarea></td>
+		</tr>
+		<tr>
+			<td class="label">链接结束：</td>
+			<td><textarea name="mlinkB" rows="6" cols="80">{Fun(HTMLEncode(gESCrlf("mlinkB")))}</textarea></td>
+		</tr>
+		<tr>
+			<td class="label red">特殊链接处理：</td>
+			<td><input type="radio" class="radio" name="isspecialmlink" value="0" onClick="hide('specialmlinkbody');"<if "{Fun(gES("isspecialmlink"))}"!="True"}checked="checked"{/if}/>不作设置<input type="radio" class="radio" name="isspecialmlink" value="1" onClick="show('specialmlinkbody')"<if "{Fun(gES("isspecialmlink"))}"=="True"}checked="checked"{/if}/>替换地址<br>对于使用了JavaScript跳转形式的连接请使用此功能</td>
+		</tr>
+	</tbody>
+	<tbody id="specialmlinkbody" <if "{Fun(gES("isspecialmlink"))}"!="True"}style="display:none"{/if}>
+		<tr>
+			<td class="label">要替换的地址：</td>
+			<td><p class="red">要替换的连接:/channel/[变量]/[变量].html</p><textarea name="mlinkRF" rows="4" cols="80">{Fun(HTMLEncode(gESCrlf("mlinkRF")))}</textarea></td>
+		</tr>
+		<tr>
+			<td class="label">替换为的地址：</td>
+			<td><p class="red">实际连接:/list/?$1-$2.html ($1至$99对应[变量]的出现位置)<br>/list/?[变量]-[变量].html中的[变量]等同$1</p><textarea name="mlinkRR" rows="4" cols="80">{Fun(HTMLEncode(gESCrlf("mlinkRR")))}</textarea></td>
+		</tr>
+	</tbody>
+</table>
+<table class="tb2" id="step3" style="display:none">
+	<tbody>
+		<tr>
+			<td class="label">可选采集字段</td>
+			<td>
+				<input type="checkbox" class="checkbox" name="fields" id="contact" value="contact" onClick="if(this.checked){show('contactbody')}else{hide('contactbody')}"<if "{Fun(gES("contactA")&gES("contactB")<>"")}"=="True"}checked="checked"{/if}/><label for="contact">联系人</label>
+				<input type="checkbox" class="checkbox" name="fields" id="Email" value="Email" onClick="if(this.checked){show('Emailbody')}else{hide('notebody')}"<if "{Fun(gES("EmailA")&gES("EmailB")<>"")}"=="True"} checked="checked"{/if}/><label for="Email">电子邮箱</label>
+				<input type="checkbox" class="checkbox" name="fields" id="CompanyWeb" value="CompanyWeb" onClick="if(this.checked){show('CompanyWebbody')}else{hide('CompanyWebbody')}"<if "{Fun(gES("CompanyWebA")&gES("CompanyWebB")<>"")}"=="True"} checked="checked"{/if}/><label for="CompanyWeb">公司网址</label>
+				<input type="checkbox" class="checkbox" name="fields" id="mobile" value="mobile" onClick="if(this.checked){show('mobilebody')}else{hide('mobilebody')}"<if "{Fun(gES("mobileA")&gES("mobileB")<>"")}"=="True"} checked="checked"{/if}/><label for="mobile">移动电话</label>
+				<input type="checkbox" class="checkbox" name="fields" id="Fixed" value="Fixed" onClick="if(this.checked){show('Fixedbody')}else{hide('Fixedbody')}"<if "{Fun(gES("FixedA")&gES("FixedB")<>"")}"=="True"} checked="checked"{/if}/><label for="Fixed">固定电话</label>
+			</td>
+		</tr>
+	</tbody>
+	<tbody id="contactbody" <if "{Fun(gES("contactA")&gES("contactB")<>"")}"!="True"}style="display:none"{/if}>
+		<tr>
+			<td class="label">联系人开始：</td>
+			<td><textarea name="contactA" rows="4" cols="80">{Fun(HTMLEncode(gESCrlf("contactA")))}</textarea></td>
+		</tr>
+		<tr>
+			<td class="label">联系人结束：</td>
+			<td><textarea name="contactB" rows="4" cols="80">{Fun(HTMLEncode(gESCrlf("contactB")))}</textarea></td>
+		</tr>
+	</tbody>
+	<tbody id="Emailbody" <if "{Fun(gES("EmailA")&gES("EmailB")<>"")}"!="True"}style="display:none"{/if}>
+    <tr>
+      <td class="label">电子邮箱开始：</td>
+      <td><textarea name="EmailA" rows="4" cols="80">{Fun(HTMLEncode(gESCrlf("EmailA")))}</textarea></td>
+    </tr>
+    <tr>
+      <td class="label">电子邮箱结束：</td>
+      <td><textarea name="EmailB" rows="4" cols="80">{Fun(HTMLEncode(gESCrlf("EmailB")))}</textarea></td>
+    </tr>
+	</tbody>
+	<tbody id="CompanyWebbody" <if "{Fun(gES("CompanyWebA")&gES("CompanyWebB")<>"")}"!="True"}style="display:none"{/if}>
+    <tr>
+      <td class="label">公司网址开始：</td>
+      <td><textarea name="CompanyWebA" rows="4" cols="80">{Fun(HTMLEncode(gESCrlf("CompanyWebA")))}</textarea></td>
+    </tr>
+    <tr>
+      <td class="label">公司网址结束：</td>
+      <td><textarea name="CompanyWebB" rows="4" cols="80">{Fun(HTMLEncode(gESCrlf("CompanyWebB")))}</textarea></td>
+    </tr>
+	</tbody>
+	<tbody id="Fixedbody" <if "{Fun(gES("FixedA")&gES("FixedB")<>"")}"!="True"}style="display:none"{/if}>
+    <tr>
+      <td class="label">固定电话开始：</td>
+      <td><textarea name="FixedA" rows="4" cols="80">{Fun(HTMLEncode(gESCrlf("FixedA")))}</textarea></td>
+    </tr>
+    <tr>
+      <td class="label">固定电话结束：</td>
+      <td><textarea name="FixedB" rows="4" cols="80">{Fun(HTMLEncode(gESCrlf("FixedB")))}</textarea></td>
+    </tr>
+	</tbody>
+	<tbody id="mobilebody" <if "{Fun(gES("mobileA")&gES("mobileB")<>"")}"!="True"}style="display:none"{/if}>
+    <tr>
+      <td class="label">移动电话开始：</td>
+      <td><textarea name="mobileA" rows="4" cols="80">{Fun(HTMLEncode(gESCrlf("mobileA")))}</textarea></td>
+    </tr>
+    <tr>
+      <td class="label">移动电话结束：</td>
+      <td><textarea name="mobileB" rows="4" cols="80">{Fun(HTMLEncode(gESCrlf("mobileB")))}</textarea></td>
+    </tr>
+	</tbody>
+</table>
+<div id="step4" style="display:none"></div>
+<div id="step5" style="display:none"></div>
+<table class="tb2">
+  <tbody>
+    <tr>
+      <td class="label"></td>
+      <td>
+        <input type="submit" class="pn" value="快速保存"/>
+        <input type="button" class="pn" name="back" value="返回上一步" onClick="prestep()" />
+        <input type="button" class="pn" id="next" value="下一步" onClick="nextstep()"/>
+        <input type="checkbox" class="checkbox" name="showcode" id="showcode" value="1"/>
+        下一步显示源码
+      </td>
+    </tr>
+  </tbody>
+</table>
+</form>
+<script type="text/javascript">
+function setHtmlCode(str){
+  S('htmlcode').value=(""+str).replace(/([^\r])\n([^\r])/ig,"$1\\n$2");
+}
+function trim(s){
+	return (""+s).replace(/(^\s*)|(\s*$)/g,"");
+}
+function trimall(s){
+	return (""+s).replace(/(\s*)/g,"");
+}
+function addcslashes(str){
+	return (""+str).replace(/\\n/g,"\n").replace(/\\r/g,"\r").replace(/([\(\)\[\]\""\'\.\?\+\*\/\\\^\$])/ig,"\\$1").replace(/\n/g,"\\n").replace(/\r/g,"\\r");
+}
+function StrSlice(Str,sStr,eStr){
+	if(eStr=='') return false;
+	let tStr=Str.toLowerCase(),iPos=tStr.indexOf(sStr.toLowerCase()),sLen=sStr.length;
+	if(iPos==-1) return false;
+	iPos=sLen>0 ? iPos+sLen : 0;
+	return Str.substr(iPos,tStr.slice(iPos).indexOf(eStr.toLowerCase()));
+}
+function StrSliceB(Str,sStr,eStr){
+	if(sStr+eStr=="") return Str;
+	let tStr=Str.toLowerCase(),iPos=tStr.indexOf(sStr.toLowerCase()),sLen=sStr.length;
+	if(iPos==-1) return false;
+	iPos=sLen>0 ? iPos+sLen : 0;
+	if(eStr==""){
+		return Str.slice(iPos);
+	}else{
+		return Str.substr(iPos,tStr.slice(iPos).lastIndexOf(eStr.toLowerCase()));
+	}
+}
+function ReCrlf(Str){
+	return Str.replace(/\\t/g,'\u0009').replace(/\\n/g,'\u000a').replace(/\\r/g,'\u000d');
+}
+//分割文件段
+function StrSplits(Str,sStr,eStr){
+	if(eStr=="" || Str=="") return [];
+	let ret=[],tStr=Str.toLowerCase(),str=Str;
+	sStr=sStr.toLowerCase(),eStr=eStr.toLowerCase();
+	let sLen=sStr.length,eLen=eStr.length,iPos,ePos;
+	while(true){
+		iPos=tStr.indexOf(sStr);
+		if(iPos==-1) break;
+		iPos=sLen>0 ? iPos+sLen : 0,tStr=tStr.slice(iPos),ePos=tStr.indexOf(eStr);
+		if(ePos==-1) break;
+		ret[ret.length]=str.substr(iPos,ePos),tStr=tStr.slice(ePos+eLen),str=str.slice(iPos+ePos+eLen)
+	}
+	return ret;
+}
+function paseAbsURI(aLink,currUrl){
+	let b,t,H,i,j,k,siteUrl,rg=/^\s*[\/\\]/i,ab=/^http:\/\//i,qt=/\\([\\\/])/ig;
+	currUrl=trim(currUrl).replace(qt,"/"),siteUrl=currUrl.replace(/(https?\:\/\/)((\w+)(\.\w+)*(:\d+)?)\/.*/i,"$1$2"),currUrl=currUrl.replace(siteUrl,"")
+	for(let i=0;i<aLink.length;i++){
+		H=""+aLink[i];
+		if(ab.test(H)){
+		}else if(rg.test(H)){
+			aLink[i]=siteUrl+H
+		}else{
+			j=H.split("../").length,t=currUrl.split("/"),k=t.length
+			t.length=j<k ? k-j : 0
+			aLink[i]=siteUrl+t.join("/")+"/"+H.replace(/([\.]{2}\/)/g,"")
+		}
+	}
+	return aLink;
+}
+function speciallink(sLink,fLink,rLink){
+	let a=fLink.split('[变量]');
+	rLink=rLink.split('[变量]').join("$1");
+	for(let i=0;i<a.length;i++){
+		a[i]=addcslashes(a[i]);
+	};
+	let rg=new RegExp(a.join("([\\w\\W]+)"),"ig");
+	return a.length>1 ? sLink.replace(rg,rLink) : sLink;
+}
+function removeHTMLCode(Str,cHas){
+	if(cHas=="" || Str===false) return Str;
+	cHas=cHas.toUpperCase().split("|"),Str=""+Str;
+	for(let i=0;i<cHas.length;i++){
+		switch(cHas[i]){
+			case "TABLE":Str=Str.replace(/<\/?(table|thead|tbody|tr|th|td).*>/ig,"");
+			break;
+			case "OBJECT":Str=Str.replace(/<\/?(object|param|embed).*>/ig,"");
+			break;
+			case "SCRIPT":Str=Str.replace(new RegExp("<scr"+"ipt.*>[\\w\\W]+?<\\/scr"+"ipt>","ig"),"").replace(new RegExp("\\son[\\w]+=[\\'\\\"].+?[\\'\\\"](\\s|>)(\\s|\\>)","ig"),"$1");
+			break;
+			case "STYLE":
+				Str=Str.replace(/<style.*>[\w\W]+?<\/style>/ig,"");
+				Str=Str.replace(/\sstyle=.+(\s|\>)/ig,"$1");
+			break;
+			case "CLASS":
+				Str=Str.replace(/\sclass=.+(\s|\>)/ig,"$1");
+			break;
+			default:
+				Str=removeHTMLCode(removeHTMLCode(Str,"SCRIPT"),"STYLE").replace(new RegExp("<.*?>","ig"),"");
+			break;
+		}
+	}
+	return Str
+}
+let f=S('wizardform'),hurl={1:"",2:"",3:"",4:""},url,cache={},step=[],stephit=[],istep=1;
+for(let i=1;i<6;i++){
+	step.push(S("step"+i));
+	stephit.push(S("stephit"+i));
+}
+function clearvalue(){
+	let arg=arguments;
+	for(let i=0;i<arg.length;i++){
+		try{f.elements[arg[i]].value='';}catch(ignore){}
+	}
+};
+function showBody(n){
+  n--;
+  for(let i=0;i<step.length;i++){
+	step[i].style.display= n!=i ? "none" : "";
+	stephit[i].color= n==i ? "red" : "";
+  };
+}
+function prestep(){
+	if(istep>1){
+		showurl(url=hurl[--istep]);
+		showBody(istep);
+		if(url!="") request(url,function (Q){setHtmlCode(Q.responseText)});
+	}else{
+		if(confirm("确实要离开该页面吗？\n\n这将会导致规则页面上未保存的数据丢失，确定？\n\n按\"确定\"继续，或按\"取消\"留在当前页面。")){
+			history.go(-1);
+		}
+	}
+}
+function request(url,fun){
+	S("next").style.display="none";
+	url="ajax/admin_ajax.aspx?action=proxy&result=true&charset="+f.elements['charset'].value+"&url="+escape(url);
+	if(cache[url]==undefined || cache[url]!=''){
+		ajax.get(url,function (Q){
+			S("next").style.display="";
+			let txt=Q.responseText;
+			if(txt!="err" && txt!="ok") cache[url]=txt;
+			fun(Q);
+		});
+	}else{
+		fun({responseText:cache[url]})
+	}
+}
+function _nextstep(Q){
+	let txt=Q.responseText;
+	if(txt!="err"){
+		showBody(++istep);
+		S('htmltable').style.display=S('showcode').checked ? '' : 'none'
+		if(txt!="OK") setHtmlCode(txt);
+	}else{
+		alert("err")
+	}
+}
+function showurl(s){
+	S('showurl').innerHTML="&nbsp;&nbsp;当前采集地址：<font color=red>"+s+"</font>";
+}
+let hPic="",rg=/\[\u53d8\u91cf\]/g;
+function nextstep(){
+  let es=f.elements,showcode=es['showcode'].checked;
+  if(trim(es["charset"].value)==""){alert("请选择网页编码");return;}
+  if(istep==1)
+  {
+	  for(let i=0,ps;i<es['pageset'].length;i++){
+		  if(es['pageset'][i].checked){
+			  ps=i;
+			  break;
+		  }
+	  };
+	  if(ps==0){
+		  url = es['pageurl0'].value
+	  }else if(ps==1 || ps==3){
+		  let _s=parseInt(es['istart'].value),_e=parseInt(es['iend'].value);
+		  if(_s>_e){
+			  es['istart'].value=_e,es['iend'].value=_s,es['reverse'].checked=true;
+		  }
+		  url = es['pageurl1'].value.replace("{$ID}",trim(es['istart'].value));
+	  }else if(ps==2){
+		  url = trim(es['pageurl2'].value).split("\r\n")[0]
+	  }else{
+		  alert("请选择分类设置")
+	  };
+	  if(trim(url) == ""){
+		  alert("请输入采集列表网址");
+		  return;
+	  };
+	  showurl(hurl[2]=url);
+	  request(url,function (Q){
+			  if(ps==3) istep=2;
+			  _nextstep(Q);
+	  });
+  }
+  else if(istep == 2)
+  {
+	  request(url,function(Q){
+		  let txt=Q.responseText,ls=StrSliceB(txt,ReCrlf(es["listA"].value),ReCrlf(es["listB"].value));
+		  if(ls===false){if(!confirm("截取 列表开始~数据列表结束 失败\n\n点[确定]忽略这错误提示，[取消]返回修改")){return;}}
+		  let mlink=StrSlice(ls,ReCrlf(es["mlinkA"].value),ReCrlf(es["mlinkB"].value));
+		  if(mlink===false){if(!confirm("截取 链接开始~数据链接结束 失败\n\n点[确定]忽略这错误提示，[取消]返回修改")){return;}}
+		  if(es['isspecialmlink'][1].checked) mlink=speciallink(mlink,es["mlinkRF"].value,es["mlinkRR"].value);
+		  mlink=paseAbsURI([mlink],url);
+		  setHtmlCode(mlink);
+		  showurl(hurl[3]=url=mlink);
+		  request(url,function (W){
+			  _nextstep(W);
+		  });
+	  });
+  }
+  else if(istep == 3)
+  {
+	  request(url,function (Q){
+		  let t,sa,sb,ttxt,txt=Q.responseText,val={},has={'contact': "联系人",'Email': '电子邮箱','Fixed': '固定电话','CompanyWeb': '公司网址','mobile':'移动电话'};
+		  ttxt = txt;
+		  for(let k in has){
+			  try{
+				  t=document.getElementById(k);
+				  if(t.checked){
+					  sa=ReCrlf(es[k+"A"].value),sb=ReCrlf(es[k+"B"].value);
+					  val[k] = sa+sb!='' ? removeHTMLCode(StrSlice(ttxt,sa,sb),"*") : '-';
+				  }
+			  }catch(ignore){}
+		  };
+		  let ch=function (R){
+		    let txt=R.responseText;
+			  for(let k in has){
+				  if(val[k]===false){
+					  if(!confirm("截取 "+has[k]+"开始 ~ "+has[k]+"结束 失败\n\n点[确定]忽略这错误提示，[取消]返回修改")){
+						  return;
+					  }
+				  };
+			  };
+			  let dc=S('step4');
+			  let s="\
+			  来源地址："+trim(url)+"\r\n\
+			  联 系 人："+trimall(val['contact'] || '')+"\r\n\
+			  固定电话："+trim(val['Fixed'] || '')+"\r\n\
+			  电子邮箱："+trim(val['Email'] || '')+"\r\n\
+			  移动电话："+trim(val['mobile'] || '')+"\r\n\
+			  公司网址："+trim(val['CompanyWeb'] || '')+"\r\n\
+			  ";
+			  dc.innerHTML="<pre>"+s.replace(/\</g,"&lt;").replace(/\>/g,"&gt;")+"</pre>";
+			  _nextstep(R);
+		  };
+		  
+		 ch({'responseText':txt});
+	  });
+  }
+  else if(istep == 4)
+  {
+	  f.submit()
+  }
+}
+</script>
+

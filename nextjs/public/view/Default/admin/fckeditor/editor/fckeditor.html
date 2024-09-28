@@ -1,0 +1,307 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<title>FCKeditor</title>
+	<meta name="robots" content="noindex, nofollow">
+<!--
+	Robots 的 META 標註是用來指示 Web Robots 的簡易機制，指示這個網頁是否要作 Index ( 全文檢索，好讓搜尋引擎可以找到這個網頁 ) ，或是這個網頁上的連結是否應該被追沿下去。
+	目前定義了幾個指令：
+	index : 指示 robot 可對本網頁作 Index 。 
+	noindex : 指示 robot 不可對本網頁作 Index 。 
+	follow : 指示 robot 可追沿本網頁上連結出去的網頁作 Index 。 
+	nofollow : 指示 robot 不可追沿本網頁上連結出去的網頁作 Index 。 
+	all : 等於 index 加上 follow。 
+	none : 等於 noindex 加上 nofollow。
+ -->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="Cache-Control" content="public">
+<!--	
+	Cache-Control 顧名思義是用來控制 Cache 行為的標註：
+	HTTP 1.1. Allowed values :
+	HTTP 1.1 的 Cache-Control 允許以下幾個值：
+	Public - may be cached in public shared caches 
+	Public - 允許網頁內容被 Cache 在共有合用的 caches 中。 
+	Private - may only be cached in private cache 
+	Private - 只允許網頁內容被 Cache 在個人私有的 caches 中。 
+	no-Cache - may not be cached 
+	no-Cache - 不允許網頁內容被 Cache。 
+	no-Store - may be cached but not archived 
+	no-Store - 允許網頁內容被 Cache，但是不能一直留存著。 
+-->
+<script type="text/javascript">//加载'fckeditorcode_ie.js'和'../fckconfig.js'
+/*
+　Instead of loading scripts and CSSs using inline tags, all scripts are loaded by code. 
+　In this way we can guarantee the correct processing order, otherwise external 
+　scripts and inline scripts could be executed in an unwanted order (IE).
+　這裡不使用靜態的 tag 來載入外部的 Javascript 程式檔 ( *.js ) 與 CSS ( *.css ) ，而
+　以 Javascript 的程式來載入，以這種方式確保其載入順序的正確性，否則若以靜態
+　的 tag 來載入，外部程式可能會以不正常的順序執行( 在 IE 裡可能會發生 )。
+*/ 
+if ( document.location.protocol == 'file:' )//false
+{//protocol	设置或返回url的协议
+	try
+	{
+		window.parent.document.domain ;
+	}
+	catch ( e )
+	{
+		window.addEventListener( 'load', function()
+			{
+				document.body.innerHTML = '\
+					<div style="border: 1px red solid; font-family: arial; font-size: 12px; color: red; padding:10px;">\
+						<p>\
+							<b>Your browser security settings don\'t allow FCKeditor to be opened from\
+							the local filesystem.<\/b>\
+						<\/p>\
+						<p>\
+							Please open the <b>about:config<\/b> page and disable the\
+							&quot;security.fileuri.strict_origin_policy&quot; option; then load this page again.\
+						<\/p>\
+						<p>\
+							Check our <a href="http://docs.fckeditor.net/FCKeditor_2.x/Developers_Guide/FAQ#ff3perms">FAQ<\/a>\
+							for more information.\
+						<\/p>\
+					<\/div>' ;
+			}, false ) ;
+	}
+}
+var FCK_ORIGINAL_DOMAIN ;
+(function()
+{
+	var d = FCK_ORIGINAL_DOMAIN = document.domain ;//="localhost"
+	//domain　　 返回当前文档的域名。 
+	while ( true )
+	{
+		try
+		{
+			var test = window.parent.document.domain ;//="localhost"
+			break ;//从这退出了
+		}
+		catch( e ) {}
+		d = d.replace( /.*?(?:\.|$)/, '' ) ;
+		if ( d.length == 0 )
+			break ;
+		try
+		{
+			document.domain = d ;
+		}
+		catch (e)
+		{
+			break ;
+		}
+	}
+})() ;
+var FCK_RUNTIME_DOMAIN = document.domain ;//="localhost"
+//domain　　 返回当前文档的域名。 
+var FCK_IS_CUSTOM_DOMAIN = ( FCK_ORIGINAL_DOMAIN != FCK_RUNTIME_DOMAIN ) ;//=false
+//FCK_ORIGINAL_DOMAIN="192.168.0.2"
+//FCK_RUNTIME_DOMAIN="192.168.0.2"
+function LoadScript( url )//载入函数文件(a)
+{
+	document.write( '<scr' + 'ipt type="text/javascript" src="' + url + '"><\/scr' + 'ipt>' ) ;
+	//url="fckeditorcode_ie.js"
+}
+var sSuffix = ( /*@cc_on!@*/false ) ? 'ie' : 'gecko' ;//="ie"
+LoadScript( 'fckeditorcode_' + sSuffix + '.js' ) ;// Main editor scripts. 載入編輯器的主程式
+//LoadScript(a)//载入函数文件(a)
+LoadScript( '../fckconfig.js' ) ;// Base configuration file. 載入架構檔
+LoadScript( 'beautify.js' ) ;// Base configuration file. 載入架構檔
+</script>
+<script type="text/javascript">//初始化
+if ( FCKBrowserInfo.IsAIR )//false
+	LoadScript( 'js/fckadobeair.js' ) ;//载入函数文件(a)
+if ( FCKBrowserInfo.IsIE )//true	//初始化对象
+{
+	try	//消除 IE 滑鼠閃爍情形
+	{
+	document.execCommand( 'BackgroundImageCache', false, true );//这样就能不缓存背景
+	//document.execCommand()用法说明
+	//document.execCommand(sCommand[,交互方式, 动态参数]) 
+	//其中：sCommand为指令参数（如下例中的"2D-Position"），交互方式参数如果是true的话将显示对话框，如果为false的话，则不显示对话框（下例中的"false"即表示不显示对话框），动态参数一般为一可用值或属性值（如下例中的"true"）。 
+	}
+	catch (e)
+	{
+	　　/*
+	　　　We have been reported about loading problems caused by the above line. For 
+　　　	safety, let's just ignore errors.
+　　　	我們已經回報過上面這行程式載入時的問題，現在我們先忽略這個問題。
+　　		*/
+	}
+	FCK.IECleanup = new FCKIECleanup( window ) ;//自定义对象.(a)对象名
+	//FCK.IECleanup=[object Object]
+		//window=[object]
+	FCK.IECleanup.AddItem( FCKTempBin, FCKTempBin.Reset ) ;//将a和b添加到Items数组中，并返回数组的新长度值
+		//FCKTempBin=[object Object]
+		//FCKTempBin.Reset="function(){var i=0;while (i<this.Elements.length) this.Elements[i++]=null;this.Elements.length=0;}"
+	FCK.IECleanup.AddItem( FCK, FCK_Cleanup ) ;//将a和b添加到Items数组中，并返回数组的新长度值
+		//FCK=[object Object]
+		//FCK_Cleanup="function FCK_Cleanup(){this.LinkedField=null;this.EditorWindow=null;this.EditorDocument=null;}"
+/*
+FCKTempBin 是用於儲存編輯器原始檔中的一些需要特別保護的 tag ，FCKTempBin.Reset 則是把儲存的內容全部清除的 method ；
+FCK_Cleanup 則是用來把 FCKeditor 在編輯區 ( xEditingArea ) 中所 create 的 iframe 清除掉的 Cleanup Routine 。
+*/
+}
+/*
+　The config hidden field is processed immediately, because 
+　CustomConfigurationsPath may be set in the page.
+　先處理 config 隱藏欄位，因為後面可能有設定 CustomConfigurationsPath 到自訂架
+　構檔去。
+*/
+FCK.Events.AttachEvent('OnSelectionChange', function(){ FCKStyles.CheckSelectionChanges(); } );//新增一個事件處理程序到指定事件中.(a)事件名称.(b)事件函数
+//OnSelectionChange		选择对象的类型财产的变化。
+FCKConfig.ProcessHiddenField();//条件不符
+/*
+　Load the custom configurations file (if defined).
+　若有設定 CustomConfigurationsPath 的話，載入指定的自訂架構檔。
+*/
+if ( FCKConfig.CustomConfigurationsPath.length > 0 )//=false
+LoadScript( FCKConfig.CustomConfigurationsPath ) ;
+</script>
+<script type="text/javascript">//載入網頁層級的架構定義
+FCKConfig_LoadPageConfig() ;//将FCKConfig.PageConfig对象相存入PageConfig数组中
+FCKConfig_PreProcess() ;//设置样式的路径
+if ( FCKConfig.Debug )//false
+LoadScript( '_source/internals/fckdebug.js' ) ;
+</script>
+<script type="text/javascript">//载入样式和语言文件
+var FCK_InternalCSS=FCKTools.FixCssUrls(FCKConfig.BasePath + 'css/','');
+//a="http://localhost/movie/admin/fckeditor/editor/css/"
+var b=''
+var FCK_ShowTableBordersCSS=FCKTools.FixCssUrls(FCKConfig.BasePath + 'css/',b);
+//a="http://localhost/movie/admin/fckeditor/editor/css/"
+if ( FCKConfig.Debug )//=false
+FCKDebug._GetWindow();
+document.write(FCKTools.GetStyleHtml( FCKConfig.SkinEditorCSS ));//载入样式
+//FCKTools.GetStyleHtml( FCKConfig.SkinEditorCSS )=<link href="http://rendie/admin/fckeditor/editor/skins/silver/fck_editor.css" type="text/css"	rel="stylesheet" />
+FCKLanguageManager.Initialize() ;//載入語言檔
+LoadScript('' + FCKLanguageManager.ActiveLanguage.Code + '.js' ) ;
+//LoadScript(a)//载入函数文件(a)
+	//a="zh-cn.js"
+</script>
+<script type="text/javascript">//启动编辑器的快速功能表
+FCK_ContextMenu_Init() ;//????????????
+FCKPlugins.Load() ;//??????????
+</script>
+<script type="text/javascript">//??????????
+/*
+　Set the editor interface direction.
+　依語言設定編輯器的文字顯示的方向
+*/
+window.document.dir = FCKLang.Dir ;
+//FCKLang.Dir="ltr"		在"zh-cn.js"中定义.
+</script>
+<script type="text/javascript">//??????????????
+window.onload = function()
+{
+	InitializeAPI() ;//初始化
+	if ( FCKBrowserInfo.IsIE )//true
+	{
+		FCK_PreloadImages();//设置图片的事件和属性
+	}
+	else
+	{
+		LoadToolbarSetup() ;
+	}
+}
+function LoadToolbarSetup()//显示所有的工具栏
+{
+	FCKeditorAPI._FunctionQueue.Add(LoadToolbar) ;//显示所有的工具栏
+}
+function LoadToolbar()//显示所有的工具栏
+{
+	var oToolbarSet=FCK.ToolbarSet=FCKToolbarSet_Create();//控制工具栏
+	if ( oToolbarSet.IsLoaded )//false
+		StartEditor();
+	else
+	{
+		oToolbarSet.OnLoad = StartEditor ;//　移除 OnLoad 事件接收器
+		oToolbarSet.Load(FCKURLParams['Toolbar'] || 'Default' ) ;//显示所有的工具栏
+		//a="rendie"
+	}
+}
+function StartEditor()//当载入事件结束时显示编辑器的内容
+{
+	FCK.ToolbarSet.OnLoad = null ;
+	FCKeditorAPI._FunctionQueue.Remove( LoadToolbar ) ;//显示所有的工具栏		（这次不符）
+	FCK.Events.AttachEvent( 'OnStatusChange', WaitForActive ) ;//新增一個事件處理程序到指定事件中
+	//状态变化时会触发OnStatusChange事件
+	FCK.StartEditor() ;//显示编辑器的内容
+}
+function WaitForActive( editorInstance, newStatus )//????????????
+{//editorInstance=[object Object]
+//newStatus=1
+	if ( newStatus == FCK_STATUS_ACTIVE )//true
+	{
+		if ( FCKBrowserInfo.IsGecko ){FCKTools.RunFunction( window.onresize ) ;}//false
+		
+		if (!FCKConfig.PreventSubmitHandler )_AttachFormSubmitToAPI() ;//true
+		FCK.SetStatus(FCK_STATUS_COMPLETE) ;
+		//FCK_STATUS_COMPLETE=2
+		if ( typeof( window.parent.FCKeditor_OnComplete ) == 'function' )window.parent.FCKeditor_OnComplete( FCK ) ;//false
+	}
+}
+if ( FCKBrowserInfo.IsGecko && !FCKBrowserInfo.IsOpera )//false
+{
+	window.onresize = function( e )
+	{
+		if ( e && e.originalTarget !== document && e.originalTarget !== window && (!e.originalTarget.ownerDocument || e.originalTarget.ownerDocument != document ))
+			return ;
+
+		var oCell = document.getElementById( 'xEditingArea' ) ;
+
+		var eInnerElement = oCell.firstChild ;
+		if ( eInnerElement )
+		{
+			eInnerElement.style.height = '0px' ;
+			eInnerElement.style.height = ( oCell.scrollHeight - 2 ) + 'px' ;
+		}
+	}
+}
+</script>
+</head>
+<body>
+<table width="100%"  border="0" cellpadding="0" cellspacing="0" height="100%">
+		<tr id="xToolbarRow" style="display: none">
+			<td id="xToolbarSpace" style="overflow: hidden" colspan="2">
+<!--
+			overflow版本：CSS2　 兼容性：IE4+ NS6+　继承性：无
+			语法：
+			overflow : visible | auto | hidden | scroll 
+			取值：
+			visible  : 默认值。不剪切内容也不添加滚动条。假如显式声明此默认值，对象将以包含对象的 window 或 frame 的尺寸裁切。并且 clip 属性设置将失效 
+			auto  : 在必需时对象内容才会被裁切或显示滚动条 
+			hidden  : 不显示超过对象尺寸的内容 
+			scroll  : 总是显示滚动 
+-->
+			<table width="100%" cellpadding="0" cellspacing="0">
+					<tr id="xCollapsed" style="display: none">
+						<td id="xExpandHandle" class="TB_Expand" colspan="3">
+							<img class="TB_ExpandImg" alt="" src="images/spacer.gif" width="8" height="4" />
+						</td>
+					</tr>
+					<tr id="xExpanded" style="display: none">
+						<td id="xTBLeftBorder" class="TB_SideBorder" style="width: 1px; display: none;"></td>
+						<td id="xCollapseHandle" style="display: none" class="TB_Collapse" valign="bottom">
+							<img class="TB_CollapseImg" alt="" src="images/spacer.gif" width="8" height="4" /></td>
+						<td id="xToolbar" class="TB_ToolbarSet"></td>
+						<td class="TB_SideBorder" style="width: 1px"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>			
+			<td id="xEditingArea" valign="top" style="height: 100%" >&nbsp;</td>
+		</tr>
+</table>
+<!--
+	table-layout: fixed
+	如果想要一个table固定大小，里面的文字强制换行(尤其是在一长串英文文本，并且中间无空格分隔的情况下)，以达到使过长的文字不撑破表格的目的，一般是使用样式：table-layout:fixed。
+	使用overflow:hidden防止表格被撐破：
+	用TABLE和DIV做頁面布局設計的時候,遇到大尺寸的圖片和長英文字符串,布局中定義的尺寸都會被破壞,導致頁面布局變形. 這時可以用CSS的屬性OVERFLOW:hidden來控制,這樣超出部分會自動隱藏,這樣做不好的地方是就是這部分的信息顯示不完全,比如圖片只顯示了一部分. 但是頁面布局不會亂.
+	display: none
+	display : Sets whether the object is rendered. 設定是否物件被描繪出來。
+	none : Object is not rendered. 不描繪物件，也就是隱藏、看不見的意思。
+-->
+</body>
+</html>
+
