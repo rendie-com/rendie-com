@@ -15,14 +15,24 @@ jobs:
       actions: write
       contents: write
     steps:
-      - name: 下载当前项目
-        uses: actions/checkout@v4     
+      - name: Checkout
+        uses: actions/checkout@v4
+  
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+            version: 9
+            run_install: false
+            
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
             
       - name: 更新时区
         id: date
         run: |
-          sudo timedatectl set-timezone "$TZ"       
-          npm i -g pnpm
+          sudo timedatectl set-timezone "$TZ"
           
       - name: 运行nextjs     
         run: | 
