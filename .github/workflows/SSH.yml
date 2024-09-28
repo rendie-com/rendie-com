@@ -18,11 +18,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    # - uses: pnpm/action-setup@v4
-    #   name: Install pnpm
-    #   with:
-    #     version: 9
-    #     run_install: false
+    - uses: pnpm/action-setup@v4
+      name: Install pnpm
 
     - name: Install Node.js
       uses: actions/setup-node@v4
