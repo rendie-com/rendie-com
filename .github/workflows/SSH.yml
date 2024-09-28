@@ -36,8 +36,8 @@ jobs:
         # mv ./sqlite3/shopee/采集箱/商品/my.db ./releases/shopee_gather_product_my.db
         # mv ./sqlite3/shopee/采集箱/商品/tw.db ./releases/shopee_gather_product_tw.db
         
-        # 7z x nextjs.7z
-        7z x node-shopee.7z
+        7z x nextjs.7z
+        # 7z x node-shopee.7z
         # mv ./nextjs/plugins/ ./nextjs/public/plugins/
         # unzip ./nextjs.zip
         # unzip ./plugins.zip ./nextjs/
@@ -55,8 +55,8 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@v4
       with: 
           branch: main
-          folder: ./node-shopee/
-          target-folder: ./node-shopee/
+          folder: ./nextjs/
+          target-folder: ./nextjs/
           
     - name: 自动发布固件到 Releases
       uses: softprops/action-gh-release@v2
