@@ -17,7 +17,8 @@ jobs:
     steps:
     - name: 准备完成
       uses: actions/checkout@main
-    - uses: actions/setup-node@v4
+    - name: 安装node
+      uses: actions/setup-node@v4
       
     - name: 运行       
       run: | 
