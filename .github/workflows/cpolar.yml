@@ -12,12 +12,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:   
-    - name: 下载当前项目
-      uses: actions/checkout@v4 
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - uses: pnpm/action-setup@v4
+      name: Install pnpm
+      with:
+          version: 9
+          run_install: false
+          
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
 
     - name: 运行 nextjs       
       run: |     
-          npm i -g pnpm
           cd ./nextjs/         
           pnpm i
           pnpm run dev & 
