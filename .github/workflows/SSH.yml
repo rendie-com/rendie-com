@@ -19,6 +19,8 @@ jobs:
       uses: actions/checkout@main
     - name: 安装node
       uses: actions/setup-node@v4
+      with:
+          node-version: 22
       
     - name: 运行       
       run: | 
