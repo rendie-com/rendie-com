@@ -24,11 +24,11 @@ jobs:
         version: 9
         run_install: false
 
-    - name: Install Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22
-        cache: 'pnpm'
+    # - name: Install Node.js
+    #   uses: actions/setup-node@v4
+    #   with:
+    #     node-version: 22
+    #     cache: 'pnpm'
         
     - name: 运行       
       run: | 
