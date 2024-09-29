@@ -96,7 +96,7 @@ jobs:
       #       folder: sqlite3/
       #       target-folder: sqlite3/
       
-      - name: 自动发布固件到 Releases
+      - name: 发布固件到 Releases
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
