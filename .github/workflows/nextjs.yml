@@ -105,6 +105,15 @@ jobs:
           tag_name: 1
           files: ./releases/* 
           
+      - name: 重新发布一下防止上面的发布出错丢数据
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: sqlite3 文件发布
+          tag_name: 2
+          files: ./releases/* 
+          
       - name: 删除运行记录
         uses: Mattraks/delete-workflow-runs@v2
         with:
