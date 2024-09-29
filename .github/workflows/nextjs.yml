@@ -110,7 +110,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: sqlite3 文件发布
+          name: 重新发布，当出错丢数据时，这个发布数据还能用
           tag_name: 2
           files: ./releases/* 
           
