@@ -74,5 +74,8 @@ import path from 'path';
   });
   await page.close()
   await browser.close()
+  
+  console.error("出错了")
+  
   console.log('已完成所有任务。');
 })();
