@@ -26,6 +26,7 @@ import path from 'path';
       }, delay);
     })
   }
+   throw new Error('除数不能为0');
   ///////////////////////////////////////////////////////////////
   const page = await browser.newPage();
   await page.evaluateOnNewDocument('const newProto = navigator.__proto__;delete newProto.webdriver;navigator.__proto__ = newProto;');//puppeteer去除webdriver标记问题+打包   https://www.cnblogs.com/yangdadaBO/p/14956397.html
