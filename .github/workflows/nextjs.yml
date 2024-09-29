@@ -105,7 +105,7 @@ jobs:
           tag_name: 1
           files: ./releases/* 
           
-      - name: 重新发布一下防止上面的发布出错丢数据
+      - name: 重新发布，当上面的发布出错丢数据时，这个发布数据还能用
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
