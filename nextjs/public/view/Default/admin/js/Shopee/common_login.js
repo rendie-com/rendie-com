@@ -22,10 +22,7 @@ Object.assign(Tool, {
             $("#username").html(o1.username);
             let arr = [], cookies = JSON.parse(o1.cookies);
             for (let i = 0; i < cookies.length; i++) {
-                if (cookies[i].url == "https://shopee.cn/") {
-                    arr = cookies[i].cookies;
-                    break;
-                }
+                arr = arr.concat(cookies[i].cookies);//为什么不用break?答：因为“SPC_CDS”值异常时就会在“https://shopee.cn/”网址里面，正常时就在“https://seller.shopee.cn/”网址里面。
             }
             this.a04(arr, o1, o2)
         },
@@ -47,7 +44,7 @@ Object.assign(Tool, {
         a05: function (SPC_CDS, o1, o2) {
             o1.config = JSON.parse(o1.config)
             o1.config.SPC_CDS = SPC_CDS
-            o2.seller = o1.config            
+            o2.seller = o1.config
             Tool.loginShopee.a01(o1.username, o1.password, JSON.parse(o1.cookies), JSON.parse(o1.localstorage), $("#state"), this.a06, this, o2)
         },
         a06: function (t, oo) {

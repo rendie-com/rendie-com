@@ -99,7 +99,7 @@ Object.assign(Tool, {
             gg.postFetch(url, null, this.d04, this, oo)//注：必须要post提交
         },
         d04: function (t, oo) {
-            if (t.message == "token not found1111111111") {
+            if (t.message == "token not found") {
                 oo.dom.html("登入失败，要重新登入...");
                 oo.cookies = 0;
                 this.a02(oo);//去登入
