@@ -26,7 +26,6 @@ import path from 'path';
       }, delay);
     })
   }
-   throw new Error('除数不能为0');
   ///////////////////////////////////////////////////////////////
   const page = await browser.newPage();
   await page.evaluateOnNewDocument('const newProto = navigator.__proto__;delete newProto.webdriver;navigator.__proto__ = newProto;');//puppeteer去除webdriver标记问题+打包   https://www.cnblogs.com/yangdadaBO/p/14956397.html
@@ -51,14 +50,15 @@ import path from 'path';
   await page.goto(url);
   /////////////////////////////////// 
   let count = 0;
-  let Enable = true;
+  let total = 60 * 10 / 5//最多运行10分钟
+  let Enable = true;  
   while (Enable) {
     count++
     console.log('已运行：' + ((count * 5) / 60).toFixed(2) + '（分钟）');
     await timeout(5000);//5秒   
     try {
       let content = await page.$eval('title', ele => ele.innerHTML);
-      if (count < 60 * 10 / 5) {//最多运行10分钟
+      if (count < total) {
         Enable = content == "已完成所有任务。" ? false : true;
       }
       else {
@@ -69,14 +69,12 @@ import path from 'path';
       console.log("出错退出。")
     }
   }
-  ///////////////////////
-  await page.screenshot({
-    path: '../releases/screenshot.png'
-  });
   await page.close()
   await browser.close()
-  
-  console.error("出错了")
-  
-  console.log('已完成所有任务。');
+  if (count < total) {
+    console.log('已完成所有任务。');
+  }
+  else {
+    throw new Error('主动抛出异常,因为时间到了。');
+  }
 })();
