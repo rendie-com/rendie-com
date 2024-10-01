@@ -40,20 +40,20 @@ Object.assign(gg, {
         this.postMessage(next, This, t, oo)
     },
     //指定类型提交  gg.typeHtml(url, "DELETE", data, this.a08, this, "xxxxx")
-    // typeHtml: function (url, type, data, next, This, t) {
+    //typeHtml: function (url, type, data, next, This, t) {
     //     let oo = { action: "typeHtml", url: url, type: type, data: data }
     //     this.postMessage(next, This, t, oo)
-    // },
-    //  //////////////////////////////////////////////
-    // //设置Headers信息get请求返回html           gg.setHeaders_getHtml("https://www.aliexpress.com/item/1005002156462954.html",{},this.c01,this,t)
-    // setHeaders_getHtml: function (url, headers, next, This, t) {
+    //},
+    ////////////////////////////////////////////////
+    //设置Headers信息get请求返回html            gg.setHeaders_getHtml("https://www.aliexpress.com/item/1005002156462954.html",{},this.c01,this,t)
+    //setHeaders_getHtml: function (url, headers, next, This, t) {
     //     let oo = { action: "setHeaders_getHtml", url: url, headers: headers }
     //     this.postMessage(next, This, t, oo)
-    // },
-    // //返回值必须是Json,否则出错  (注：有的网站还必须要你Json提交，否则它给你报错)
-    // //设置Headers信息post请求返回json		    gg.setHeaders_postHtml("https://www.aliexpress.com/item/1005002156462954.html",{},{},this.c01,this)
-    // setHeaders_postHtml: function (url, headers, data, next, This, t) {
-    //     let oo = { action: "setHeaders_postHtml", url: url, headers: headers, data: data }
-    //     this.postMessage(next, This, t, oo)
-    // }
+    //},
+    ////返回值必须是Json,否则出错  (注：有的网站还必须要你Json提交，否则它给你报错)
+    ////设置Headers信息post请求返回json		    gg.setHeaders_postHtml("https://www.aliexpress.com/item/1005002156462954.html",{},{},this.c01,this)
+    //setHeaders_postHtml: function (url, headers, data, next, This, t) {
+    //    let oo = { action: "setHeaders_postHtml", url: url, headers: headers, data: data }
+    //    this.postMessage(next, This, t, oo)
+    //}
 }) 

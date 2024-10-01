@@ -395,6 +395,9 @@ Object.assign(Tool, {
     remainder: function (id, num) {
         return (Math.abs(id % num) + 1).toString().padStart(2, '0');
     },
+    remainder3: function (id, num) {
+        return (Math.abs(id % num) + 1).toString().padStart(3, '0');
+    },
     pronum: function (proid, num) {
         let id = parseInt(proid.substring(1))
         return this.remainder(id, num);
