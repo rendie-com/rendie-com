@@ -1,22 +1,22 @@
 #!/bin/bash
 
- mkdir ./releases/    
- for i in {1..100}
- do  
-   db_name="";
-   if (( $i < 10 ))
-   then        
-     db_name="00$i"   
-   elif (( $i < 100 ))
-   then 
-     db_name="0$i" 
-   else
-     db_name="$i"
-   fi   
-   mv ./br/${db_name}.db ./releases/shopee_gather_fans_br_${db_name}.db
-   mv ./my/${db_name}.db ./releases/shopee_gather_fans_my_${db_name}.db
-   echo "$db_name"
- done
+ # mkdir ./releases/    
+ # for i in {1..100}
+ # do  
+ #   db_name="";
+ #   if (( $i < 10 ))
+ #   then        
+ #     db_name="00$i"   
+ #   elif (( $i < 100 ))
+ #   then 
+ #     db_name="0$i" 
+ #   else
+ #     db_name="$i"
+ #   fi   
+ #   mv ./br/${db_name}.db ./releases/shopee_gather_fans_br_${db_name}.db
+ #   mv ./my/${db_name}.db ./releases/shopee_gather_fans_my_${db_name}.db
+ #   echo "$db_name"
+ # done
 
 
         
