@@ -4,15 +4,15 @@
  
  for i in {1..100};
  do      
-   db_name="";
-   if (( $i < 10 ))
-   then        
-     db_name="00"+$i
-   else if (( $i < 100 ))
-   then 
-     db_name="0"+$i
-   fi    
-   echo $db_name
+   # db_name="";
+   # if (( $i < 10 ))
+   # then        
+   #   db_name="00"+$i
+   # else if (( $i < 100 ))
+   # then 
+   #   db_name="0"+$i
+   # fi    
+   echo $i
  done
 
 
