@@ -34,19 +34,16 @@ do
 	db_name="$i"
 	fi   
 	
-	mv ./br/${db_name}.db ./releases/shopee_gather_fans_br_${db_name}.db
-	mv ./my/${db_name}.db ./releases/shopee_gather_fans_my_${db_name}.db
-	echo "$db_name"
-done
+	 if [ -f "./sqlite3/shopee/采集箱/粉丝/tw/${db_name}.db" ]; then
+		 cp ./sqlite3/shopee/采集箱/粉丝/tw/${db_name}.db ./releases/shopee_gather_fans_tw_${db_name}.db 
+	 fi
+	if [ -f "./sqlite3/shopee/采集箱/粉丝/my/${db_name}.db" ]; then
+		 cp ./sqlite3/shopee/采集箱/粉丝/my/${db_name}.db ./releases/shopee_gather_fans_my_${db_name}.db 
+	 fi
+	if [ -f "./sqlite3/shopee/采集箱/粉丝/br/${db_name}.db" ]; then
+		 cp ./sqlite3/shopee/采集箱/粉丝/br/${db_name}.db ./releases/shopee_gather_fans_br_${db_name}.db 
+	 fi
 
-         # if [ -f "./sqlite3/shopee/采集箱/粉丝/br.db" ]; then
-         #   cp ./sqlite3/shopee/采集箱/粉丝/br.db ./releases/shopee_gather_fans_br.db 
-         # fi
-         # if [ -f "./sqlite3/shopee/采集箱/粉丝/my.db" ]; then
-         #   cp ./sqlite3/shopee/采集箱/粉丝/my.db ./releases/shopee_gather_fans_my.db 
-         # fi
-         # if [ -f "./sqlite3/shopee/采集箱/粉丝/tw.db" ]; then
-         #   cp ./sqlite3/shopee/采集箱/粉丝/tw.db ./releases/shopee_gather_fans_tw.db 
-         # fi
-          
+done
+      
          
