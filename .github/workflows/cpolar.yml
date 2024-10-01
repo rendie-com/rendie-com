@@ -50,7 +50,10 @@ jobs:
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
       
     - name: 复制到发布目录       
-      run: |                
+      run: |     
+        chmod +x ssh.sh
+        $GITHUB_WORKSPACE/releases.sh 
+        
          mkdir ./releases/
          if [ -f "./sqlite3/shopee/采集箱/粉丝/br.db" ]; then
            cp ./sqlite3/shopee/采集箱/粉丝/br.db ./releases/shopee_gather_fans_br.db 
