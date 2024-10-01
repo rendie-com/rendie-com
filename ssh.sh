@@ -6,15 +6,14 @@
    db_name="";
    if (( $i < 10 ))
    then        
-     db_name="00$i"
-   else if (( $i < 100 ))
-   then 
-     db_name="0$i"
+     db_name="00$i"   
    fi   
    echo "$db_name"
  done
 
-
+# else if (( $i < 100 ))
+#    then 
+#      db_name="0$i"
          
       
         
