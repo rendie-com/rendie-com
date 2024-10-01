@@ -1,9 +1,11 @@
 #!/bin/bash
 
  mkdir ./releases/    
+ for i in {1..100} do      
  
- for i in {1..100};
- do      
+   echo $i
+ done
+
    # db_name="";
    # if (( $i < 10 ))
    # then        
@@ -11,11 +13,7 @@
    # else if (( $i < 100 ))
    # then 
    #   db_name="0"+$i
-   # fi    
-   echo $i
- done
-
-
+   # fi   
          
       
         
