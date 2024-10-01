@@ -20,7 +20,8 @@ jobs:
 
     - name: 运行       
       run: | 
-        # mkdir ./releases/        
+        mkdir ./releases/    
+        
         # mv ./sqlite3/shopee/采集箱/商品/br.db ./releases/shopee_gather_product_br.db
         # mv ./sqlite3/shopee/采集箱/商品/my.db ./releases/shopee_gather_product_my.db
         # mv ./sqlite3/shopee/采集箱/商品/tw.db ./releases/shopee_gather_product_tw.db
