@@ -51,7 +51,7 @@ jobs:
       
     - name: 复制到发布目录       
       run: |     
-        chmod +x ssh.sh
+        chmod +x releases.sh
         $GITHUB_WORKSPACE/releases.sh 
         
     - name: 自动发布固件到 Releases
