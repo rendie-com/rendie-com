@@ -11,6 +11,7 @@
    then 
      db_name="0$i" 
    fi   
+   mv ./tw/${db_name}.db ./releases/shopee_gather_fans_tw_${db_name}.db
    echo "$db_name"
  done
 
