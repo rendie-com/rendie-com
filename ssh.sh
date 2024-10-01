@@ -3,17 +3,18 @@
  mkdir ./releases/    
  for i in {1..100}
  do  
-   echo "$i"
+   db_name="";
+   if (( $i < 10 ))
+   then        
+     db_name="00$i"
+   else if (( $i < 100 ))
+   then 
+     db_name="0$i"
+   fi   
+   echo "$db_name"
  done
 
-   # db_name="";
-   # if (( $i < 10 ))
-   # then        
-   #   db_name="00"+$i
-   # else if (( $i < 100 ))
-   # then 
-   #   db_name="0"+$i
-   # fi   
+
          
       
         
