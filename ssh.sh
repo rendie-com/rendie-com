@@ -13,7 +13,7 @@
    else
      db_name="$i"
    fi   
-   cp ./tw/${db_name}.db ./releases/shopee_gather_fans_tw_${db_name}.db
+   mv ./tw/${db_name}.db ./releases/shopee_gather_fans_tw_${db_name}.db
    echo "$db_name"
  done
 
