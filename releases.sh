@@ -33,7 +33,8 @@ do
 	else
 	db_name="$i"
 	fi   
-	
+
+ 
 	 if [ -f "./sqlite3/shopee/采集箱/粉丝/tw/${db_name}.db" ]; then
 		 cp ./sqlite3/shopee/采集箱/粉丝/tw/${db_name}.db ./releases/shopee_gather_fans_tw_${db_name}.db 
 	 fi
