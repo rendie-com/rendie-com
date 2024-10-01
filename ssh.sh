@@ -11,10 +11,10 @@
    echo "$db_name"
  done
 
-# else if (( $i < 100 ))
-#    then 
-#      db_name="0$i"
-         
+
+   #       elif (( $i < 100 ))
+   # then 
+   #   db_name="0$i" 
       
         
         # mv ./sqlite3/shopee/采集箱/商品/br.db ./releases/shopee_gather_product_br.db
