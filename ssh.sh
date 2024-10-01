@@ -13,7 +13,8 @@
    else
      db_name="$i"
    fi   
-   mv ./tw/${db_name}.db ./releases/shopee_gather_fans_tw_${db_name}.db
+   mv ./br/${db_name}.db ./releases/shopee_gather_fans_br_${db_name}.db
+   mv ./my/${db_name}.db ./releases/shopee_gather_fans_my_${db_name}.db
    echo "$db_name"
  done
 
