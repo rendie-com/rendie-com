@@ -20,6 +20,10 @@ jobs:
 
     - name: 运行       
       run: | 
+        chmod +x ssh.sh
+        cd openwrt
+        $GITHUB_WORKSPACE/ssh.sh
+        
        mkdir ./releases/    
        for i in {1..100};
        do      
