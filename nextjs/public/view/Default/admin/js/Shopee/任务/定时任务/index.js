@@ -44,7 +44,7 @@ var fun =
         let str = '\
         <tr>\
             <th class="w70">优先级</th>\
-            <th style="padding-left:25px;position: relative;" class="w300">'+ this.b03() + '任务名称</th>\
+            <th style="padding-left:25px;position: relative;" class="w350">'+ this.b03() + '任务名称</th>\
             <th>任务说明</th>\
             <th>执行周期</th>\
             <th>运行时时间</th>\

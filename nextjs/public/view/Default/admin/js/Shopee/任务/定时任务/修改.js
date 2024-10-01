@@ -31,7 +31,7 @@ var fun =
           </tr>\
           <tr>\
           <td class="right">JS文件地址：</td>\
-          <td><textarea rows="5" class="form-control" onblur="fun.c04($(this),\'jsfile\')">' + jsfile + '</textarea></td>\
+          <td><textarea rows="6" class="form-control" onblur="fun.c04($(this),\'jsfile\')">' + jsfile + '</textarea></td>\
           <td>json格式如:["admin/js/Shopee/任务/定时任务/启动定时任务/所有任务/保持在线.js"]</td>\
           </tr>\
           <tr>\

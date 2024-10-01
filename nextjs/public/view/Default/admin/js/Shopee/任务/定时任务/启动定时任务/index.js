@@ -6,10 +6,12 @@ var fun =
         B1: 1, B2: 0, Barr: [],
         seller: {},
         runtime: 0,//运行时时间
+        stop:false,
     },
     a01: function () {
         //obj.params.jsFile         选择JS文件
         //obj.params.return         返回URL
+        this.obj.runtime=Tool.gettime("")
         this.a02();
     },
     a02: function () {
@@ -17,8 +19,9 @@ var fun =
         <div class="p-2">\
             <table class="table table-hover">\
             <tbody>\
-		        <tr><td class="right w200">用户名：</td><td id="username" colspan="2"></td></tr>\
-		        <tr><td class="right">运行时时间：</td><td colspan="2" id="runtime"></td></tr>\
+		        <tr><td class="right w200">运行时时间：</td><td colspan="2">'+Tool.js_date_time2(this.obj.runtime)+'</td></tr>\
+		        <tr><td class="right">已运行时长：</td><td id="time" colspan="2"></td></tr>\
+		        <tr><td class="right">用户名：</td><td id="username" colspan="2"></td></tr>\
 		        <tr><td class="right">执行周期：</td><td id="cycle" colspan="2"></td></tr>\
 		        <tr><td class="right">任务名称：</td><td id="name" colspan="2"></td></tr>\
 		        <tr><td class="right">任务说明：</td><td id="remark" colspan="2"></td></tr>\
@@ -33,6 +36,7 @@ var fun =
         Tool.html(this.a03, this, html);
     },
     a03: function () {
+        this.c01()
         Tool.login.a01(this.a04, this);
     },
     a04: function (t) {
@@ -47,10 +51,18 @@ var fun =
         this.obj.B2 = arr.length;
         this.d01()
     },
+    //////////////////////////////////////
+    c01: function () {
+        if(!this.obj.stop){
+            Tool.Time("name", 1000, this.c02, this); 
+        }        
+    },
+    c02: function () {        
+        $("#time").html(Tool.dateDHM(false, this.obj.runtime * 1000,"s"))        
+        this.c01();
+    },
     /////////////////////////////
-    d01: function () {
-        this.obj.runtime = Tool.gettime("")
-        $("#runtime").html(Tool.js_date_time2(this.obj.runtime))
+    d01: function () {       
         $("#state").html("正在获取任务信息。。。");
         let data = [{
             action: "${default_db}",
@@ -115,6 +127,7 @@ var fun =
         }
     },
     f03: function () {
+        this.obj.stop=true;
         $("#state").html("已完成所有任务。")
         frameElement._DialogArguments.$("title").html("已完成所有任务。")
     },
