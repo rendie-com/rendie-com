@@ -24,15 +24,15 @@ jobs:
        for i in {1..100};
        do      
          db_name="";
-          if (( $i < 10 ))
-          then        
-              db_name="00"+$i
-          else if (( $i < 100 ))
-          then 
-            db_name="0"+$i
-          fi    
-          echo $db_name
-        done
+         if (( $i < 10 ))
+         then        
+           db_name="00"+$i
+         else if (( $i < 100 ))
+         then 
+           db_name="0"+$i
+         fi    
+         echo $db_name
+       done
         
         # mv ./sqlite3/shopee/采集箱/商品/br.db ./releases/shopee_gather_product_br.db
         # mv ./sqlite3/shopee/采集箱/商品/my.db ./releases/shopee_gather_product_my.db
