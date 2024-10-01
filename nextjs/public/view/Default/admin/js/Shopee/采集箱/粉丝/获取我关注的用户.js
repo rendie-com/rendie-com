@@ -59,7 +59,7 @@
         if (t.data) {
             if (!t.data.nomore) { this.obj.A2++; }
             if (t.data.accounts) {
-                Tool.accounts.a01(t.data.accounts, "@.is_my_following", obj.params.site,this.d04, this)
+                Tool.accounts.a01(t.data.accounts, {},"@.is_my_following", obj.params.site,this.d04, this)
             }
             else {
                 $("#state").html("店铺的粉丝隐藏了，跳过。。。")

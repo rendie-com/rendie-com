@@ -29,7 +29,7 @@ $(function () {
         case "js07": Tool.scriptArr(loginPath.concat([path + '粉丝/common_follow_user.js',path + '粉丝/取消关注和关注.js'])); break;
         case "js08": Tool.scriptArr(loginPath.concat([path + '粉丝/common_accounts.js',path + '粉丝/获取关注我的用户.js'])); break;
         case "js09": Tool.scriptArr(loginPath.concat([path + '粉丝/common_accounts.js',path + '粉丝/获取我关注的用户.js'])); break;  
-        case "js10": Tool.scriptArr(['admin/js/Shopee/通用/把旧表复制到新表.js']); break;      
+        case "js10": Tool.scriptArr([path +'粉丝/把一个db文件拆分成多个db文件.js']); break;//admin/js/Shopee/通用/把旧表复制到新表.js
         default: Tool.scriptArr([
             "admin/js/Shopee/common.js",
             path + 'common.js',
