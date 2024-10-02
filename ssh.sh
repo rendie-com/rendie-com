@@ -1,6 +1,6 @@
 #!/bin/bash
 
- # mkdir ./releases/    
+  mkdir ./releases/    
  # for i in {1..100}
  # do  
  #   db_name="";
