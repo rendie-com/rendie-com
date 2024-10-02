@@ -18,7 +18,7 @@
  #   echo "$db_name"
  # done
 
-
+ mv ./shopee_gather_fans_tw_038.db ./releases/shopee_gather_fans_tw_038.db
         
       
         
