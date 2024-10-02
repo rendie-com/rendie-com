@@ -62,6 +62,16 @@ jobs:
         name: sqlite3 文件发布
         tag_name: 1
         files: ./releases/* 
+
+    - name: 重新发布，当上面的发布出错丢数据时，这个发布数据还能用
+      uses: softprops/action-gh-release@v2
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          name: 重新发布，当出错丢数据时，这个发布数据还能用
+          tag_name: 2
+          files: ./releases/* 
+          
     # - name: 部署 sqlite3
     #   uses: JamesIves/github-pages-deploy-action@v4
     #   with: 
