@@ -61,7 +61,7 @@ jobs:
       #     chmod +x releases.sh
       #     $GITHUB_WORKSPACE/releases.sh
           
-      - name: 部署next.js
+      - name: 部署nextjs
         uses: JamesIves/github-pages-deploy-action@v4
         with: 
             branch: main
