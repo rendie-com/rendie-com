@@ -18,7 +18,7 @@ var fun =
             elselist: [{
                 action: "fs",
                 fun: "download_sqlite",
-                url: "https://github.com/rendie-com/rendie-com/releases/download/1/shopee_gather_shop_" + obj.params.site + ".db",
+                urlArr: ["https://github.com/rendie-com/rendie-com/releases/download/1/shopee_gather_shop_" + obj.params.site + ".db","https://github.com/rendie-com/rendie-com/releases/download/2/shopee_gather_shop_" + obj.params.site + ".db"],
                 database: "shopee/采集箱/店铺/" + obj.params.site
             }]
         }]

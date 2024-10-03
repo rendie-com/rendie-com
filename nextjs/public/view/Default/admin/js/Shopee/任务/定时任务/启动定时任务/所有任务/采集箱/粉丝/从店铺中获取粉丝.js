@@ -45,7 +45,7 @@ var task = {
             elselist: [{
                 action: "fs",
                 fun: "download_sqlite",
-                url: "https://github.com/rendie-com/rendie-com/releases/download/1/shopee_gather_shop_" + oo.site + ".db",
+                urlArr: ["https://github.com/rendie-com/rendie-com/releases/download/1/shopee_gather_shop_" + oo.site + ".db","https://github.com/rendie-com/rendie-com/releases/download/2/shopee_gather_shop_" + oo.site + ".db"],
                 database: "shopee/采集箱/店铺/" + oo.site
             }]
         }]
