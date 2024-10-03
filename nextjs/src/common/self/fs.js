@@ -12,7 +12,7 @@ export const self_fs = {
       case "stat": nObj = await this.stat(obj.path); break;
       case "access_sqlite": nObj = await this.access(process.env.NEXTJS_CONFIG_SQLITE.replace("{database}", obj.database), obj.mode); break;
       case "access": nObj = await this.access(obj.path, obj.mode); break;
-      case "download_sqlite": nObj = await this.download(obj.url, process.env.NEXTJS_CONFIG_SQLITE.replace("{database}", obj.database)); break;
+      case "download_sqlite":  nObj = this.download_sqlite(obj.urlArr, obj.database); break;
       case "download": nObj = await this.download(obj.url, obj.path); break;
       case "upload": nObj = await this.upload(obj.folder); break;
     }
@@ -75,6 +75,14 @@ export const self_fs = {
       })
     });
   },
+  download_sqlite: async function (urlArr, database){
+    let ret="";
+    for(let i=0;i<urlArr.length;i++){
+      ret=await this.download(urlArr[i], process.env.NEXTJS_CONFIG_SQLITE.replace("{database}", database));
+      if(ret=="下载完成"){break;}
+    }
+    return ret;
+  },
   download: async function (url, filePath) {
     //使用Axios下载超过80MB的数据     https://cloud.tencent.com/developer/information/%E4%BD%BF%E7%94%A8Axios%E4%B8%8B%E8%BD%BD%E8%B6%85%E8%BF%8780MB%E7%9A%84%E6%95%B0%E6%8D%AE
     const directoryPath = path.join(filePath, '..'); // 相对于当前文件的上级目录
@@ -106,9 +114,9 @@ export const self_fs = {
             writer.on('finish', () => {
               writer.close();
             });
-          }).catch((error) => {
-            console.error('Error:', error);
+          }).catch((error) => {            
             // 这里可以处理下载失败的情况
+            resolve(error.status);
           });
         }
       })
