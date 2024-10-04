@@ -69,6 +69,9 @@ import path from 'path';
       console.log("出错退出。")
     }
   }
+  await page.screenshot({
+      path: '../sqlite3/screenshot.png'
+  });
   await page.close()
   await browser.close()
   if (count < total) {
