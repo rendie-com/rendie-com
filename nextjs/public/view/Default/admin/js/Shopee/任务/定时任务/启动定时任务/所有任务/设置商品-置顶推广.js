@@ -18,13 +18,13 @@ var task = {
         $("#state").html("正在获取商品信息。。。");
         let data = [{
             action: "sqlite",
-            database: "shopee/商品/店铺商品/"+oo.site,
+            database: "shopee/商品/店铺商品/" + oo.site,
             sql: "select @.fromid as fromid FROM @.table where @.status=1 order by @._1688_saleNum desc" + Tool.limit(1, this.obj.C1, "sqlite"),
         }]
         if (this.obj.C2 == 0) {
             data.push({
                 action: "sqlite",
-                database: "shopee/商品/店铺商品/"+oo.site,
+                database: "shopee/商品/店铺商品/" + oo.site,
                 sql: "select count(1) as total FROM @.table where @.status=1",
             })
         }
@@ -44,12 +44,12 @@ var task = {
             "cbsc_shop_region=" + oo.site
         ]
         let url = "https://seller.shopee.cn/api/v3/product/boost_product/?" + pArr.join("&")
-        let data='{"id":' + oo.fromid + '}'
-        $("#state").html("正在置顶推广。。。");       
-        gg.postFetch(url, data , this.a05, this, oo)
+        let data = '{"id":' + oo.fromid + '}'
+        $("#state").html("正在置顶推广。。。");
+        gg.postFetch(url, data, this.a05, this, oo)
     },
     a05: function (t, oo) {
-        if (t.message ==  "success") {
+        if (t.message == "success") {
             $("#state").html("已置顶推广。");
             this.a06(oo)
         }
@@ -66,7 +66,8 @@ var task = {
             $("#state").html("置顶完成。");
             this.d01(oo)
         }
-        else if (t.code == 1000100220) {
+        else if (t.code == 1000100220 || t.code == 200) {
+            //item status not normal or stock is 0
             $("#state").html("物料状态不正常或库存为");
             this.a06(oo)
         }
@@ -83,5 +84,7 @@ var task = {
         this.obj.C1 = 1; this.obj.C2 = 0;
         $("#tbody").html("");
         oo.next.apply(oo.This, [oo.t]);
-    },
+    }
 }
+
+
