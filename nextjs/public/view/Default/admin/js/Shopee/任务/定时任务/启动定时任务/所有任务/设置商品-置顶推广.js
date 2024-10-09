@@ -66,7 +66,7 @@ var task = {
             $("#state").html("置顶完成。");
             this.d01(oo)
         }
-        else if (t.code == 1000100220 || t.code == 200) {
+        else if (t.message == "item status not normal or stock is 0") {
             //item status not normal or stock is 0
             $("#state").html("物料状态不正常或库存为");
             this.a06(oo)
