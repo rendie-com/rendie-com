@@ -39,7 +39,7 @@ Object.assign(Tool, {
         },
         ////////////////////
         d01: function (oo) {
-            if (this.obj.F1 <= 49) {
+            if (this.obj.F1 <= 48) {
                 $("#state").html("不用取关了")
                 this.e01(oo)
             }
