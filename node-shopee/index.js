@@ -51,7 +51,7 @@ import path from 'path';
   /////////////////////////////////// 
   let count = 0;
   let total = 60 * 15 / 5//最多运行15分钟
-  let Enable = true;  
+  let Enable = true;
   while (Enable) {
     count++
     console.log('已运行：' + ((count * 5) / 60).toFixed(2) + '（分钟）');
@@ -66,18 +66,20 @@ import path from 'path';
       }
     } catch (error) {
       // 处理错误的代码
-      console.log("出错退出。")
+      console.log("处理错误的信息：", error)
+      await page.screenshot({
+        path: '../sqlite3/error-' + new Date().toISOString() + '.png'
+      });
+      Enable = false;
     }
   }
-  await page.screenshot({
-      path: '../sqlite3/screenshot.png'
-  });
+  if (count >= total) {
+    await page.screenshot({
+      path: '../sqlite3/overtime-' + new Date().toISOString() + '.png'
+    });
+  }
   await page.close()
   await browser.close()
-  if (count < total) {
-    console.log('已完成所有任务。');
-  }
-  else {
-    throw new Error('主动抛出异常,因为时间到了。');
-  }
+  console.log('已完成所有任务。');
+
 })();
