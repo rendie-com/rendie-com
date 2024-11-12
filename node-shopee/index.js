@@ -4,11 +4,14 @@ import path from 'path';
   const pathToExtension = path.join(process.cwd(), 'rendie.com');
   const browser = await puppeteer.launch({
     args: [
+      '--disable-blink-features=AutomationControlled',//就能轻松移除上一节介绍的 navigator.webdriver = true 属性  https://www.webhek.com/post/detecting-headless-chrome-puppeteer-2024/
       `--disable-extensions-except=${pathToExtension}`,
       `--load-extension=${pathToExtension}`,
-      //'--lang=zh-CN',//这个是给客户获取用的
-      // '--no-sandbox', 
-      // '--disable-setuid-sandbox'
+      '--lang=zh-CN',//这个是给客户获取用的
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-gpu',
+      '--no-zygote'
     ],
     ignoreDefaultArgs: ["--enable-automation"],//如何避免Puppeteer被前端JS检测  https://segmentfault.com/a/1190000019539509
     headless: 'new',//'new':表示后台运行
