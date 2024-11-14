@@ -91,13 +91,13 @@ Object.assign(Tool, {
             if (objJson.status == "success") {
                 this.d01(objJson, oo);
             }
-            // else if (objJson.status == "error" && objJson.data.indexOf('无【access_token】') != -1) {
-            //     this.tryTimes(oo);
-            // }
             else {
                 Tool.pre(["出错ajax--01：", objJson])
                 console.log("出错ajax--01：", objJson, oo)
             }
+            //else if (objJson.status == "error" && objJson.data.indexOf('无【access_token】') != -1) {
+            //    this.tryTimes(oo);
+            //}
             //if (o3 == "需要安装") { top.location.href = "/install"; }
             //else {
             //}
@@ -109,7 +109,6 @@ Object.assign(Tool, {
             //    top.location.href = "/" + obj.arr[0] + "/html/login.html?" + top.location.href;
             //}
             //else {
-            //    
             //}
         },
         d01: function (objJson, oo) {
@@ -148,7 +147,6 @@ Object.assign(Tool, {
         //             if (typeof (e) == "object") {
         //                 //.indexOf('SyntaxError: Unexpected token') != -1
         //                 Tool.at("common_ajax.js出错001：\n\n" +objJson.data)
-
         //                 //Tool.at("真能到这里吗？" + e)
         //                 //this.tryTimes(oo);
         //             }

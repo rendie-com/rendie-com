@@ -55,8 +55,7 @@ var gg =
         let oo = { action: "tabs_remove_create_indexOf", index: index, url: url, htmlArr: htmlArr, isHighlightTab: isHighlightTab }
         this.postMessage(next, This, t, oo)
     },
-    //执行js代码后再找内容(返回网页内容)      gg.tabs_executeScript_indexOf(2,"加载js文件","执行代码","找到我就返回",true,this.c01,this,"xxxx")
-    //                                     gg.tabs_executeScript_indexOf(2,["jquery"],"执行代码","找到我就返回",true,this.c01,this,"xxxx")
+    //执行js代码后再找内容(返回网页内容)      gg.tabs_executeScript_indexOf(2,["jquery"],"执行代码","找到我就返回",true,this.c01,this,"xxxx")
     tabs_executeScript_indexOf: function (index, fileArr, code, htmlArr, isHighlightTab, next, This, t) {
         let oo = { action: "tabs_executeScript_indexOf", index: index, fileArr: fileArr, code: code, htmlArr: htmlArr, isHighlightTab: isHighlightTab }
         this.postMessage(next, This, t, oo)
@@ -66,16 +65,6 @@ var gg =
         let oo = { action: "tabs_executeScript", index: index, file: file, code: code, isHighlightTab: isHighlightTab }
         this.postMessage(next, This, t, oo)
     },
-    // //返回所有Headers信息     gg.tabs_remove_create_getHeaders(2,"https://pifa.pinduoduo.com/",["https://pifa.pinduoduo.com/pifa/user/queryUserInfo"],isHighlightTab,this.d02,this)
-    // tabs_remove_create_getHeaders: function (index, url, filterUrlArr, isHighlightTab, next, This, t) {
-    //     let oo = { action: "tabs_remove_create_getHeaders", index: index, url: url, filterUrlArr: filterUrlArr, isHighlightTab: isHighlightTab }
-    //     this.postMessage(next, This, t, oo)
-    // },
-    // //先执行js后，再获得某个url的Headers信息。（比如：Shopee翻页的页码，就在Headers信息中。）
-    // tabs_executeScript_getHeaders: function (index, code, filterUrlArr, isHighlightTab, next, This, t) {
-    //     let oo = { action: "tabs_executeScript_getHeaders", index: index, code: code, filterUrlArr: filterUrlArr, isHighlightTab: isHighlightTab }
-    //     this.postMessage(next, This, t, oo)
-    // },
     ////////////////////////////////////////////////////////////////
     //删除所有Cookies                 gg.delAllCookies(["https://dhgate.com/","https://seller.dhgate.com/"], this.a04, this)
     delAllCookies: function (urlArr, next, This, t)//删除所有cookie
@@ -181,6 +170,16 @@ var gg =
     },
 }
 //////////////////////////////////////////////////////
+// //返回所有Headers信息     gg.tabs_remove_create_getHeaders(2,"https://pifa.pinduoduo.com/",["https://pifa.pinduoduo.com/pifa/user/queryUserInfo"],isHighlightTab,this.d02,this)
+// tabs_remove_create_getHeaders: function (index, url, filterUrlArr, isHighlightTab, next, This, t) {
+//     let oo = { action: "tabs_remove_create_getHeaders", index: index, url: url, filterUrlArr: filterUrlArr, isHighlightTab: isHighlightTab }
+//     this.postMessage(next, This, t, oo)
+// },
+// //先执行js后，再获得某个url的Headers信息。（比如：Shopee翻页的页码，就在Headers信息中。）
+// tabs_executeScript_getHeaders: function (index, code, filterUrlArr, isHighlightTab, next, This, t) {
+//     let oo = { action: "tabs_executeScript_getHeaders", index: index, code: code, filterUrlArr: filterUrlArr, isHighlightTab: isHighlightTab }
+//     this.postMessage(next, This, t, oo)
+// },
 //返回监听url的内容。(浏览器必须打开调试模式。即F12)
 //gg.getNetwork(this.c01,this,"xxxx")
 //getNetwork: function (next, This, t) {
@@ -192,7 +191,6 @@ var gg =
 //    let oo = { action: "setNetwork", cmd: "devtools", url: url }
 //    this.postMessage(next, This, t, oo)
 //},
-
 /*
 //图片转base64	gg.imgToBase64("https://rendie.com/view/Default/html/product/img/logo/logo.png",this.a02,this,"xxxxx")
 imgToBase64:function(src,next,This,t)

@@ -28,6 +28,37 @@ var Tool = {
             return false;
         }
     },
+    //将不同的数据转换成同一数组
+    getArr: function (arr, DEFAULT_DB) {
+        let rArr = []
+        if (DEFAULT_DB == "dynamodb") {
+            let Items = arr.Items
+            for (let i = 0; i < Items.length; i++) {
+                for (let k in Items[i]) {
+                    Items[i][k] = Items[i][k][Object.keys(Items[i][k])[0]];
+                }
+            }
+            rArr = Items;
+        }
+        else {
+            rArr = arr;
+        }
+        return rArr;
+    },
+    getObj: function (oo, DEFAULT_DB) {
+        let rArr = {}
+        if (DEFAULT_DB == "dynamodb") {
+            let Item = oo.Item
+            for (let k in Item) {
+                Item[k] = Item[k][Object.keys(Item[k])[0]];
+            }
+            rArr = Item;
+        }
+        else {
+            rArr = oo[0];
+        }
+        return rArr;
+    },
     guid: function () {
         function S4() {
             return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
@@ -42,10 +73,10 @@ var Tool = {
     rpsql: function (s) {
         //.replace(/\\/ig, "\\\\")      不能替换这个,sqlite是这样的
         if (typeof s != 'number') {
-            if (s == "" || s == null|| s == false) {
+            if (s == "" || s == null || s == false) {
                 s = "null";
             }
-            else {               
+            else {
                 s = "'" + s.replace(/\'/ig, "''") + "'";
             }
         }
@@ -147,6 +178,19 @@ var Tool = {
             }
         }
         return uzipStr;
+    },
+    //把字符串中的中文翻译成Ascii码
+    getChinaAscii: function (str) {
+        let arr = str.split(""), rArr = []
+        for (let i = 0; i < arr.length; i++) {
+            if (this.isChina(arr[i])) {
+                rArr.push("0x" + this.StringToAscii(arr[i]));
+            }
+            else {
+                rArr.push(arr[i]);
+            }
+        }
+        return rArr.join("");
     },
     //Tool.StringToAscii("敦")   结果：6566
     StringToAscii: function (str) {
@@ -346,7 +390,7 @@ var Tool = {
     },
     isChina: function (s)//判断是否为中文的方法
     {
-        if (escape(s).indexOf("%u") < 0) { return false; } else { return true; }
+        return /[\u4e00-\u9fff]/.test(s);
     },
     html: function (next, This, html, t) {
         $("#table").hide().html(html).fadeIn("slow");
@@ -368,7 +412,6 @@ var Tool = {
         }
         return week
     },
-
     apply: function (data, next, This, t) {
         if (t) { next.apply(This, [data, t]); }
         else { next.apply(This, [data]); }
@@ -592,7 +635,6 @@ var Tool = {
         if (!sDate1) { sDate1 = Date.now(); }
         if (!sDate2) { sDate2 = Date.now(); }
         let dateSpan = sDate1 - sDate2;
-
         //计算出相差天数
         let days = Math.floor(dateSpan / (24 * 60 * 60 * 1000));
         //计算小时数

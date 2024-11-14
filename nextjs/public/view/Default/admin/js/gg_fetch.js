@@ -1,6 +1,6 @@
 'use strict';
 Object.assign(gg, {
-    uploadFile: function(url, headers, data,next, This, t){
+    uploadFile: function (url, type, headers, data, next, This, t) {
         /*
         data格式如下：
         [{
@@ -22,16 +22,16 @@ Object.assign(gg, {
             value: 300
         }]
         注：（二进制）表示会把文件转成二进制后，再上传。
-        上传文件       gg.uploadFile("https://rendie.com/ajax",headers,data,this.a02,this,"xxxxx")
+        上传文件       gg.uploadFile("https://rendie.com/ajax","json",headers,data,this.a02,this,"xxxxx")
         可走Headers监听路线，比如：修改“Origin”标头，胆会慢一点。
         */
-        let oo = { action: "uploadFile", url: url, headers: headers, data: data }
+        let oo = { action: "uploadFile", url: url, type: type, headers: headers, data: data }
         this.postMessage(next, This, t, oo)
-     },
-      ///////////////////////////////////////////////////////////////
+    },
+    ///////////////////////////////////////////////////////////////
     //gg.getFetch("https://www.aliexpress.com/item/1005002156462954.html","text",this.c01,this,t)
-    getFetch: function (url,type, next, This, t) {
-        let oo = { action: "getFetch",type:type, url: url }
+    getFetch: function (url, type, next, This, t) {
+        let oo = { action: "getFetch", type: type, url: url }
         this.postMessage(next, This, t, oo)
     },
     //普通返回  gg.postFetch("https://www.aliexpress.com/item/1005002156462954.html",arr3,this.c01,this)

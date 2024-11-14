@@ -48,34 +48,66 @@ Object.assign(Tool, {
             return " limit " + (page == 1 ? "" : ((page - 1) * size) + ",") + size
         }
     },
-    page: function (count, size, page2) {
-        //page2     当前页
+    page: function (count, size, CurrentPage) {
+        //CurrentPage     当前页
         let pagelen = 8,
-            page1 = Math.ceil(count / size),
-            page3 = page2 - Math.ceil(pagelen / 2),
+            CountPage = Math.ceil(count / size),
+            tempPage = CurrentPage - Math.ceil(pagelen / 2),
             str = "";
-        //page1    	总页数        
-        //page3    	临时页码
-        str = '<ul class="pagination justify-content-end"><li class="col p-2">显示 ' + count + ' 条中的 ' + (((page2 - 1) * size) + 1) + '-' + (((page2 - 1) * size) + size) + ' 条</li>'
+        //CountPage    	总页数        
+        //tempPage    	临时页码
+        str = '<ul class="pagination justify-content-end"><li class="col p-2">显示 ' + count + ' 条中的 ' + (((CurrentPage - 1) * size) + 1) + '-' + (((CurrentPage - 1) * size) + size) + ' 条</li>'
         if (count > size) {
-            if (page2 != 1) {
+            if (CurrentPage != 1) {
                 str += '\
                 <li class="page-item"><a href="javascript:" class="page-link" onclick="Tool.pageTo(1)">&#8249;&#8249; 第一页</a></li>\
-                <li class="page-item"><a href="javascript:" class="page-link" onclick="Tool.pageTo(' + (page2 - 1) + ')">&#8249; 上一页</a></li>';
+                <li class="page-item"><a href="javascript:" class="page-link" onclick="Tool.pageTo(' + (CurrentPage - 1) + ')">&#8249; 上一页</a></li>';
             }
-            if (page3 < 1) { page3 = 1; }
-            for (let z = page3; z <= (page3 + pagelen > page1 ? page1 : page3 + pagelen); z++) {
-                if (z == page2) { str += '<li class="page-item active"><span class="page-link">' + z + '</span></li>'; }
+            if (tempPage < 1) { tempPage = 1; }
+            for (let z = tempPage; z <= (tempPage + pagelen > CountPage ? CountPage : tempPage + pagelen); z++) {
+                if (z == CurrentPage) { str += '<li class="page-item active"><span class="page-link">' + z + '</span></li>'; }
                 else { str += '<li class="page-item"><a href="javascript:" class="page-link" onclick="Tool.pageTo(' + z + ');">' + z + '</a></li>'; }
             }
-            if (page2 != page1) {
+            if (CurrentPage != CountPage) {
                 str += '\
-                <li class="page-item"><a href="javascript:" class="page-link" onclick="Tool.pageTo(' + (page2 + 1) + ')">下一页 &#8250;</a></li>\
-                <li class="page-item"><a href="javascript:" class="page-link" onclick="Tool.pageTo(' + page1 + ')">最后页 &#8250;&#8250;</a></li>';
+                <li class="page-item"><a href="javascript:" class="page-link" onclick="Tool.pageTo(' + (CurrentPage + 1) + ')">下一页 &#8250;</a></li>\
+                <li class="page-item"><a href="javascript:" class="page-link" onclick="Tool.pageTo(' + CountPage + ')">最后页 &#8250;&#8250;</a></li>';
             }
         }
         str = str + '</ul>'
         return str
+    },
+    page2: function (sessionObj, LastEvaluatedKey, obj, DEFAULT_DB, size, CurrentPage, jsFile) {
+        let name = window.location.pathname + jsFile;
+        if (DEFAULT_DB == "dynamodb") {
+            if (CurrentPage == 1) {
+                sessionObj = { count: obj.Count, "2": LastEvaluatedKey }
+                sessionStorage.setItem(name, JSON.stringify(sessionObj));
+            }
+            else {
+                sessionObj[CurrentPage + 1] = LastEvaluatedKey
+                sessionStorage.setItem(name, JSON.stringify(sessionObj));
+            }
+            ////////////////////////////////////////////////////////
+            let Count = sessionObj.count
+            let CountPage = Math.ceil(Count / size)
+            let str = '<ul class="pagination justify-content-end"><li class="col p-2">显示 ' + Count + ' 条中的 ' + (((CurrentPage - 1) * size) + 1) + '-' + (((CurrentPage - 1) * size) + size) + ' 条</li>'
+            if (CurrentPage != 1) {
+                str += '<li class="page-item"><a href="javascript:" class="page-link" onclick="Tool.pageTo(' + (CurrentPage - 1) + ')">&#8249; 上一页</a></li>';
+            }
+            str += '<li class="page-item"><span class="page-link">' + CurrentPage + "/" + CountPage + '</span></li>';
+            if (CurrentPage != CountPage) {
+                str += '<li class="page-item"><a href="javascript:" class="page-link" onclick="Tool.pageTo(' + (CurrentPage + 1) + ')">下一页 &#8250;</a></li>';
+            }
+            return str + '</ul>'
+        }
+        else {
+            if (CurrentPage == 1) {
+                sessionObj = { count: obj[0].Count }
+                sessionStorage.setItem(name, JSON.stringify(sessionObj));
+            }
+            return this.page(sessionObj.count, size, CurrentPage)
+        }
     },
     pageTo: function (page) {
         let urlParams = Tool.setQueryParam(location.search, "page", page)
@@ -101,10 +133,10 @@ Object.assign(Tool, {
     },
     main: function (val) {
         let url = location.href.split("?")[0] + val
-        frameElement._DialogArguments.fun.a05(url)
+        frameElement._DialogArguments.fun.a05(url);
     },
     url: function (url) {
-        frameElement._DialogArguments.fun.a05(url)
+        frameElement._DialogArguments.fun.a05(url);
     },
     open: function (name, val) {
         Tool.main("?" + Tool.setQueryParam(location.search, name, val));
