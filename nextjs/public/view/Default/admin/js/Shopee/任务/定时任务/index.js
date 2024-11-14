@@ -1,5 +1,8 @@
 var fun =
 {
+    obj: {
+        DEFAULT_DB: "",
+    },
     a01: function () {
         obj.params.jsFile = obj.params.jsFile ? obj.params.jsFile : ""//选择JS文件
         obj.params.page = obj.params.page ? parseInt(obj.params.page) : 1;//翻页  
@@ -7,25 +10,28 @@ var fun =
     },
     a02: function () {
         let data = [{
-            action: "${default_db}",
-            database: "shopee/任务/定时任务",
-            sql: "select count(1) as total FROM @.table",
-        }, {
-            action: "${default_db}",
-            database: "shopee/任务/定时任务",
-            sql: "select " + Tool.fieldAs("id,name,remark,runtime,nexttime,cycle,isenable,priority") + " FROM @.table order by @.isenable desc,@.priority asc" + Tool.limit(20, obj.params.page, "sqlite"),
+            action: "process",
+            fun: "env",
+            name: "NEXTJS_CONFIG_DEFAULT_DB"
         }]
         Tool.ajax.a01(data, this.a03, this);
     },
     a03: function (t) {
-        let html = '', arr = t[1]
+        this.obj.DEFAULT_DB = t[0];
+        let sessionObj = {}
+        let str = sessionStorage.getItem(window.location.pathname + obj.params.jsFile)
+        if (str) sessionObj = JSON.parse(str)
+        Tool.ajax.a01(this.b04(t[0], sessionObj[obj.params.page]), this.a04, this, sessionObj);
+    },
+    a04: function (t, sessionObj) {
+        let html = '', arr = Tool.getArr(t[0], this.obj.DEFAULT_DB);
         for (let i = 0; i < arr.length; i++) {
             html += '\
             <tr>\
                 <td>' + arr[i].priority + '</td>\
-                <td style="padding-left: 30px;position: relative;">'+ this.b02(arr[i].id) + '' + arr[i].name + '</td>\
-                <td>' + arr[i].remark + '</td>\
-                <td>'+ arr[i].cycle + ' 分钟</td>\
+                <td style="padding-left: 30px;position: relative;">'+ this.b02(arr[i].id) + '' + arr[i].taskname + '</td>\
+                <td>' + (arr[i].remark ? arr[i].remark : '') + '</td>\
+                <td>'+ arr[i].runcycle + ' 分钟</td>\
                 <td>'+ Tool.js_date_time2(arr[i].runtime) + '</td>\
                 <td>'+ Tool.js_date_time2(arr[i].nexttime) + '</td>\
                 <td>'+ (arr[i].isenable ? '<font color="blue">已开启</font>' : '已关闭') + '</td>\
@@ -36,7 +42,7 @@ var fun =
             <table class="table table-hover align-middle center">\
                 <thead class="table-light center">'+ this.b01() + '</thead>\
                 <tbody>'+ html + '</tbody>\
-            </table>' + Tool.page(t[0][0].total, 20, obj.params.page) + '\
+            </table>' + Tool.page2(sessionObj, t[0].LastEvaluatedKey, t[1], this.obj.DEFAULT_DB, 20, obj.params.page, obj.params.jsFile) + '\
         </div>'
         Tool.html(null, null, html);
     },
@@ -69,10 +75,62 @@ var fun =
             <li onClick="fun.c01();"><a class="dropdown-item pointer">添加任务</a></li>\
             <li onClick="Tool.openR(\'?jsFile=js03&table=table&database=shopee/任务/定时任务&toaction=pg01\');"><a class="dropdown-item pointer">*把【sqlite】数据库该表同步到【PostgreSQL】【pg01】数据库</a></li>\
             <li onClick="Tool.openR(\'?jsFile=js03&table=table&database=shopee/任务/定时任务&toaction=pg02\');"><a class="dropdown-item pointer">*把【sqlite】数据库该表同步到【PostgreSQL】【pg02】数据库</a></li>\
+            <li onClick="Tool.openR(\'?jsFile=js03&table=table&database=shopee/任务/定时任务&toaction=pg03\');"><a class="dropdown-item pointer">*把【sqlite】数据库该表同步到【PostgreSQL】【pg03】数据库</a></li>\
+            <li onClick="Tool.openR(\'?jsFile=js03&table=table&database=shopee/任务/定时任务&toaction=dynamodb\');"><a class="dropdown-item pointer">*把【sqlite】数据库该表同步到【DynamoDB】数据库</a></li>\
             <li onClick="Tool.openR(\'?jsFile=js02\');"><a class="dropdown-item pointer">*启动定时任务</a></li>\
-            <li onClick="Tool.openR(\'?jsFile=js05&table=task&database=shopee&newdatabase=shopee/任务/定时任务\');"><a class="dropdown-item pointer">把旧表复制到新表</a></li>\
+            <li onClick="Tool.openR(\'?jsFile=js05&table=task&database=shopee&newdatabase=shopee/任务/定时任务\');"><a class="dropdown-item pointer">把一个db文件拆分成多个db文件</a></li>\
 		</ul>'
     },
+    b04: function (DEFAULT_DB, ExclusiveStartKey) {
+        let data = [], size = 20
+        if (DEFAULT_DB == "dynamodb") {
+            data = this.b05(size, DEFAULT_DB, ExclusiveStartKey)
+        }
+        else {
+            data = [{
+                action: DEFAULT_DB,
+                database: "shopee/任务/定时任务",
+                sql: "select " + Tool.fieldAs("id,taskname,remark,runtime,nexttime,runcycle,isenable,priority") + " FROM @.table" + Tool.limit(size, obj.params.page, "sqlite"),//order by @.isenable desc,@.priority asc
+            }]
+            if (obj.params.page == 1) {
+                data.push({
+                    action: DEFAULT_DB,
+                    database: "shopee/任务/定时任务",
+                    sql: "select count(1) as total FROM @.table",
+                })
+            }
+        }
+        return data;
+    },
+    b05: function (size, DEFAULT_DB, ExclusiveStartKey) {
+        let TableName = Tool.getChinaAscii('shopee_任务_定时任务_table')
+        let params = {
+            ProjectionExpression: 'id,taskname,remark,runtime,nexttime,runcycle,isenable,priority', // 只获取这些字段
+            Limit: size, // 每页项目数上限
+            TableName: TableName,
+        }
+        if (ExclusiveStartKey && obj.params.page != 1) {//翻页
+            params.ExclusiveStartKey = ExclusiveStartKey;
+        }
+        let data = [{
+            action: DEFAULT_DB,
+            fun: "scan",
+            params: params,
+        }]
+        /////////////////////////////////////////////
+        if (obj.params.page == 1) {
+            data.push({
+                action: DEFAULT_DB,
+                fun: "scan",
+                params: {
+                    TableName: TableName,
+                    Select: 'COUNT' // 请求只返回项目总数
+                }
+            })
+        }
+        return data;
+    },
+    ///////////////////////////////////////////////
     c01: function () {
         let data = [{
             action: "sqlite",

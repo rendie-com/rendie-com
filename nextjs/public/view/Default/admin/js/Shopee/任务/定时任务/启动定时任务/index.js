@@ -22,8 +22,8 @@ var fun =
 		        <tr><td class="right w200">运行时时间：</td><td colspan="2">'+Tool.js_date_time2(this.obj.runtime)+'</td></tr>\
 		        <tr><td class="right">已运行时长：</td><td id="time" colspan="2"></td></tr>\
 		        <tr><td class="right">用户名：</td><td id="username" colspan="2"></td></tr>\
-		        <tr><td class="right">执行周期：</td><td id="cycle" colspan="2"></td></tr>\
-		        <tr><td class="right">任务名称：</td><td id="name" colspan="2"></td></tr>\
+		        <tr><td class="right">执行周期：</td><td id="runcycle" colspan="2"></td></tr>\
+		        <tr><td class="right">任务名称：</td><td id="taskname" colspan="2"></td></tr>\
 		        <tr><td class="right">任务说明：</td><td id="remark" colspan="2"></td></tr>\
 		        <tr><td class="right">任务进度：</td>'+ Tool.htmlProgress('A') + '</tr>\
 		        <tr><td class="right">站点：</td><td id="site" colspan="2"></td></tr>\
@@ -67,7 +67,7 @@ var fun =
         let data = [{
             action: "${default_db}",
             database: "shopee/任务/定时任务",
-            sql: "select " + Tool.fieldAs("jsfile,name,id,cycle,remark") + " FROM @.table where @.nexttime<" + this.obj.runtime + " and @.isenable=1 order by @.priority asc limit 1",
+            sql: "select " + Tool.fieldAs("jsfile,taskname,id,runcycle,remark") + " FROM @.table where @.nexttime<" + this.obj.runtime + " and @.isenable=1 order by @.priority asc limit 1",
         }]
         if (this.obj.A2 == 0) {
             data.push({
@@ -88,9 +88,9 @@ var fun =
     },
     d04: function () {
         let oo = this.obj.Aobj
-        $("#name").html(oo.name);
+        $("#taskname").html(oo.taskname);
         $("#remark").html(oo.remark);
-        $("#cycle").html(oo.cycle + " 分钟");
+        $("#runcycle").html(oo.runcycle + " 分钟");
         Tool.jsArr(JSON.parse(oo.jsfile), this.e01, this);
     },
     /////////////////////////////////////////
@@ -111,7 +111,7 @@ var fun =
         let data = [{
             action: "${default_db}",
             database: "shopee/任务/定时任务",
-            sql: "update @.table set @.runtime=" + this.obj.runtime + ",@.nexttime=" + (this.obj.runtime + oo.cycle * 60) + " where @.id=" + oo.id,
+            sql: "update @.table set @.runtime=" + this.obj.runtime + ",@.nexttime=" + (this.obj.runtime + oo.runcycle * 60) + " where @.id=" + oo.id,
         }]
         Tool.ajax.a01(data, this.f02, this);
     },

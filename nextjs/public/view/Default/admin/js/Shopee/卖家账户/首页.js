@@ -1,20 +1,27 @@
 'use strict';
 var fun =
 {
+    obj: {
+        DEFAULT_DB: "",
+    },
     a01: function () {
         //obj.params.jsFile         选择JS文件
         this.a02();
     },
     a02: function () {
         let data = [{
-            action: "${default_db}",
-            database: "shopee/卖家账户",
-            sql: "select " + Tool.fieldAs("sort,id,note,name,company,phone,username,password") + " FROM @.table order by @.sort asc,@.id asc limit 50"
+            action: "process",
+            fun: "env",
+            name: "NEXTJS_CONFIG_DEFAULT_DB"
         }]
         Tool.ajax.a01(data, this.a03, this);
     },
     a03: function (t) {
-        let html = "", arr = t[0];
+        this.obj.DEFAULT_DB = t[0];
+        Tool.ajax.a01(this.b02(t[0]), this.a04, this);
+    },
+    a04: function (t) {
+        let html = "", arr = Tool.getArr(t[0], this.obj.DEFAULT_DB);
         for (let i = 0; i < arr.length; i++) {
             html += '\
 			<tr>\
@@ -30,7 +37,7 @@ var fun =
 				<td class="left">* <a href="javascript:;" onclick="Tool.SignIn.a01('+ arr[i].id + ',$(this).parent())" title="点击登陆">' + arr[i].username + '</a></td>\
 				<td>'+ arr[i].company + '</td>\
 				<td>'+ arr[i].phone + '</td>\
-				<td>'+ arr[i].name + '</td>\
+				<td>'+ arr[i].withdrawee + '</td>\
 				<td>'+ arr[i].note + '</td>\
             </tr>'
         }
@@ -82,7 +89,9 @@ var fun =
               <li><a class="dropdown-item pointer" onClick="fun.c01()">添加</a></li>\
               <li onClick="Tool.openR(\'?jsFile=js21&table=table&database=shopee/卖家账户&toaction=pg01\');"><a class="dropdown-item pointer">*把【sqlite】数据库该表同步到【PostgreSQL】【pg01】数据库</a></li>\
               <li onClick="Tool.openR(\'?jsFile=js21&table=table&database=shopee/卖家账户&toaction=pg02\');"><a class="dropdown-item pointer">*把【sqlite】数据库该表同步到【PostgreSQL】【pg02】数据库</a></li>\
-              <li onClick="Tool.openR(\'?jsFile=js03&table=seller&database=shopee&newdatabase=shopee/seller\');"><a class="dropdown-item pointer">把旧表复制到新表</a></li>\
+              <li onClick="Tool.openR(\'?jsFile=js21&table=table&database=shopee/卖家账户&toaction=pg03\');"><a class="dropdown-item pointer">*把【sqlite】数据库该表同步到【PostgreSQL】【pg03】数据库</a></li>\
+              <li onClick="Tool.openR(\'?jsFile=js21&table=table&database=shopee/卖家账户&toaction=dynamodb\');"><a class="dropdown-item pointer">*把【sqlite】数据库该表同步到【DynamoDB】数据库</a></li>\
+              <li onClick="Tool.openR(\'?jsFile=js03&table=seller&database=shopee&newdatabase=shopee/seller\');"><a class="dropdown-item pointer">把一个db文件拆分成多个db文件</a></li>\
            </ul>\
           </th>\
           <th class="left">用户名</th>\
@@ -92,6 +101,33 @@ var fun =
           <th>备注</th>\
         </tr>'
         return str
+    },
+    b02: function (DEFAULT_DB) {
+        let data = [], size = 50
+        if (DEFAULT_DB == "dynamodb") {
+            data = this.b03(size, DEFAULT_DB)
+        }
+        else {
+            data = [{
+                action: DEFAULT_DB,
+                database: "shopee/卖家账户",
+                sql: "select " + Tool.fieldAs("sort,id,note,withdrawee,company,phone,username,password") + " FROM @.table order by @.sort asc,@.id asc limit " + size
+            }]
+        }
+        return data
+    },
+    b03: function (size, DEFAULT_DB) {
+        let params = {
+            ProjectionExpression: 'sort,id,note,withdrawee,company,phone,username,password', // 只获取这些字段
+            Limit: size, // 每页项目数上限
+            TableName: Tool.getChinaAscii('shopee_卖家账户_table'),
+        }
+        let data = [{
+            action: DEFAULT_DB,
+            fun: "scan",
+            params: params,
+        }]
+        return data;
     },
     c01: function () {
         let html = '"ok"<r: db="sqlite.shopee">INSERT into @.seller(@.addtime)VALUES(' + Tool.gettime("") + ')</r:>'

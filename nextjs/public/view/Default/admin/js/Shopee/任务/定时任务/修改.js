@@ -11,13 +11,13 @@ var fun =
     let data = [{
       action: "${default_db}",
       database: "shopee/任务/定时任务",
-      sql: "select " + Tool.fieldAs("id,name,jsfile,runtime,cycle,remark,isenable,priority") + " FROM @.table where @.id=" + obj.params.id,
+      sql: "select " + Tool.fieldAs("id,taskname,jsfile,runtime,runcycle,remark,isenable,priority") + " FROM @.table where @.id=" + obj.params.id,
     }]
     Tool.ajax.a01(data, this.a03, this);
   },
   a03: function (t) {
     let oo = t[0][0]
-    if (!oo.name) oo.name = "";
+    if (!oo.taskname) oo.taskname = "";
     let jsfile = ""; if (oo.jsfile) { jsfile = JSON.stringify(JSON.parse(oo.jsfile), null, 2); }//
     if (!oo.remark) oo.remark = "";
     let html = Tool.header(obj.params.return, "Shopee  &gt; 定时任务 &gt; 修改") + '\
@@ -26,7 +26,7 @@ var fun =
         <tbody>\
           <tr>\
           <td class="w200 right">任务名称：</td>\
-          <td><input type="text" class="form-control" value="'+ oo.name + '" onblur="fun.c01($(this),\'name\',\'' + oo.name + '\')"></td>\
+          <td><input type="text" class="form-control" value="'+ oo.taskname + '" onblur="fun.c01($(this),\'taskname\',\'' + oo.taskname + '\')"></td>\
           <td class="w300">如:定时生成首页</td>\
           </tr>\
           <tr>\
@@ -38,7 +38,7 @@ var fun =
           <td class="right">执行周期：</td>\
           <td>\
             <div class="input-group w150">\
-            <input class="form-control center" type="text" value="' + oo.cycle + '" onblur="fun.c01($(this),\'cycle\',\'' + oo.cycle + '\')">\
+            <input class="form-control center" type="text" value="' + oo.runcycle + '" onblur="fun.c01($(this),\'runcycle\',\'' + oo.runcycle + '\')">\
             <span class="input-group-text">分钟</span>\
             </div>\
           </td>\
