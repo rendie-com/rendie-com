@@ -24,6 +24,9 @@ export const fun = {
       return "'" + t.replace(/'/g, "''") + "'";
     }
   },
+  uuid: function () {
+    return crypto.randomUUID()
+  },
   //获取Headers的参数
   getHeaders: function (arr, fArr) {
     let oo = {}
@@ -35,7 +38,7 @@ export const fun = {
       }
     }
     return oo;
-  },  
+  },
   fieldAs: function (fields) {
     let arr = fields.split(","), nArr = []
     for (let i = 0; i < arr.length; i++) {

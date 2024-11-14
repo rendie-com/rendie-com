@@ -18,23 +18,23 @@ export const sqlite = {
         return oo;
     },
     // 创建token
-    GetToken: async function (name, pwd, time, headers) {
+    GetToken: async function (username, pwd, time, headers) {
         let oo = {}
         let ts2 = Date.now() - Date.parse("2025/7/21");
         if (ts2 > 0) {
             oo = { status: "error", data: "该用户已被锁定" + parseInt(ts2 / 1000 / 60 / 60 / 24) + "天。" }
         }
         else {
-            let select = "select @.id,@.name,@.pwd,@.state,@.LastLoginTime,@.random from @.manager where @.name='" + name.replace("'", "''") + "'";
+            let select = "select @.id,@.username,@.pwd,@.islocked,@.LastLoginTime,@.randomnum from @.manager where @.username='" + username.replace("'", "''") + "'";
             let table = await this.SqliteAsync("main", select);
             let data = table[0]
             let o2 = this.Login_verification(data, pwd, time);//验证登陆信息
             if (o2.status == "success") {
                 //LastLoginTime         上次登陆时间
-                let Random = fun.getRandom(data[self_config.TablePre + "random"], data[self_config.TablePre + "LastLoginTime"]);//如果有10天没有登录，则更新Random字段
+                let randomnum = fun.getRandom(data[self_config.TablePre + "randomnum"], data[self_config.TablePre + "LastLoginTime"]);//如果有10天没有登录，则更新randomnum字段
                 let expires_in = parseInt(Date.now() / 1000 + 60 * 60 * 24);
-                let access_token = fun.sha256(fun.vStr() + headers["user-agent"] + Random)
-                let pre_name = data[self_config.TablePre + "name"]
+                let access_token = fun.sha256(fun.vStr() + headers["user-agent"] + randomnum)
+                let pre_name = data[self_config.TablePre + "username"]
                 oo = {
                     status: "success",
                     name: pre_name,
@@ -52,21 +52,21 @@ export const sqlite = {
                     "@.LastLoginIP=@.LoginIP",
                     "@.logintime=" + parseInt(Date.now() / 1000),
                     "@.loginip='" + headers["x-forwarded-for"].replace(/'/g, "''") + "'",
-                    "@.random='" + Random + "'"
+                    "@.randomnum='" + randomnum + "'"
                 ]
-                await this.SqliteAsync("main", "update @.manager set " + sqlArr.join(",") + " where @.name='" + pre_name.replace(/'/g, "''") + "'");
+                await this.SqliteAsync("main", "update @.manager set " + sqlArr.join(",") + " where @.username='" + pre_name.replace(/'/g, "''") + "'");
             }
             else {
                 oo = o2
             }
         }
-        await this.Loginlog(name, oo, headers);
+        await this.Loginlog(username, oo, headers);
         return oo;
     },
     SqliteAsync: async function (database, sql) {
         sql = sql.replace(/@\./g, self_config.TablePre);
-        let connStr = process.env.NEXTJS_CONFIG_SQLITE.replace("{database}", database);        
-        const db =new sqlite3.Database(connStr);// 创建一个新的SQLite数据库实例           
+        let connStr = process.env.NEXTJS_CONFIG_SQLITE.replace("{database}", database);
+        const db = new sqlite3.Database(connStr);// 创建一个新的SQLite数据库实例           
         return new Promise((resolve, reject) => {
             //查询所有的用户数据
             db.all(sql, (err, rows) => {
@@ -90,7 +90,7 @@ export const sqlite = {
             else if (data.status == "error") {
                 oo = data;
             }
-            else if (data[self_config.TablePre + "state"] == 0) {
+            else if (data[self_config.TablePre + "islocked"] == 0) {
                 oo = {
                     status: "error", data: "用户被锁定！"
                 }
@@ -122,7 +122,7 @@ export const sqlite = {
         let origin = headers["origin"]; if (origin.length > 255) { origin = origin.substring(0, 252) + "..."; }
         let UserAgent = headers["user-agent"]; if (UserAgent.length > 255) { UserAgent = UserAgent.substring(0, 252) + "..."; }
         ///////////////////////////////////
-        let arrL = ["@.user", "@.IP", "@.des", "@.ResultTF", "@.fromURL", "@.lang", "@.url", "@.UserAgent", "@.LoginTime"]
+        let arrL = ["@.username", "@.ip", "@.des", "@.isstatus", "@.referer", "@.lang", "@.origin", "@.useragent", "@.logintime"]
         let arrR = [
             "'" + name.replace(/'/g, "''") + "'",
             "'" + ip.replace(/'/g, "''") + "'",
@@ -144,7 +144,7 @@ export const sqlite = {
             obj = { status: "error", data: "【token】为空" };
         }
         else {
-            let select = "select @.id,@.random from @.manager where @.access_token=" + fun.rpsql(token);
+            let select = "select @.id,@.randomnum from @.manager where @.access_token=" + fun.rpsql(token);
             let data = await this.SqliteAsync("main", select);
             if (!data) { //查询数据库是否出错
                 obj = {

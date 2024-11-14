@@ -31,7 +31,7 @@ export const PostgreSQL = {
             //尝试连接数据库
             pool.connect((err, client, done) => {
                 if (err) {
-                    resolve('数据库连接失败');
+                    resolve(['数据库连接失败',err]);
                 } else {
                     done();// 释放连接
                     resolve('数据库连接成功');

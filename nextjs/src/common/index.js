@@ -3,6 +3,7 @@ import { self_fs } from './self/fs.js'
 import { self_process } from './self/process.js'
 import { sqlite } from './db/sqlite.js'
 import { PostgreSQL } from './db/PostgreSQL.js'
+import { DynamoDB } from './db/DynamoDB.js'
 
 export const index = {
     init: async function (list) {
@@ -15,11 +16,17 @@ export const index = {
             newList[i] = await this.switch_action(oo, list[i]);
             if (list[i].list && newList[i].length != 0) {
                 //返回结果有数据，运行list内的参数。 
+                if (oo.fun == 'getItem') {
+                    //在DynamoDB只有一条结果的情况。这个是因为返回结果不是数组了。
+                    newList[i] = [newList[i]];
+                }
                 for (let j = 0; j < newList[i].length; j++) {
+                    //查询出一条或多条的情况。
                     newList[i][j].list = await this.for_list(newList[i][j], list[i].list)
                 }
             }
-            else if (list[i].elselist && newList[i].length == 0) {
+            else if (list[i].elselist && (newList[i].length == 0 || Object.keys(newList[i]).length === 0)) {
+                //Object.keys   要检查一个对象是否为空
                 //返回结果没数据，运行elselist内的参数。    
                 //问：为什么要做成这种格式？
                 //答：为了与正确的结果返回统一格式。
@@ -27,17 +34,17 @@ export const index = {
                     list: await this.for_list({}, list[i].elselist)
                 }]
             }
-
-
         }
         return newList;
     },
-    switch_action: async function (o1, oo) {
+    switch_action: async function (data, oo) {
         if (oo.action == "${default_db}") { oo.action = process.env.NEXTJS_CONFIG_DEFAULT_DB; }
         switch (oo.action) {
-            case "sqlite": oo = await sqlite.a01(oo, this.database(o1, oo.database), this.sql(o1, oo.sql)); break;
-            case "pg01": oo = await PostgreSQL.a01(oo, this.database(o1, oo.database), this.sql(o1, oo.sql), process.env.NEXTJS_CONFIG_PG01); break;
-            case "pg02": oo = await PostgreSQL.a01(oo, this.database(o1, oo.database), this.sql(o1, oo.sql), process.env.NEXTJS_CONFIG_PG02); break;
+            case "sqlite": oo = await sqlite.a01(oo, this.database(data, oo.database), this.sql(data, oo.sql)); break;
+            case "pg01": oo = await PostgreSQL.a01(oo, this.database(data, oo.database), this.sql(data, oo.sql), process.env.NEXTJS_CONFIG_PG01); break;
+            case "pg02": oo = await PostgreSQL.a01(oo, this.database(data, oo.database), this.sql(data, oo.sql), process.env.NEXTJS_CONFIG_PG02); break;
+            case "pg03": oo = await PostgreSQL.a01(oo, this.database(data, oo.database), this.sql(data, oo.sql), process.env.NEXTJS_CONFIG_PG03); break;
+            case "dynamodb": oo = await DynamoDB.a01(oo, oo.params); break;
             case "fs": oo = await self_fs.a01(oo); break;
             case "process": oo = await self_process.a01(oo); break;
             case "__dirname": oo = __dirname; break;
@@ -93,11 +100,11 @@ export const index = {
 //     const nodeDiskInfo = require('node-disk-info');
 //     return await nodeDiskInfo.getDiskInfo();
 //},
-
 //import { child_process}  from 'child_process'//我没时间来调试
+
 //我没时间来调试
-// exec: async function (command) {
-//     //解决调用cmd中文乱码（我没测式，要用了再来解决。）        https://www.lovestu.com/electroncmdcn.html
+//exec: async function (command) {
+//解决调用cmd中文乱码（我没测式，要用了再来解决。）        https://www.lovestu.com/electroncmdcn.html
 //     return new Promise((resolve) => {
 //         child_process(command, { encoding: 'utf8' }, (err, stdout, stderr) => {
 //             if (err) {

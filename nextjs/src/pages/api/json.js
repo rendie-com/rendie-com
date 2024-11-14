@@ -1,4 +1,5 @@
 import { sqlite } from '../../common/db/sqlite.js'
+import { DynamoDB } from '../../common/db/DynamoDB.js'
 import { PostgreSQL } from '../../common/db/PostgreSQL.js'
 import { index } from '../../common/index.js'
 import { self_config } from '../../common/self/config.js'
@@ -21,8 +22,11 @@ export default async function handler(req, res) {
       if (process.env.NEXTJS_CONFIG_DEFAULT_DB == "pg01") {
         obj = await PostgreSQL.GetToken(body.name, body.pwd, body.time, req.headers, process.env.NEXTJS_CONFIG_PG01);
       }
-      else if (process.env.NEXTJS_CONFIG_DEFAULT_DB == "pg02") {       
+      else if (process.env.NEXTJS_CONFIG_DEFAULT_DB == "pg02") {
         obj = await PostgreSQL.GetToken(body.name, body.pwd, body.time, req.headers, process.env.NEXTJS_CONFIG_PG02);
+      }
+      else if (process.env.NEXTJS_CONFIG_DEFAULT_DB == "dynamodb") {
+        obj = await DynamoDB.GetToken(body.name, body.pwd, body.time, req.headers, process.env.NEXTJS_CONFIG_PG02);
       }
       else {
         obj = await sqlite.GetToken(body.name, body.pwd, body.time, req.headers);

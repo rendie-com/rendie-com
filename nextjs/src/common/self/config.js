@@ -1,6 +1,6 @@
 export const self_config = {
   path: "view/Default/",
-  pg_database: "verceldb",
+  pg_database: "postgres",//postgres    verceldb
   TablePre: "rd_",
   isInstall: true,
 };
