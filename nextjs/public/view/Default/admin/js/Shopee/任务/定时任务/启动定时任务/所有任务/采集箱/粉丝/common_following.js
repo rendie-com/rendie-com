@@ -4,7 +4,7 @@ Object.assign(Tool, {
         obj: {
             E1: 1, E2: 0, Earr: [],
             F1: 0, F2: 0,
-            G1: 0, G2: 50,
+            G1: 0, G2: 40,
         },
         a01: function (dbnameObj, oo) {
             let Earr = [];
@@ -39,7 +39,7 @@ Object.assign(Tool, {
         },
         ////////////////////
         d01: function (oo) {
-            if (this.obj.F1 <= 49) {
+            if (this.obj.F1 <= this.obj.G2 - 1) {
                 $("#state").html("不用取关了")
                 this.e01(oo)
             }
@@ -109,9 +109,9 @@ Object.assign(Tool, {
             this.a02(oo);
         },
         f02: function (oo) {
-            this.obj.E1= 1, 
-            this.obj.E2= 0
-            this.obj.Earr= []
+            this.obj.E1 = 1,
+                this.obj.E2 = 0
+            this.obj.Earr = []
             oo.next.apply(oo.This, [oo.t])
         },
     }
