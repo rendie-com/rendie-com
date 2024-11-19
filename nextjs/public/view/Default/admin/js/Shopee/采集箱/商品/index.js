@@ -1,6 +1,10 @@
 'use strict';
 var fun =
 {
+    obj: {
+        DEFAULT_DB: "",
+        size: 20
+    },
     a01: function () {
         obj.params.jsFile = obj.params.jsFile ? obj.params.jsFile : ""//选择JS文件
         obj.params.page = obj.params.page ? parseInt(obj.params.page) : 1;//翻页  
@@ -11,34 +15,21 @@ var fun =
     },
     a02: function () {
         let data = [{
-            action: "fs",
-            fun: "access_sqlite",
-            database: "shopee/采集箱/商品/" + obj.params.site,
-            mode: 0,
-            elselist: [{
-                action: "fs",
-                fun: "download_sqlite",
-                urlArr: ["https://github.com/rendie-com/rendie-com/releases/download/1/shopee_gather_product_" + obj.params.site + ".db","https://github.com/rendie-com/rendie-com/releases/download/2/shopee_gather_product_" + obj.params.site + ".db"],
-                database: "shopee/采集箱/商品/" + obj.params.site
-            }]
+            action: "process",
+            fun: "env",
+            name: "NEXTJS_CONFIG_DEFAULT_DB"
         }]
         Tool.ajax.a01(data, this.a03, this);
     },
-    a03: function () {
-        let where = " order by @.addtime desc";
-        let data = [{
-            action: "sqlite",
-            database: "shopee/采集箱/商品/" + obj.params.site,
-            sql: "select count(1) as total FROM @.table" + this.b03(),
-        }, {
-            action: "sqlite",
-            database: "shopee/采集箱/商品/" + obj.params.site,
-            sql: "select " + Tool.fieldAs("itemid,shopid,name,image,shop_location,currency,price,addtime") + " FROM @.table" + this.b03() + where + Tool.limit(10, obj.params.page, "sqlite"),
-        }]
-        Tool.ajax.a01(data, this.a04, this);
+    a03: function (t) {
+        this.obj.DEFAULT_DB = t[0];
+        let sessionObj = {}
+        let str = sessionStorage.getItem(window.location.pathname + obj.params.jsFile)
+        if (str) sessionObj = JSON.parse(str)
+        Tool.ajax.a01(this.b07(t[0], sessionObj[obj.params.page]), this.a04, this, sessionObj);
     },
-    a04: function (t) {
-        let html1 = "", arr = t[1]
+    a04: function (t, sessionObj) {
+        let html1 = "", arr = Tool.getArr(t[0], this.obj.DEFAULT_DB);
         for (let i = 0; i < arr.length; i++) {
             html1 += '\
             <tr>\
@@ -46,20 +37,20 @@ var fun =
                 <td>'+ arr[i].shopid + '</td>\
                 <td class="nowrap">'+ arr[i].shop_location + '</td>\
                 <td>'+ this.b04(arr[i].image) + '</td>\
-                <td class="left"><a href="https://' + (obj.params.site == "tw" ? "xiapi" : obj.params.site) + '.xiapibuy.com/product/' + arr[i].shopid + '/' + arr[i].itemid + '/" target="_blank">' + arr[i].name + '</a></td>\
-                <td>'+ (arr[i].price / 100000).toFixed(2) + ' ' + arr[i].currency + '</td>\
+                <td class="left"><a href="https://' + (obj.params.site == "tw" ? "xiapi" : obj.params.site) + '.xiapibuy.com/product/' + arr[i].shopid + '/' + arr[i].itemid + '/" target="_blank">' + arr[i].title + '</a></td>\
+                <td>'+ arr[i].price + '</td>\
                 <td>'+ Tool.js_date_time2(arr[i].addtime) + '</td>\
             </tr>'
         }
         let html = Tool.header2(obj.params.jsFile, obj.params.site) + '\
-		<div class="p-2">\
-			'+ Tool.header3(obj.params.jsFile, obj.params.site) + this.b06() + '\
-			<table class="table align-middle table-hover center">\
-				<thead class="table-light">'+ this.b01() + '</thead>\
-				<tbody>'+ html1 + '</tbody>\
-			</table>\
-            ' + Tool.page(t[0][0].total, 10, obj.params.page) + '\
-		</div>'
+    	<div class="p-2">\
+    		'+ Tool.header3(obj.params.jsFile, obj.params.site) + this.b06() + '\
+    		<table class="table align-middle table-hover center">\
+    			<thead class="table-light">'+ this.b01() + '</thead>\
+    			<tbody>'+ html1 + '</tbody>\
+    		</table>\
+            ' + Tool.page2(sessionObj, t[0].LastEvaluatedKey, t[1], this.obj.DEFAULT_DB, this.obj.size, obj.params.page, obj.params.jsFile) + '\
+    	</div>'
         Tool.html(null, null, html)
     },
     //////////////////////////////////////////////
@@ -81,7 +72,8 @@ var fun =
         <button title="操作" class="menu-button" data-bs-toggle="dropdown" aria-expanded="false"><div></div><div></div><div></div></button>\
 		<ul class="dropdown-menu">\
             <li onClick="Tool.openR(\'?jsFile=js01&site='+ obj.params.site + '\');"><a class="dropdown-item pointer">采集商品</a></li>\
-            <li onClick="Tool.openR(\'?jsFile=js10&table=pro_'+ obj.params.site + '&database=shopee_gather&newdatabase=shopee/采集箱/商品/' + obj.params.site + '\');"><a class="dropdown-item pointer">把旧表复制到新表</a></li>\
+            <li onClick="Tool.openR(\'?jsFile=js10&table=pro_'+ obj.params.site + '&database=shopee_gather&newdatabase=shopee/采集箱/商品/' + obj.params.site + '\');"><a class="dropdown-item pointer">把一个db文件拆分成多个db文件</a></li>\
+            <li onClick="Tool.openR(\'?jsFile=js11&table=table&database=shopee/采集箱/商品/'+ obj.params.site + '&toaction=dynamodb\');"><a class="dropdown-item pointer">*把【sqlite】数据库该表同步到【DynamoDB】数据库</a></li>\
 		</ul>'
     },
     b03: function () {
@@ -128,6 +120,54 @@ var fun =
             <button class="btn btn-outline-secondary" type="button"onclick="fun.c02();">搜索</button>\
         </div>'
     },
+    b07: function (DEFAULT_DB, ExclusiveStartKey) {
+        if (DEFAULT_DB == "dynamodb") {
+            return this.b08(this.obj.size, DEFAULT_DB, ExclusiveStartKey)
+        }
+        else {
+            return this.b09(this.obj.size, DEFAULT_DB)
+        }
+    },
+    b08: function (size, DEFAULT_DB, ExclusiveStartKey) {
+        let TableName = Tool.getChinaAscii('shopee_采集箱_商品_' + obj.params.site + '_table')
+        let params = {
+            ProjectionExpression: 'itemid,shopid,title,image,shop_location,currency,price,addtime', // 只获取这些字段
+            Limit: size, // 每页项目数上限
+            TableName: TableName,
+        }
+        if (ExclusiveStartKey && obj.params.page != 1) {//翻页
+            params.ExclusiveStartKey = ExclusiveStartKey;
+        }
+        let data = [{
+            action: DEFAULT_DB,
+            fun: "scan",
+            params: params,
+        }]
+        /////////////////////////////////////////////
+        if (obj.params.page == 1) {
+            data.push({
+                action: DEFAULT_DB,
+                fun: "scan",
+                params: {
+                    TableName: TableName,
+                    Select: 'COUNT' // 请求只返回项目总数
+                }
+            })
+        }
+        return data;
+    },
+    b09: function (size, DEFAULT_DB) {
+        let data = [{
+            action: DEFAULT_DB,
+            database: "shopee/采集箱/商品/" + obj.params.site,
+            sql: "select " + Tool.fieldAs("itemid,shopid,title,image,shop_location,currency,price,addtime") + " FROM @.table" + this.b03() + Tool.limit(size, obj.params.page, DEFAULT_DB),
+        }, {
+            action: DEFAULT_DB,
+            database: "shopee/采集箱/商品/" + obj.params.site,
+            sql: "select count(1) as Count FROM @.table" + this.b03(),
+        }]
+        return data
+    },
     c01: function (val) {
         let name = this.b05("" + val)
         $("#field").html(name).val(val)
@@ -143,3 +183,16 @@ var fun =
     },
 }
 fun.a01();
+
+// let data = [{
+//     action: "fs",
+//     fun: "access_sqlite",
+//     database: "shopee/采集箱/商品/" + obj.params.site,
+//     mode: 0,
+//     elselist: [{
+//         action: "fs",
+//         fun: "download_sqlite",
+//         urlArr: ["https://github.com/rendie-com/rendie-com/releases/download/1/shopee_gather_product_" + obj.params.site + ".db", "https://github.com/rendie-com/rendie-com/releases/download/2/shopee_gather_product_" + obj.params.site + ".db"],
+//         database: "shopee/采集箱/商品/" + obj.params.site
+//     }]
+// }]

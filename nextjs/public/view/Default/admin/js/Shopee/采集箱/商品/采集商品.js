@@ -2,7 +2,7 @@ var fun =
 {
     obj:
     {
-        A1: 1, A2: 0, key: "",
+        A1: 1, A2: 1, key: "",
     },
     a01: function () {
         //obj.params.jsFile         选择JS文件        
@@ -46,11 +46,15 @@ var fun =
         </select>';
         return str2;
     },
+    //////////////////////////////////////////////
+    b02: function (site) {
+        if (site == "tw") { site = "xiapi" }
+        return "https://" + site + ".xiapibuy.com/search?keyword=" + this.obj.key + "&page=" + (this.obj.A1 - 1) + "&sortBy=ctime";//搜索   
+    },
     ///////////////////////////////////
     c01: function (This, val) {
         This.attr("disabled", true);
         this.obj.key = val;
-        this.obj.A2 = 9;//为什么是9？答：最多只能翻到第9页。
         this.d01()
     },
     ////////////////////////////////////////
@@ -61,26 +65,39 @@ var fun =
         Tool.x1x2("A", this.obj.A1, this.obj.A2, this.d03, this)
     },
     d03: function () {
-        let url = "https://" + (obj.params.site == "tw" ? 'xiapi' : obj.params.site) + ".xiapibuy.com/search?keyword=" + this.obj.key + "&page=" + (this.obj.A1 - 1) + "&sortBy=ctime";//搜索        
-        gg.tabs_remove_create_getHeaders(2, url, ["/api/v4/search/search_items"], false, this.d04, this)
+        gg.tabs_remove_create_indexOf(3, this.b02(obj.params.site), false, false, this.d04, this)
     },
     d04: function (t) {
-        gg.setHeaders_getHtml(t.url, t.requestHeaders, this.d05, this)
+        Tool.ajax.text("/" + o.path + "admin/js/Shopee/采集箱/商品/注入_翻页和显示完整内容.js", this.d05, this);
     },
     d05: function (t) {
-        if (t.items) {
-            this.d06(t.items)
+        gg.tabs_executeScript_indexOf(3, ["jquery"], t + "\nfun01.a01()", ["商品个数：60=60=60</title>"], false, this.e01, this)
+    },
+    ////////////////////////////////////////////////////
+    e01: function (t) {
+        let itemidArr = Tool.StrSplits(t, "itemid=", "&")
+        let shopidArr = Tool.StrSplits(t, "shopid=", "\"")
+        let nameArr = Tool.StrSplits(t, '.webp" alt="', "\"")
+        let imageArr = Tool.StrSplits(t, '<div class="relative z-0 w-full pt-full"><img src="', "\"")
+        let priceArr = Tool.StrSplits(t, '<span class="font-medium text-base/5 truncate">', "</span>")
+        let shop_locationArr = Tool.StrSplits(t, '<span class="ml-[3px] align-middle">', "</span>")
+        this.obj.A2 = Tool.int(Tool.StrSlice(t, 'class="shopee-mini-page-controller__total">', '</span>'));
+        if (itemidArr.length == shopidArr.length &&
+            shopidArr.length == nameArr.length &&
+            nameArr.length == imageArr.length &&
+            imageArr.length == priceArr.length &&
+            priceArr.length == shop_locationArr.length
+        ) {
+            this.e02(itemidArr, shopidArr, nameArr, imageArr, priceArr, shop_locationArr)
         }
         else {
-            Tool.pre(["内容不对1111", t])
+            Tool.at("内容出错：\n\n" + t)
         }
     },
-    d06: function (arr) {
-        let itemidArr = [];
-        let insertObj = {}, updateObj = {}
-        for (let i = 0; i < arr.length; i++) {
+    e02: function (itemidArr, shopidArr, nameArr, imageArr, priceArr, shop_locationArr) {
+        let data = []
+        for (let i = 0; i < itemidArr.length; i++) {
             let arrL = [
-                "@.currency",
                 "@.itemid",
                 "@.shopid",
                 "@.name",
@@ -90,83 +107,56 @@ var fun =
                 "@.addtime",
             ]
             let arrR = [
-                Tool.rpsql(arr[i].item_basic.currency),
-                arr[i].itemid,
-                arr[i].shopid,
-                Tool.rpsql(arr[i].item_basic.name),
-                Tool.rpsql(arr[i].item_basic.image),
-                arr[i].item_basic.price,
-                Tool.rpsql(arr[i].item_basic.shop_location),
-                arr[i].item_basic.ctime,
+                shopidArr[i],
+                shopidArr[i],
+                Tool.rpsql(nameArr[i]),
+                Tool.rpsql(imageArr[i]),
+                priceArr[i].replace(/,/g, ""),
+                Tool.rpsql(shop_locationArr[i]),
+                Tool.gettime(""),
             ]
             let arrUp = []; for (let i = 0; i < arrL.length; i++) { arrUp.push(arrL[i] + "=" + arrR[i]); }
-            insertObj[arr[i].itemid] = 'insert into @.table(' + arrL.join(",") + ')values(' + arrR.join(",") + ')'
-            updateObj[arr[i].itemid] = 'update @.table set ' + arrUp.join(",") + ' where @.itemid=' + arr[i].itemid
-            itemidArr.push(arr[i].itemid);
-        }
-        let data = [{
-            action: "sqlite",
-            database: "shopee/采集箱/商品/"+obj.params.site,
-            sql: "select @.itemid as itemid from @.table where @.itemid in(" + itemidArr.join(",") + ")",
-        }]
-        Tool.ajax.a01(data, this.d07, this, [insertObj, updateObj]);
-    },
-    d07: function (t, sqlArr) {
-        let arr = t[0], nArr = []
-        for (let i = 0; i < arr.length; i++) {
-            nArr.push(arr[i].itemid);
-        }
-        this.d08(nArr, sqlArr[0], sqlArr[1])
-    },
-    d08: function (itemidArr, insertObj, updateObj) {
-        let data = []
-        for (let k in insertObj) {
-            if (itemidArr.indexOf(Tool.int(k)) == -1) {
-                data.push({
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            data.push({
+                action: "sqlite",
+                database: "shopee/采集箱/商品/" + obj.params.site,
+                sql: "select @.itemid as itemid from @.table where @.itemid=" + itemidArr[i],
+                list: [{
                     action: "sqlite",
-                    database: "shopee/采集箱/商品/"+obj.params.site,
-                    sql: insertObj[k],
-                })
-            }
-            else {
-                data.push({
+                    database: "shopee/采集箱/商品/" + obj.params.site,
+                    sql: "update @.table set " + arrUp.join(",") + " where @.itemid=" + itemidArr[i],
+                }],
+                elselist: [{
                     action: "sqlite",
-                    database: "shopee/采集箱/商品/"+obj.params.site,
-                    sql: updateObj[k],
-                })
-            }
+                    database: "shopee/采集箱/商品/" + obj.params.site,
+                    sql: "insert into @.table(" + arrL.join(",") + ")values(" + arrR.join(",") + ")",
+                }]
+            })
         }
-        Tool.ajax.a01(data, this.d09, this);
+        Tool.ajax.a01(data, this.e03, this);
     },
-    d09: function (t) {
+    e03: function (t) {
         let iserr = false;
         for (let i = 0; i < t.length; i++) {
-            if (t[i] != null) { iserr = true; break; }
+            if (t[i][0].list[0].length != 0) { iserr = true; break; }
         }
         if (iserr) {
             Tool.pre(["有出错", t]);
         }
         else {
             this.obj.A1++;
-            this.e01()
+            this.f01()
         }
     },
-    e01: function () {
-        Tool.x1x2("A", this.obj.A1, this.obj.A2, this.e02, this)
+    f01: function () {
+        Tool.x1x2("A", this.obj.A1, this.obj.A2, this.f02, this)
     },
-    e02: function () {
-        Tool.ajax.text("/" + o.path + "admin/js/Shopee/采集箱/商品/注入_翻页.js", this.e03, this);
+    f02: function (t) {
+        Tool.ajax.text("/" + o.path + "admin/js/Shopee/采集箱/商品/注入_翻页和显示完整内容.js", this.f03, this);
     },
-    e03: function (txt) {
-        gg.tabs_executeScript_getHeaders(2, txt, ["/api/v4/search/search_items"], false, this.e04, this)
-    },
-    e04: function (t) {
-        if (t.url.indexOf("&newest=" + ((this.obj.A1 - 1) * 60) + "&") != -1) {
-            this.d04(t)
-        }
-        else {
-            Tool.pre(["页码不对", t.url])
-        }
-    },
+    f03: function (t) {
+        //问：为什么不直接访问下一页？答：这样会很容易出现验证码。
+        gg.tabs_executeScript_indexOf(3, ["jquery"], t + "\nfun01.d01(" + this.obj.A1 + ")", ["已打开下一页。"], false, this.d04, this)
+    },   
 }
 fun.a01();

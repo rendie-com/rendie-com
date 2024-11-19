@@ -97,7 +97,7 @@ var fun =
 		<ul class="dropdown-menu">\
             <li onClick="Tool.openR(\'?jsFile=js03&site='+ obj.params.site + '\');"><a class="dropdown-item pointer">采集店铺</a></li>\
             <li onClick="Tool.openR(\'?jsFile=js04&site='+ obj.params.site + '\');"><a class="dropdown-item pointer">从商品中获取店铺ID</a></li>\
-            <li onClick="Tool.openR(\'?jsFile=js10&table=users_'+ obj.params.site + '&database=shopee_gather&newdatabase=shopee/采集箱/店铺/' + obj.params.site + '\');"><a class="dropdown-item pointer">把旧表复制到新表</a></li>\
+            <li onClick="Tool.openR(\'?jsFile=js10&table=users_'+ obj.params.site + '&database=shopee_gather&newdatabase=shopee/采集箱/店铺/' + obj.params.site + '\');"><a class="dropdown-item pointer">把一个db文件拆分成多个db文件</a></li>\
 		</ul>'
     },
     b03: function () {
