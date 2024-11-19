@@ -11,16 +11,16 @@ var fun =
         obj.params.site = obj.params.site ? obj.params.site : 'tw'
         obj.params.field = obj.params.field ? obj.params.field : '1'
         obj.params.searchword = obj.params.searchword ? Tool.Trim(obj.params.searchword) : "";//搜索关键词
-        this.a02()
+        this.a03(["sqlite"])
     },
-    a02: function () {
-        let data = [{
-            action: "process",
-            fun: "env",
-            name: "NEXTJS_CONFIG_DEFAULT_DB"
-        }]
-        Tool.ajax.a01(data, this.a03, this);
-    },
+    // a02: function () {
+    //     let data = [{
+    //         action: "process",
+    //         fun: "env",
+    //         name: "NEXTJS_CONFIG_DEFAULT_DB"
+    //     }]
+    //     Tool.ajax.a01(data, this.a03, this);
+    // },
     a03: function (t) {
         this.obj.DEFAULT_DB = t[0];
         let sessionObj = {}
