@@ -71,14 +71,14 @@ import path from 'path';
       // 处理错误的代码
       console.log("处理错误的信息：", error)
       await page.screenshot({
-        path: '../sqlite3/error-' + new Date().toISOString() + '.png'
+        path: '../sqlite3/error/' + new Date().toISOString() + '.png'
       });
       Enable = false;
     }
   }
   if (count >= total) {
     await page.screenshot({
-      path: '../sqlite3/overtime-' + new Date().toISOString() + '.png'
+      path: '../sqlite3/error/overtime-' + new Date().toISOString() + '.png'
     });
   }
   await page.close()
