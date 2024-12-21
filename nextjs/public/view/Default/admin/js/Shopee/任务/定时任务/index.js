@@ -31,6 +31,7 @@ var fun =
                 <td>' + arr[i].priority + '</td>\
                 <td style="padding-left: 30px;position: relative;">'+ this.b02(arr[i].id) + '' + arr[i].taskname + '</td>\
                 <td>' + (arr[i].remark ? arr[i].remark : '') + '</td>\
+                <td>'+ arr[i].runuser + ' </td>\
                 <td>'+ arr[i].runcycle + ' 分钟</td>\
                 <td>'+ Tool.js_date_time2(arr[i].runtime) + '</td>\
                 <td>'+ Tool.js_date_time2(arr[i].nexttime) + '</td>\
@@ -42,7 +43,7 @@ var fun =
             <table class="table table-hover align-middle center">\
                 <thead class="table-light center">'+ this.b01() + '</thead>\
                 <tbody>'+ html + '</tbody>\
-            </table>' + Tool.page2(sessionObj, t[0].LastEvaluatedKey, t[1], this.obj.DEFAULT_DB, 20, obj.params.page, obj.params.jsFile) + '\
+            </table>' + Tool.page(t[1][0].Count, 20, obj.params.page) + '\
         </div>'
         Tool.html(null, null, html);
     },
@@ -52,6 +53,7 @@ var fun =
             <th class="w70">优先级</th>\
             <th style="padding-left:25px;position: relative;" class="w350">'+ this.b03() + '任务名称</th>\
             <th>任务说明</th>\
+            <th>执行者用户名</th>\
             <th>执行周期</th>\
             <th>运行时时间</th>\
             <th>下次运行时间</th>\
@@ -90,13 +92,13 @@ var fun =
             data = [{
                 action: DEFAULT_DB,
                 database: "shopee/任务/定时任务",
-                sql: "select " + Tool.fieldAs("id,taskname,remark,runtime,nexttime,runcycle,isenable,priority") + " FROM @.table" + Tool.limit(size, obj.params.page, "sqlite"),//order by @.isenable desc,@.priority asc
+                sql: "select " + Tool.fieldAs("id,taskname,remark,runuser,runtime,nexttime,runcycle,isenable,priority") + " FROM @.table" + Tool.limit(size, obj.params.page, "sqlite"),//order by @.isenable desc,@.priority asc
             }]
             if (obj.params.page == 1) {
                 data.push({
                     action: DEFAULT_DB,
                     database: "shopee/任务/定时任务",
-                    sql: "select count(1) as total FROM @.table",
+                    sql: "select count(1) as Count FROM @.table",
                 })
             }
         }

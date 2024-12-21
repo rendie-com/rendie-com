@@ -32,7 +32,7 @@ Object.assign(Tool, {
                 this.a04(oo);
             }
             else {
-                Tool.pre(["出错", t])
+                Tool.pre(["出错2024.12.21", t])
             }
         },
         a04: function (oo) {

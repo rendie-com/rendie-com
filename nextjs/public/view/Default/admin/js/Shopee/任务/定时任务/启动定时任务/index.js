@@ -99,8 +99,13 @@ var fun =
     },
     e02: function () {
         let site = this.obj.Barr[this.obj.B1 - 1]
-        $("#site").html(Tool.site(site))
-        task.a01(this.obj.seller, site, this.e03, this)
+        if(site=="sg"){
+            this.e03()
+        }
+        else{
+            $("#site").html(Tool.site(site))
+            task.a01(this.obj.seller, site, this.e03, this)
+        }        
     },
     e03: function () {
         this.obj.B1++;
@@ -123,7 +128,7 @@ var fun =
             this.d01();
         }
         else {
-            Tool.pre(["出错", t])
+            Tool.pre(["出错2024.12.21-16:03", t])
         }
     },
     f03: function () {
