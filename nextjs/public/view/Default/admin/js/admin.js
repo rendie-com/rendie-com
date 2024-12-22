@@ -772,7 +772,34 @@ var Tool = {
     },
     pre: function (oo) {
         Tool.Modal('网页对象提示', '<textarea style="height: 500px;" class="form-control form-control-sm">' + JSON.stringify(oo, null, 2) + '</textarea>', '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>', 'modal-xl');
-    }
+    },
+    translate_name: {
+        a01: function (q, sl, tl, next, This, t) {
+            let oo = {
+                next: next,
+                This: This,
+                t: t
+            }
+            let url = "https://translate-pa.googleapis.com/v1/translateHtml"
+            let data = [
+                [
+                    [q],
+                    sl,
+                    tl
+                ],
+                "te_lib"
+            ]
+            gg.postFetch(url, JSON.stringify(data), this.a02, this, oo)
+        },
+        a02: function (t, oo) {
+            if (t[0][0]) {
+                Tool.apply(t[0][0], oo.next, oo.This, oo.t)
+            }
+            else {
+                Tool.pre(["翻译出错", t])
+            }
+        },
+    },
 }
 /*
  * var url = URL.createObjectURL(blob);
