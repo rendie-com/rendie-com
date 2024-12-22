@@ -5,7 +5,7 @@ import { Pool } from 'pg';
 export const PostgreSQL = {
     a01: async function (oo, database, sql, pgStr) {
         if (database.indexOf("/") != -1) { database = database.replace(/\//g, "_"); }
-        let r = {}
+        let r = {}       
         try {
             switch (oo.fun) {
                 case "connect": r = await this.connect(database, pgStr); break;

@@ -44,6 +44,7 @@ export const index = {
             case "pg01": oo = await PostgreSQL.a01(oo, this.database(data, oo.database), this.sql(data, oo.sql), process.env.NEXTJS_CONFIG_PG01); break;
             case "pg02": oo = await PostgreSQL.a01(oo, this.database(data, oo.database), this.sql(data, oo.sql), process.env.NEXTJS_CONFIG_PG02); break;
             case "pg03": oo = await PostgreSQL.a01(oo, this.database(data, oo.database), this.sql(data, oo.sql), process.env.NEXTJS_CONFIG_PG03); break;
+            case "pg04": oo = await PostgreSQL.a01(oo, this.database(data, oo.database), this.sql(data, oo.sql), process.env.NEXTJS_CONFIG_PG04); break;
             case "dynamodb": oo = await DynamoDB.a01(oo, oo.params); break;
             case "fs": oo = await self_fs.a01(oo); break;
             case "process": oo = await self_process.a01(oo); break;
