@@ -28,11 +28,11 @@ var fun =
         this.a04(oo);
     },
     a04: function (oo) {
-        if (oo.name.indexOf("|") != -1)//要不要建多个表
+        if (oo.database.indexOf("${100}") != -1)//要不要建多个表
         {
-            let arr = oo.name.split("|");
-            oo.name = arr[0];
-            this.obj.B2 = parseInt(arr[1]);
+            let arr = oo.database.split("${100}");
+            oo.database = arr[0];
+            this.obj.B2 = parseInt(100);
             this.a05(oo);
         }
         else {
@@ -50,19 +50,22 @@ var fun =
     },
     a06: function (oo) {
         //数据库是否存在
-        let database = this.obj.B2 != 1 ? oo.database + (this.obj.B1.toString().padStart(2, '0')) : oo.database
+        let database = this.obj.B2 != 1 ? oo.database + (this.obj.B1.toString().padStart(("" + this.obj.B2).length, '0')) : oo.database
         if (oo.action == "mysql") {
-            alert("没做"+oo.action)
+            alert("没做" + oo.action)
             //Tool.mysql.a01(oo, database, this.obj.B1, this.obj.B2, this.a07, this);
         }
-        else if (oo.action == "pg01"||oo.action == "pg02") {
+        else if (oo.action == "pg01" || oo.action == "pg02" || oo.action == "pg03" || oo.action == "pg04") {
             Tool.pg.a01(oo, database, this.obj.B1, this.obj.B2, this.a07, this, oo);
         }
         else if (oo.action == "sqlite") {
             Tool.sqlite.a01(oo, database, this.obj.B1, this.obj.B2, this.a07, this, oo);
         }
+        else if (oo.action == "dynamodb") {
+            Tool.DynamoDB.a01(oo, database, this.obj.B1, this.obj.B2, this.a07, this, oo);
+        }
         else {
-            alert("没做"+oo.action)
+            alert("没做" + oo.action)
         }
     },
     a07: function (oo) {

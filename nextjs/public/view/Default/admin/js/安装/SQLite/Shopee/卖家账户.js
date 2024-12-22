@@ -12,7 +12,7 @@ mssql = mssql.concat([{
             des: "索引"
         },
         {
-            name: "name",
+            name: "withdrawee",
             type: "varchar(100)",
             default: "",
             des: "提现人"
@@ -30,7 +30,7 @@ mssql = mssql.concat([{
             des: "排序"
         },
         {
-            name: "UserName",
+            name: "username",
             type: "varchar(100)",
             default: "",
             des: "用户名"
@@ -48,7 +48,7 @@ mssql = mssql.concat([{
             des: "登录用的cookies信息"
         },
         {
-            name: "localStorage",
+            name: "localstorage",
             type: "text",
             default: "",
             des: "登录用的localStorage信息"

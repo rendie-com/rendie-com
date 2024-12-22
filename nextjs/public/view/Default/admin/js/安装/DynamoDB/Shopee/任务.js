@@ -3,67 +3,57 @@ mssql = mssql.concat([{
     name: "table",
     des: "定时任务",
     database: "shopee/任务/定时任务",
-    action: "pg04",
+    action: "dynamodb",
     table: [
         {
             name: "id",
-            type: "serial primary key",
-            default: "",
+            type: "S",
             des: "索引"
         },
         {
             name: "taskname",
-            type: "varchar(50)",
-            default: "",
+            type: "S",
             des: "名称"
         },
         {
             name: "priority",
-            type: "integer",
-            default: "0",
+            type: "N",
             des: "优先级"
         },
         {
             name: "runcycle",
-            type: "smallint",
-            default: "0",
+            type: "N",
             des: "执行周期"
         },
         {
             name: "isenable",
-            type: "smallint",
-            default: "0",
+            type: "N",
             des: "是否启用"
         },
         {
             name: "addtime",
-            type: "integer",
-            default: "0",
+            type: "N",
             des: "添加时间"
         },
         {
             name: "jsfile",
-            type: "varchar(255)",
-            default: "",
+            type: "S",
             des: "js文件"
 
         },
         {
             name: "runtime",
-            type: "integer",
-            default: "0",
+            type: "N",
             des: "运行时间"
         },
         {
             name: "nexttime",
-            type: "integer",
-            default: "0",
+            type: "N",
             des: "下次运行时间"
         },
         {
             name: "remark",
-            type: "text",
-            default: "",
+            type: "S",
             des: "备注"
         }
     ]

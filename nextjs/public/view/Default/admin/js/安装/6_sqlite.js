@@ -6,8 +6,9 @@ Object.assign(Tool, {
             this.obj.B1 = B1;
             this.obj.B2 = B2;
             let data = [{
-                action: "config",
-                name: "sqlite"
+                action: "process",
+                fun: "env",
+                name: "NEXTJS_CONFIG_SQLITE"
             }]
             let oo = {
                 table: table,
@@ -15,10 +16,10 @@ Object.assign(Tool, {
                 next: next,
                 This: This,
                 t: t
-            }           
+            }
             Tool.ajax.a01(data, this.a02, this, oo);
         },
-        a02: function (t, oo) {
+        a02: function (t, oo) {           
             oo.path = t[0].replace("{database}",oo.database)           
             let data = [{
                 action: "fs",
@@ -29,7 +30,7 @@ Object.assign(Tool, {
             Tool.ajax.a01(data, this.a03, this, oo);
         },
         a03: function (t, oo) {            
-            if (t[0]) {
+            if (t[0].length) {
                 //文件已存在
                 this.a04(["写入成功"], oo)
             }
@@ -51,7 +52,7 @@ Object.assign(Tool, {
                     action: oo.table.action,
                     database: oo.database,
                     sql: 'select count(1) as total from sqlite_master WHERE name=\'@.' + oo.table.name + '\''                    
-                }]               
+                }]       
                 Tool.ajax.a01(data, this.a05, this, oo);
             }
             else {
@@ -60,8 +61,8 @@ Object.assign(Tool, {
         },
         a05: function (t, oo) {
             if (t[0][0].total == 0) {
-                //要建表       
-                Tool.ajax.a01(this.b01(oo.table), this.a06, this, oo);
+                //要建表                   
+                Tool.ajax.a01(this.b01(oo.table,oo.database), this.a06, this, oo);
             }
             else {
                 $(".nr").append('（' + (this.obj.B2 == 1 ? "" : this.obj.B1 + '. ') + '已存在,跳过）');//建分数据库时要用
@@ -89,11 +90,11 @@ Object.assign(Tool, {
         },
         //////////////////////////////////////////////////
         //创建表
-        b01: function (table) {           
+        b01: function (table,database) {           
             let arr = this.b02(table.table);//取字段
             let data = [{
                 action: table.action,
-                database: table.database,
+                database: database,
                 sql: 'create table @.' + table.name + '(' + arr.join(",") + ')',                
             }]           
             if (table.sql) {
@@ -101,7 +102,7 @@ Object.assign(Tool, {
                 for (let i = 0; i < table.sql.length; i++) {
                     data.push({
                         action: table.action,
-                        database: table.database,
+                        database: database,
                         sql: table.sql[i],
                     })
                 }

@@ -81,7 +81,7 @@ mssql = mssql.concat([
                 des: "索引"
             },
             {
-                name: "user",
+                name: "username",
                 type: "varchar(50)",
                 default: "",
                 des: "用户"
@@ -99,31 +99,31 @@ mssql = mssql.concat([
                 des: "归属地"
             },
             {
-                name: "ResultTF",
+                name: "status",
                 type: "tinyint",
                 default: "0",
                 des: "橾作成功/橾作失败    0:表款失败；   1:表示成功；"
             },
             {
-                name: "IP",
+                name: "ip",
                 type: "varchar(100)",
                 default: "",
                 des: "公网IP地址"
             },
             {
-                name: "LocalIp",
+                name: "localip",
                 type: "varchar(100)",
                 default: "",
                 des: "局域网IP地址"
             },
             {
-                name: "LoginTime",
+                name: "logintime",
                 type: "integer",
                 default: "0",
                 des: "登陆时间"
             },
             {
-                name: "OS",
+                name: "os",
                 type: "varchar(255)",
                 default: "",
                 des: "操作系统"
@@ -135,31 +135,31 @@ mssql = mssql.concat([
                 des: "备注"
             },
             {
-                name: "UserAgent",
+                name: "useragent",
                 type: "varchar(255)",
                 default: "",
                 des: "客户信息"
             },
             {
-                name: "URL",
+                name: "origin",
                 type: "varchar(255)",
                 default: "",
                 des: "当前URL"
             },
             {
-                name: "fromURL",
+                name: "referer",
                 type: "varchar(255)",
                 default: "",
                 des: "来源URL"
             },
             {
-                name: "Browser",
+                name: "browser",
                 type: "varchar(255)",
                 default: "",
                 des: "浏览器"
             },
             {
-                name: "Lang",
+                name: "lang",
                 type: "varchar(50)",
                 default: "",
                 des: "语言"
@@ -171,7 +171,7 @@ mssql = mssql.concat([
         des: "管理员表",
         database: "main",
         action: "sqlite",
-        "sql": [
+        sql: [
             "insert into @.manager(@.name,@.pwd,@.state,@.GroupID)values('admin','1a55179d134cd8af19b11439eb6387472ae8ddc02a5190a3f47f8acf423d479e',1,1)"
         ],
         table: [
@@ -182,7 +182,7 @@ mssql = mssql.concat([
                 des: "索引"
             },
             {
-                name: "name",
+                name: "username",
                 type: "varchar(20)",
                 default: "",
                 des: "名称"
@@ -212,7 +212,7 @@ mssql = mssql.concat([
                 des: "refresh_token不能超过30天"
             },
             {
-                name: "state",
+                name: "islocked",
                 type: "tinyint",
                 default: "0",
                 des: "是否锁定"
@@ -230,7 +230,7 @@ mssql = mssql.concat([
                 des: "登陆IP"
             },
             {
-                name: "random",
+                name: "randomnum",
                 type: "varchar(64)",
                 default: "",
                 des: "加密的随机数"
@@ -360,7 +360,13 @@ mssql = mssql.concat([
                 des: "索引"
             },
             {
-                name: "Name",
+                name: "groupid",
+                type: "tinyint",
+                default: "0",
+                des: "会员组ID"
+            },
+            {
+                name: "groupname",
                 type: "varchar(100)",
                 default: "",
                 des: "会员组名称"

@@ -1,9 +1,9 @@
 'use strict';
 mssql = mssql.concat([
-    {
+    {        
         name: "table",
         des: "采集箱-粉丝TW",
-        database: "shopee/采集箱/粉丝/tw",
+        database: "shopee/采集箱/粉丝/tw/${100}",//按【用户ID】划分100个文件
         action: "sqlite",
         sql: [
             "create index userid ON @.table(@.userid)"
@@ -116,7 +116,7 @@ mssql = mssql.concat([
     {
         name: "table",
         des: "采集箱-粉丝MY",
-        database: "shopee/采集箱/粉丝/my",
+        database: "shopee/采集箱/粉丝/my/${100}",//按【用户ID】划分100个文件
         action: "sqlite",
         sql: [
             "create index userid ON @.table(@.userid)"
@@ -229,7 +229,7 @@ mssql = mssql.concat([
     {
         name: "table",
         des: "采集箱-粉丝BR",
-        database: "shopee/采集箱/粉丝/br",
+        database: "shopee/采集箱/粉丝/br/${100}",//按【用户ID】划分100个文件
         action: "sqlite",
         sql: [
             "create index userid ON @.table(@.userid)"

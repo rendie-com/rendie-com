@@ -43,7 +43,7 @@ Object.assign(Tool, {
                 Tool.ajax.a01(data, this.a04, this, oo);
             }
             else {
-                $(".nr").append("出错：" + JSON.stringify(t));
+                $(".nr").append("出错002：" + JSON.stringify(t));
             }
         },
         a04: function (t, oo) {

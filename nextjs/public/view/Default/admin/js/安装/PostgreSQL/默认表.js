@@ -4,7 +4,7 @@ let mssql = [
     //     name: "sqlhelp",
     //     des: "SQL帮助表",
     //     database: "main",
-    //     action: "pg02",
+    //     action: "pg04",
     //     sql: [
     //         "insert into @.sqlhelp(@.note,@.sql) values ('列出某一栏目数据','select  *  from @.video where @.type =(select @.id from @.type where @.name = ''动作片'')')",
     //         "insert into @.sqlhelp(@.note,@.sql) values ('删除某一栏目数据','delete  from @.video where @.type =(select @.id from @.type where @.name = ''动作片'')')",
@@ -69,7 +69,7 @@ let mssql = [
     // {
     //     name: "loginlog",
     //     des: "后台日志表",
-    //     action: "pg02",
+    //     action: "pg04",
     //     database: "main",
     //     table: [
     //         {
@@ -167,7 +167,7 @@ let mssql = [
     // {
     //     name: "manager",
     //     des: "管理员表",
-    //     action: "pg02",
+    //     action: "pg04",
     //     database: "main",
     //     sql: [
     //         "insert into @.manager(@.name,@.pwd,@.state,@.GroupID)values('admin','1a55179d134cd8af19b11439eb6387472ae8ddc02a5190a3f47f8acf423d479e',1,1)"
@@ -292,7 +292,7 @@ let mssql = [
     // {
     //     name: "download",
     //     des: "应用商店-下载源",
-    //     action: "pg02",
+    //     action: "pg04",
     //     database: "main",
     //     table: [
     //         {
@@ -337,7 +337,7 @@ let mssql = [
     //     name: "usergroup",
     //     des: "用户组",
     //     database: "main",
-    //     action: "pg02",
+    //     action: "pg04",
     //     sql: [
     //         "insert into @.usergroup(@.name,@.Descript)VALUES ('网站管理员','开发者权限')",
     //         "insert into @.usergroup(@.name,@.Descript)VALUES ('超级管理员','最高管理权限')",
@@ -464,7 +464,7 @@ let mssql = [
     // {
     //     name: "weblog",
     //     des: "访问日志",
-    //     action: "pg02",
+    //     action: "pg04",
     //     database: "main",
     //     table: [
     //         {
@@ -538,7 +538,7 @@ let mssql = [
     // {
     //     name: "weblog_os",
     //     des: "访问日志_操作系统占比",
-    //     action: "pg02",
+    //     action: "pg04",
     //     database: "main",
     //     table: [
     //         {
@@ -564,7 +564,7 @@ let mssql = [
     // {
     //     name: "ip",
     //     des: "ip库",
-    //     action: "pg02",
+    //     action: "pg04",
     //     database: "main",
     //     sql: [
     //         "create UNIQUE index ip_ip ON @.ip(@.ip)"
@@ -647,7 +647,7 @@ let mssql = [
     // {
     //     name: "dhgatelogimg",
     //     des: "上传到敦煌的图片访问日志",
-    //     action: "pg02",
+    //     action: "pg04",
     //     database: "main",
     //     table: [
     //         {
@@ -751,7 +751,7 @@ let mssql = [
     // {
     //     name: "dhgatelogimg_os",
     //     des: "上传到敦煌的图片访问日志_操作系统占比",
-    //     action: "pg02",
+    //     action: "pg04",
     //     database: "main",
     //     table: [
     //         {
@@ -777,7 +777,7 @@ let mssql = [
     // {
     //     name: "dhgatelogpro",
     //     des: "上传到敦煌的商品访问日志",
-    //     action: "pg02",
+    //     action: "pg04",
     //     database: "main",
     //     table: [
     //         {
@@ -863,7 +863,7 @@ let mssql = [
     // {
     //     name: "dhgatelogpro_os",
     //     des: "上传到敦煌商品的访问日志_操作系统占比",
-    //     action: "pg02",
+    //     action: "pg04",
     //     database: "main",
     //     table: [
     //         {

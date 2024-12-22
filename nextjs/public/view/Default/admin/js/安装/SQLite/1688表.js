@@ -46,7 +46,13 @@ mssql = mssql.concat([
                 "name": "ManualReview_video_status",
                 "type": "tinyint",
                 "default": "0",
-                "des": "人工审核视频状态（0：未审核；1：无视频；2：有视频；3：审核不通过；4：带中文审核通过；5：完全审核通过；）"
+                "des": "人工审核主视频状态"
+            },
+            {
+                "name": "ManualReview_ExplanationVideo_status",
+                "type": "tinyint",
+                "default": "0",
+                "des": "人工审核讲解视频状态"
             },
             {
                 "name": "ManualReview_1688_fromid",
@@ -237,6 +243,12 @@ mssql = mssql.concat([
                 "des": "类目ID"
             },
             {
+                "name": "categoryId1",
+                "type": "integer",
+                "default": "0",
+                "des": "一级类目ID"
+            },
+            {
                 "name": "state",
                 "type": "bit",
                 "default": "0",
@@ -328,10 +340,28 @@ mssql = mssql.concat([
                 "des": "属性图"
             },
             {
+                "name": "pic",
+                "type": "text",
+                "default": "",
+                "des": "放大镜图"
+            },
+            {
                 "name": "attrPic_shopee",
                 "type": "text",
                 "default": "",
                 "des": "属性图-上传到shopee后"
+            },
+            {
+                "name": "pic_shopee",
+                "type": "text",
+                "default": "",
+                "des": "放大镜图-上传到shopee后"
+            },
+            {
+                "name": "desPic_shopee",
+                "type": "text",
+                "default": "",
+                "des": "详情图-上传到shopee后"
             },
             {
                 "name": "videoUrl",

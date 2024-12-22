@@ -12,7 +12,7 @@ mssql = mssql.concat([{
             des: "索引"
         },
         {
-            name: "name",
+            name: "taskname",
             type: "varchar(50)",
             default: "",
             des: "名称"
@@ -24,7 +24,19 @@ mssql = mssql.concat([{
             des: "优先级"
         },
         {
-            name: "cycle",
+            name: "runuser",
+            type: "varchar(10)",
+            default: "",
+            des: "执行者用户名"
+        },
+        {
+            name: "runuserid",
+            type: "integer",
+            default: "0",
+            des: "执行者用户名ID"
+        },
+        {
+            name: "runcycle",
             type: "tinyint",
             default: "0",
             des: "执行周期"

@@ -3,78 +3,66 @@ mssql = mssql.concat([{
     name: "table",
     des: "卖家账户",
     database: "shopee/卖家账户",
-    action: "pg04",
+    action: "dynamodb",
     table: [
         {
             name: "id",
-            type: "serial primary key",
-            default: "",
+            type: "S",
             des: "索引"
         },
         {
-            name: "name",
-            type: "varchar(100)",
-            default: "",
+            name: "withdrawee",
+            type: "S",
             des: "提现人"
         },
         {
             name: "company",
-            type: "varchar(100)",
-            default: "",
+            type: "S",
             des: "公司"
         },
         {
             name: "sort",
-            type: "integer",
-            default: "0",
+            type: "N",
             des: "排序"
         },
         {
-            name: "UserName",
-            type: "varchar(100)",
-            default: "",
+            name: "username",
+            type: "S",
             des: "用户名"
         },
         {
             name: "password",
-            type: "varchar(255)",
-            default: "",
+            type: "S",
             des: "密码"
         },
         {
             name: "cookies",
-            type: "text",
-            default: "",
+            type: "S",
             des: "登录用的cookies信息"
         },
         {
-            name: "localStorage",
-            type: "text",
-            default: "",
+            name: "localstorage",
+            type: "S",
             des: "登录用的localStorage信息"
         },
         {
             name: "phone",
-            type: "varchar(11)",
-            default: "",
+            type: "S",
             des: "手机"
         },
         {
             name: "note",
-            type: "varchar(255)",
-            default: "",
+            type: "S",
             des: "备注"
         },
         {
             name: "config",
-            type: "text",
-            default: "",
+            type: "S",
             des: "配置信息（如：店铺ID，店铺名，等等）"
         },
         {
             name: "addtime",
-            type: "integer",
-            default: "0",
+            type: "N",
             des: "添加时间"
         }
     ]
