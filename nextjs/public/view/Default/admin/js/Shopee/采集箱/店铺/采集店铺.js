@@ -5,17 +5,17 @@ var fun =
         A1: 1, A2: 1,
     },
     a01: function () {
-        obj.arr[4] = obj.arr[4] ? obj.arr[4] : "-_-20";//返回URL
-        obj.arr[5] = obj.arr[5] ? obj.arr[5] : "-_-20";//站点
+        //obj.params.return         返回URL
+        //obj.params.site           站点
         this.a02()
     },
     a02: function () {
-        let html = Tool.header("Shopee &gt; 采集箱 &gt; 商品 &gt; 采集店铺") + '\
+        let html = Tool.header(obj.params.return, "Shopee &gt; 采集箱 &gt; 商品 &gt; 采集店铺") + '\
         <div class="p-2">\
             <table class="table table-hover align-middle">\
             <tbody>\
-		        <tr><td class="right w150">站点：</td><td colspan="2">'+ Tool.site(obj.arr[5]) + '</td></tr>\
-		        <tr><td class="right">请选择关键词：</td><td colspan="2">'+ this.b01() + '</td></tr>\
+		        <tr><td class="right w150">站点：</td><td colspan="2">'+ Tool.site(obj.params.site) + '</td></tr>\
+		        <tr><td class="right">请选择关键词：</td><td colspan="2">'+ this.b01(obj.params.site) + '</td></tr>\
 		        <tr><td class="right">关键词页进度：</td>'+ Tool.htmlProgress('A') + '</tr>\
 		        <tr><td class="right">提示：</td><td id="state" colspan="2"></td></tr>\
             </tbody>\
@@ -24,13 +24,16 @@ var fun =
         Tool.html(null, null, html);
     },
     //////////////////////////////////////////////
-    b01: function () {
+    b01: function (site) {
         let arr = []
-        if (obj.arr[5] == "my") {
+        if (site == "my") {
             arr = config_my
         }
-        else if (obj.arr[5] == "br") {
+        else if (site == "br") {
             arr = config_br
+        }
+        else if (site == "tw") {
+            arr = config_tw
         }
         let str1 = ""
         for (let i = 0; i < arr.length; i++) {
@@ -56,8 +59,10 @@ var fun =
         Tool.x1x2("A", this.obj.A1, this.obj.A2, this.d03, this)
     },
     d03: function () {
-        let url = "https://" + obj.arr[5] + ".xiapibuy.com/search_user/?keyword=" + this.obj.key//搜索
-        gg.tabs_remove_create_getHeaders(2, url, ["/api/v4/search/search_user"], false, this.d04, this)
+        let url = "https://" + (obj.params.site == "tw" ? "xiapi" : obj.params.site) + ".xiapibuy.com/search_user/?keyword=" + this.obj.key//搜索
+        $("#state").html('<a href="' + url + '" target="_blank">' + url + '</a>')
+        //这个必须要获取“Headers”信息。。。。。。
+        //gg.tabs_remove_create_getHeaders(2, url, ["/api/v4/search/search_user"], false, this.d04, this)
     },
     d04: function (t) {
         $("#state").html(t.url)
@@ -104,7 +109,7 @@ var fun =
                 "@.is_shopee_choice",//是否为choice标志
             ]
             let arrR = [
-                Tool.rpsql(obj.arr[5]),//站点（如：my）
+                Tool.rpsql(obj.params.site),//站点（如：my）
                 arr[i].status,//状态（如：1）----还不知道有什么用
                 Tool.rpsql(arr[i].shopname),//店铺名称（如：Skullreaper Digital）
                 arr[i].follower_count,//粉丝数量
@@ -131,12 +136,12 @@ var fun =
                 arr[i].is_shopee_choice ? 1 : 0,//是否为choice标志
             ]
             let arrUp = []; for (let i = 0; i < arrL.length; i++) { arrUp.push(arrL[i] + "=" + arrR[i]); }
-            let sel = "select count(1) from @.users where @.shopid=" + arr[i].shopid + " and @.site='" + obj.arr[5] + "'"
+            let sel = "select count(1) from @.users where @.shopid=" + arr[i].shopid + " and @.site='" + obj.params.site + "'"
             sqlArr.push('\
 		    <if Fun(Db(sqlite.shopee,'+ sel + ',count))==0>\
 			    <r: db="sqlite.shopee">insert into @.users('+ arrL.join(",") + ')values(' + arrR.join(",") + ')</r:>\
 		    <else/>\
-			    <r: db="sqlite.shopee">update @.users set '+ arrUp.join(",") + ' where @.shopid=' + arr[i].shopid + ' and @.site=\'' + obj.arr[5] + '\'</r:>\
+			    <r: db="sqlite.shopee">update @.users set '+ arrUp.join(",") + ' where @.shopid=' + arr[i].shopid + ' and @.site=\'' + obj.params.site + '\'</r:>\
 		    </if>')
         }
         Tool.ajax.a01('"ok"' + sqlArr.join(""), 1, this.e02, this);

@@ -2,6 +2,7 @@
     site: function (val) {
         let name = "未知站点：" + val
         switch (val) {
+            case "sg": name = "【新加坡】站点"; break;
             case "tw": name = "【台湾虾皮】站点"; break;
             case "my": name = "【马来西亚】站点"; break;
             case "br": name = "【巴西】站点"; break;
@@ -11,6 +12,7 @@
     header3: function (jsFile, site) {
         let html = '\
           <ul class="makeHtmlTab">\
+              <li'+ (site == "sg" ? ' class="hover"' : '') + ' onclick="Tool.main(\'?jsFile=' + jsFile + '&site=sg\')">新加坡</li>\
               <li'+ (site == "tw" ? ' class="hover"' : '') + ' onclick="Tool.main(\'?jsFile=' + jsFile + '&site=tw\')">台湾虾皮</li>\
               <li'+ (site == "my" ? ' class="hover"' : '') + ' onclick="Tool.main(\'?jsFile=' + jsFile + '&site=my\')">马来西亚</li>\
               <li'+ (site == "br" ? ' class="hover"' : '') + ' onclick="Tool.main(\'?jsFile=' + jsFile + '&site=br\')">巴西</li>\
@@ -274,14 +276,13 @@
             }
             return maxLimit;
         },
-
         //打折后[含平台费]
         b06: function (price1, siteObj) {
             let price2 = price1 * siteObj.exchangeRate //打折后[不含平台费] = 1688最高单价 + 上调价格 * 汇率 
             //打折后[含平台费] = 打折后[不含平台费] / (1 - 佣金费率 - 活动服务费率 - 交易手续费率)
             let Rate = 1 - siteObj.commissionRate / 100 - siteObj.activityServiceRate / 100 - siteObj.transactionFees / 100
             let discountPrice = price2 / Rate//店铺商品价格
-            if (discountPrice < 0.1) discountPrice = 0.1//shopee有价格限制
+            if(discountPrice<0.01)discountPrice=0.01
             return discountPrice
         },
         //算计买家满多少的【最低购买量】
