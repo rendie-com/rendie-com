@@ -96,6 +96,9 @@ var task = {
         else if (site = "br") {
             arr = ["'Mainland China'", "'China Continental'"]
         }
+        else if (site = "sg") {
+            arr = ["'中国大陆'"]
+        }
         //@.get_follower_time           获取粉丝时间
         return " where @.shop_location in(" + arr.join(",") + ") and @.get_follower_time<" + time24H
     },

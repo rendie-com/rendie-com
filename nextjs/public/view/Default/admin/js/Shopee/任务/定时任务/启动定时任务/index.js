@@ -6,12 +6,12 @@ var fun =
         B1: 1, B2: 0, Barr: [],
         seller: {},
         runtime: 0,//运行时时间
-        stop:false,
+        stop: false,
     },
     a01: function () {
         //obj.params.jsFile         选择JS文件
         //obj.params.return         返回URL
-        this.obj.runtime=Tool.gettime("")
+        this.obj.runtime = Tool.gettime("")
         this.a02();
     },
     a02: function () {
@@ -19,7 +19,7 @@ var fun =
         <div class="p-2">\
             <table class="table table-hover">\
             <tbody>\
-		        <tr><td class="right w200">运行时时间：</td><td colspan="2">'+Tool.js_date_time2(this.obj.runtime)+'</td></tr>\
+		        <tr><td class="right w200">运行时时间：</td><td colspan="2">'+ Tool.js_date_time2(this.obj.runtime) + '</td></tr>\
 		        <tr><td class="right">已运行时长：</td><td id="time" colspan="2"></td></tr>\
 		        <tr><td class="right">用户名：</td><td id="username" colspan="2"></td></tr>\
 		        <tr><td class="right">执行周期：</td><td id="runcycle" colspan="2"></td></tr>\
@@ -53,16 +53,16 @@ var fun =
     },
     //////////////////////////////////////
     c01: function () {
-        if(!this.obj.stop){
-            Tool.Time("name", 1000, this.c02, this); 
-        }        
+        if (!this.obj.stop) {
+            Tool.Time("name", 1000, this.c02, this);
+        }
     },
-    c02: function () {        
-        $("#time").html(Tool.dateDHM(false, this.obj.runtime * 1000,"s"))        
+    c02: function () {
+        $("#time").html(Tool.dateDHM(false, this.obj.runtime * 1000, "s"))
         this.c01();
     },
     /////////////////////////////
-    d01: function () {       
+    d01: function () {
         $("#state").html("正在获取任务信息。。。");
         let data = [{
             action: "${default_db}",
@@ -99,13 +99,8 @@ var fun =
     },
     e02: function () {
         let site = this.obj.Barr[this.obj.B1 - 1]
-        if(site=="sg"){
-            this.e03()
-        }
-        else{
-            $("#site").html(Tool.site(site))
-            task.a01(this.obj.seller, site, this.e03, this)
-        }        
+        $("#site").html(Tool.site(site))
+        task.a01(this.obj.seller, site, this.e03, this)
     },
     e03: function () {
         this.obj.B1++;
@@ -132,7 +127,7 @@ var fun =
         }
     },
     f03: function () {
-        this.obj.stop=true;
+        this.obj.stop = true;
         $("#state").html("已完成所有任务。")
         frameElement._DialogArguments.$("title").html("已完成所有任务。")
     },
