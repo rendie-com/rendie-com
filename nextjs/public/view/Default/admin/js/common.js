@@ -113,7 +113,7 @@ Object.assign(Tool, {
         let urlParams = Tool.setQueryParam(location.search, "page", page)
         Tool.url(location.href.split("?")[0] + "?" + urlParams);
     },
-    loadJS: function (next, This, url) {
+    loadJS: function (url, next, This) {
         $.getScript({ type: 'GET', url: url, cache: false, dataType: 'script' }, function () { next.apply(This); });
     },
     write: function (oo) { document.writeln(oo); },
