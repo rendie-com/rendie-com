@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   # 定时器
   schedule:
-   - cron: "*/15 * * * *"
+   - cron: "*/30 * * * *"
 env:  
   TZ: Asia/Shanghai
 
@@ -50,7 +50,7 @@ jobs:
           mkdir ./releases/
           cd ./node-shopee/
           pnpm i  
-          node ./index.js   
+          node ./30minute.js   
         env:
           NODE_SHOPEE_NAME: ${{ secrets.NODE_SHOPEE_NAME }}
           NODE_SHOPEE_ACCESS_TOKEN: ${{ secrets.NODE_SHOPEE_ACCESS_TOKEN }}  
