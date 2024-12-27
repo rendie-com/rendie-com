@@ -41,7 +41,8 @@ import path from 'path';
     localStorage.setItem("expires_in", 1722844755);
     //////////////////////////////////////
     localStorage.setItem("refresh_token", oo.refresh_token);
-    localStorage.setItem("access_token", oo.access_token);   
+    localStorage.setItem("access_token", oo.access_token);  
+    localStorage.setItem("name", "5minute");
     ///////////////////////////////////////////////////////////////////////
     localStorage.setItem("menuList", '{"top1":1,"top2":{"18":{"name":"任务","id":"18","isbool":true,"url":"http://localhost:3000/view/Default/admin/html/Shopee/%E4%BB%BB%E5%8A%A1.html?jsFile=js02&return=%2Fview%2FDefault%2Fadmin%2Fhtml%2FShopee%2F%25E4%25BB%25BB%25E5%258A%25A1.html%3FjsFile%3Djs04"}}}');
   }, {
