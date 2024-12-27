@@ -92,7 +92,7 @@ var fun =
             data = [{
                 action: DEFAULT_DB,
                 database: "shopee/任务/定时任务",
-                sql: "select " + Tool.fieldAs("id,taskname,remark,runuser,runtime,nexttime,runcycle,isenable,priority") + " FROM @.table" + Tool.limit(size, obj.params.page, "sqlite"),//order by @.isenable desc,@.priority asc
+                sql: "select " + Tool.fieldAs("id,taskname,remark,runuser,runtime,nexttime,runcycle,isenable,priority") + " FROM @.table" + Tool.limit(size, obj.params.page, this.obj.DEFAULT_DB),//order by @.isenable desc,@.priority asc
             }]
             if (obj.params.page == 1) {
                 data.push({
@@ -135,7 +135,7 @@ var fun =
     ///////////////////////////////////////////////
     c01: function () {
         let data = [{
-            action: "sqlite",
+            action: this.obj.DEFAULT_DB,
             database: "shopee/任务/定时任务",
             sql: "INSERT into @.table(@.addtime)VALUES(" + Tool.gettime("") + ")",
         }]
@@ -152,7 +152,7 @@ var fun =
     c03: function (id) {
         if (confirm('确定删除该任务吗?')) {
             let data = [{
-                action: "sqlite",
+                action: this.obj.DEFAULT_DB,
                 database: "shopee/任务/定时任务",
                 sql: "delete from @.table where @.id=" + id,
             }]
@@ -161,7 +161,7 @@ var fun =
     },
     c04: function (id) {
         let data = [{
-            action: "sqlite",
+            action: this.obj.DEFAULT_DB,
             database: "shopee/任务/定时任务",
             sql: "update @.table set @.nexttime=0 where @.id=" + id,
         }]

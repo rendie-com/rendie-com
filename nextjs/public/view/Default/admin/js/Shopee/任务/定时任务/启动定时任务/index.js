@@ -36,7 +36,7 @@ var fun =
         Tool.html(this.a03, this, html);
     },
     a03: function () {
-        this.c01()
+        this.c01()//已运行时长
         Tool.login.a01(this.a04, this);
     },
     a04: function (t) {
@@ -64,16 +64,17 @@ var fun =
     /////////////////////////////
     d01: function () {
         $("#state").html("正在获取任务信息。。。");
+        let where = "where @.nexttime<" + this.obj.runtime + " and @.isenable=1 and @.runuser=\'" + Tool.getStorage("username") + "\'"
         let data = [{
             action: "${default_db}",
             database: "shopee/任务/定时任务",
-            sql: "select " + Tool.fieldAs("jsfile,taskname,id,runcycle,remark") + " FROM @.table where @.nexttime<" + this.obj.runtime + " and @.isenable=1 order by @.priority asc limit 1",
+            sql: "select " + Tool.fieldAs("jsfile,taskname,id,runcycle,remark") + " FROM @.table " + where + " order by @.priority asc limit 1",
         }]
         if (this.obj.A2 == 0) {
             data.push({
                 action: "${default_db}",
                 database: "shopee/任务/定时任务",
-                sql: "select count(1) as total FROM @.table where @.nexttime<" + this.obj.runtime + " and @.isenable=1",
+                sql: "select count(1) as total FROM @.table " + where,
             })
         }
         Tool.ajax.a01(data, this.d02, this);
