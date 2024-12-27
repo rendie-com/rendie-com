@@ -12,16 +12,16 @@ var fun =
             pwd: forge_sha256(time + forge_sha256(arr[0] + arr[1])),
             action: "getToken"
         }
-        Tool.getToken.a01(data,this.c02, this);
+        Tool.getToken.a01(data, this.c02, this);
     },
-    c02: function (oo) {       
+    c02: function (oo) {
         if (oo.status == "success") {
             if (!window.localStorage) {
                 alert("你的浏览器不支持localstorage，无法登陆。");
             }
             else {
                 var storage = window.localStorage;
-                storage.setItem("name", oo.name);
+                storage.setItem("username", oo.username);
                 storage.setItem("access_token", oo.access_token);
                 storage.setItem("expires_in", oo.expires_in);
                 storage.setItem("refresh_token", oo.refresh_token);
@@ -29,7 +29,7 @@ var fun =
             }
         }
         else {
-                Tool.pre(oo)
+            Tool.pre(oo)
             if ($(".warning").length == 0) {
                 //$(".container").before('<div class="alert-message warning" style="display: none;"><p>' + JSON.stringify(oo) + '</p></div> ')
 
