@@ -12,10 +12,10 @@ var fun =
         else {
             this.obj=JSON.parse(menu);            
         }
-        this.a02(Tool.getStorage("name"))
+        this.a02(Tool.getStorage("username"))
     },
-    a02: function (name) {
-        if (name) {
+    a02: function (username) {
+        if (username) {
             let str = ""
             for (let i = 0; i < menuList.length; i++) {
                 str += '<li><em><span val="' + (i + 1) + '">' + menuList[i].name + '</span></em></li>';
@@ -62,7 +62,7 @@ var fun =
                 </ul>\
                 <div class="logo p-2">\
                 <table>\
-                    <tr><td class="w50" rowspan="2"><img class="img" src="/'+ o.path + 'admin/img/首页/logo.jpg"></td><td class="admin p-1">' + name + '</td></tr>\
+                    <tr><td class="w50" rowspan="2"><img class="img" src="/'+ o.path + 'admin/img/首页/logo.jpg"></td><td class="admin p-1">' + username + '</td></tr>\
                     <tr><td class="p-0 color999">超级管理员</td></tr>\
                 </table>\
                 </div>\
