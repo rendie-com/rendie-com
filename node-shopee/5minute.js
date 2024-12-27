@@ -52,7 +52,7 @@ import path from 'path';
   await page.goto(url);
   /////////////////////////////////// 
   let count = 0;
-  let total = 60 * 1 / 5//最多运行5分钟
+  let total = 60 * 4 / 5//最多运行4分钟
   let Enable = true;
   while (Enable) {
     count++
