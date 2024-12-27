@@ -42,18 +42,17 @@ import path from 'path';
     //////////////////////////////////////
     localStorage.setItem("refresh_token", oo.refresh_token);
     localStorage.setItem("access_token", oo.access_token);
-    localStorage.setItem("name", oo.name);
+    localStorage.setItem("username", "30minute");
     ///////////////////////////////////////////////////////////////////////
     localStorage.setItem("menuList", '{"top1":1,"top2":{"18":{"name":"任务","id":"18","isbool":true,"url":"http://localhost:3000/view/Default/admin/html/Shopee/%E4%BB%BB%E5%8A%A1.html?jsFile=js02&return=%2Fview%2FDefault%2Fadmin%2Fhtml%2FShopee%2F%25E4%25BB%25BB%25E5%258A%25A1.html%3FjsFile%3Djs04"}}}');
   }, {
     refresh_token: process.env.NODE_SHOPEE_REFRESH_TOKEN,
-    access_token: process.env.NODE_SHOPEE_ACCESS_TOKEN,
-    name: process.env.NODE_SHOPEE_NAME_30MINUTE,
+    access_token: process.env.NODE_SHOPEE_ACCESS_TOKEN    
   });
   await page.goto(url);
   /////////////////////////////////// 
   let count = 0;
-  let total = 60 * 30 / 5//最多运行15分钟
+  let total = 60 * 29 / 5//最多运行29分钟
   let Enable = true;
   while (Enable) {
     count++
