@@ -48,12 +48,12 @@ import path from 'path';
   }, {
     refresh_token: process.env.NODE_SHOPEE_REFRESH_TOKEN,
     access_token: process.env.NODE_SHOPEE_ACCESS_TOKEN,
-    name: process.env.NODE_SHOPEE_NAME_5MINUTE,
+    name: process.env.NODE_SHOPEE_NAME,
   });
   await page.goto(url);
   /////////////////////////////////// 
   let count = 0;
-  let total = 60 * 5 / 5//最多运行5分钟
+  let total = 60 * 1 / 5//最多运行5分钟
   let Enable = true;
   while (Enable) {
     count++
