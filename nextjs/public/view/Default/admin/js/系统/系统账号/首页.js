@@ -2,7 +2,8 @@
 var fun =
 {
   obj: {
-    default_db: "",
+    DEFAULT_DB: "",
+    size: 20
   },
   a01: function () {
     obj.params.jsFile = obj.params.jsFile ? obj.params.jsFile : ""//选择JS文件
@@ -20,20 +21,14 @@ var fun =
     Tool.ajax.a01(data, this.a03, this);
   },
   a03: function (t) {
-    this.obj.default_db = t[0];
-    let data = [{
-      action: this.obj.default_db,
-      database: "main",
-      sql: "select count(1) as total FROM @.manager",
-    }, {
-      action: this.obj.default_db,
-      database: "main",
-      sql: "select " + Tool.fieldAs("id,realname,groupid,logintime,loginip,logintimes,state,name") + " FROM @.manager" + " order by @.id desc" + Tool.limit(20, obj.params.page, this.obj.default_db)
-    }]
-    Tool.ajax.a01(data, this.a04, this);
+    this.obj.DEFAULT_DB = t[0];
+    let sessionObj = {}
+    let str = sessionStorage.getItem(window.location.pathname + obj.params.jsFile)
+    if (str) sessionObj = JSON.parse(str)
+    Tool.ajax.a01(this.b04(t[0], sessionObj[obj.params.page]), this.a04, this, sessionObj);
   },
-  a04: function (t) {
-    let html = '', arr = t[1];
+  a04: function (t, sessionObj) {
+    let html = '', arr = Tool.getArr(t[0], this.obj.DEFAULT_DB);
     for (let i = 0; i < arr.length; i++) {
       html += '\
       <tr>\
@@ -44,14 +39,13 @@ var fun =
             <li><a class="dropdown-item pointer" onClick="ManagerDel('+ arr[i].id + ')">删除</a></li>\
             </ul>\
         </td>\
-        <td>'+ arr[i].id + '</td>\
-        <td>'+ arr[i].name + '</td>\
-        <td>'+ arr[i].realname + '</td>\
+        <td>'+ arr[i].username + '</td>\
+        <td>'+ (arr[i].realname ? arr[i].realname : '') + '</td>\
         <td>'+ arr[i].groupid + '</td>\
-        <td>'+ Tool.js_date_time2(arr[i].logintime) + '</td>\
-        <td>'+ arr[i].loginip + '</td>\
-        <td>'+ arr[i].logintimes + ' 次</td>\
-        <td>'+ this.b02(arr[i].state) + '</td>\
+        <td>'+ (arr[i].logintime ? Tool.js_date_time2(arr[i].logintime) : "") + '</td>\
+        <td>'+ (arr[i].loginip ? arr[i].loginip : '') + '</td>\
+        <td>'+ (arr[i].logintimes ? arr[i].logintimes + ' 次' : '') + '</td>\
+        <td>'+ this.b02(""+arr[i].islocked) + '</td>\
       </tr>'
     }
     html = '\
@@ -71,7 +65,7 @@ var fun =
       <table class="table table-hover align-middle center">\
         <thead class="table-light">'+ this.b01() + '</thead>\
         <tbody>'+ html + '</tbody>\
-      </table>' + Tool.page(t[0][0].total, 20, obj.params.page) + '\
+      </table>' + Tool.page2(sessionObj, t[0].LastEvaluatedKey, t[1], this.obj.DEFAULT_DB, this.obj.size, obj.params.page, obj.params.jsFile) + '\
     </div>'
     Tool.html(null, null, html)
   },
@@ -84,7 +78,6 @@ var fun =
               <li><a class="dropdown-item pointer" onClick="fun.c04()">添加用户</a></li>\
             </ul>\
           </th>\
-          <th class="w50">ID</th>\
           <th>用户名</th>\
           <th>真实姓名</th>\
           <th>所属用户组</th>\
@@ -98,8 +91,8 @@ var fun =
   b02: function (state) {
     let str = "未知"
     switch (state) {
-      case 0: str = "锁定"; break;
-      case 1: str = "激活"; break;
+      case "0": str = "锁定"; break;
+      case "1": str = "激活"; break;
     }
     return str;
   },
@@ -114,6 +107,56 @@ var fun =
     }
     return name
   },
+  b04: function (DEFAULT_DB, ExclusiveStartKey) {
+    if (DEFAULT_DB == "dynamodb") {
+      return this.b05(this.obj.size, DEFAULT_DB, ExclusiveStartKey)
+    }
+    else {
+      return this.b06(this.obj.size, DEFAULT_DB)
+    }
+  },
+  b05: function (size, DEFAULT_DB, ExclusiveStartKey) {
+    let params = {
+      ProjectionExpression: 'id,realname,groupid,logintime,loginip,logintimes,username,islocked', // 只获取这些字段
+      Limit: size, // 每页项目数上限
+      TableName: 'main_manager',
+    }
+    if (ExclusiveStartKey && obj.params.page != 1) {//翻页
+      params.ExclusiveStartKey = ExclusiveStartKey;
+    }
+    let data = [{
+      action: DEFAULT_DB,
+      fun: "scan",
+      params: params,
+    }]
+    /////////////////////////////////////////////
+    if (obj.params.page == 1) {
+      data.push({
+        action: DEFAULT_DB,
+        fun: "scan",
+        params: {
+          TableName: 'main_manager',
+          Select: 'COUNT' // 请求只返回项目总数
+        }
+      })
+    }
+    return data;
+  },
+  b06: function (size, DEFAULT_DB) {
+    let data = [{
+      action: DEFAULT_DB,
+      database: "main",
+      sql: "select " + Tool.fieldAs("id,realname,groupid,logintime,loginip,logintimes,islocked,username") + " FROM @.manager" + " order by @.id desc" + Tool.limit(size, obj.params.page, DEFAULT_DB)
+    }]
+    if (obj.params.page == 1) {
+      data.push({
+        action: DEFAULT_DB,
+        database: "main",
+        sql: "select count(1) as Count FROM @.manager",
+      })
+    }
+    return data;
+  },
   c01: function () { },
   c02: function () {
     let searchword = Tool.Trim($("#searchword").val());
@@ -127,20 +170,40 @@ var fun =
     $("#Field").html(name).val(val)
   },
   c04: function () {
-    let data = [{
-      action: this.obj.default_db,
-      database: "main",
-      sql: "insert into @.manager(@.name)values(\'新用户\')",
-    }]
+    let DEFAULT_DB = this.obj.DEFAULT_DB
+    let data = []
+    if (DEFAULT_DB == "dynamodb") {
+      data = [{
+        action: DEFAULT_DB,
+        fun: "putItem",
+        params: {
+          TableName: "main_manager",
+          Item: {
+            "id": { S: Tool.guid() },
+            "username": { S: "新用户" },
+            "islocked": { N: "1" },
+            "groupid": { N: "1" },
+          }
+        },
+      }]
+    }
+    else {
+      data = [{
+        action: DEFAULT_DB,
+        database: "main",
+        sql: "insert into @.manager(@.username)values(\'新用户\')",
+      }]
+    }
     Tool.ajax.a01(data, this.c05, this);
   },
   c05: function (t) {
-    if (t[0].length == 0) {
-      window.location.reload();
-    } else {
-      Tool.pre(["出错：", t]);
+    if (t[0] == "插入成功") {
+      location.reload();
     }
-  }
+    else {
+      Tool.pre(["出错", t])
+    }
+  },
 }
 fun.a01();
 /*
