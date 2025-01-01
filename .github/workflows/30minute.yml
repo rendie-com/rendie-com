@@ -60,13 +60,20 @@ jobs:
       #     chmod +x releases.sh
       #     $GITHUB_WORKSPACE/releases.sh
           
-      - name: 部署nextjs
+      - name: 部署sqlite
         uses: JamesIves/github-pages-deploy-action@v4
         with: 
             branch: main
             folder: sqlite3/
             target-folder: sqlite3/
-      
+
+      - name: 部署nextjs
+        uses: JamesIves/github-pages-deploy-action@v4
+        with: 
+            branch: main
+            folder: nextjs/
+            target-folder: nextjs/
+            
       # - name: 发布固件到 Releases
       #   uses: softprops/action-gh-release@v2
       #   env:
