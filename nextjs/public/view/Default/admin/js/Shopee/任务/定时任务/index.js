@@ -29,13 +29,12 @@ var fun =
             html += '\
             <tr>\
                 <td>' + arr[i].priority + '</td>\
-                <td style="padding-left: 30px;position: relative;">'+ this.b02(arr[i].id) + '' + arr[i].taskname + '</td>\
-                <td>' + (arr[i].remark ? arr[i].remark : '') + '</td>\
+                <td>'+ (arr[i].isenable ? '<font color="blue">已开启</font>' : '已关闭') + '</td>\
+                <td style="padding-left: 30px;position: relative;" class="left">'+ this.b02(arr[i].id)  + arr[i].taskname + '</td>\
                 <td>'+ arr[i].runuser + ' </td>\
                 <td>'+ arr[i].runcycle + ' 分钟</td>\
                 <td>'+ Tool.js_date_time2(arr[i].runtime) + '</td>\
                 <td>'+ Tool.js_date_time2(arr[i].nexttime) + '</td>\
-                <td>'+ (arr[i].isenable ? '<font color="blue">已开启</font>' : '已关闭') + '</td>\
             </tr>'
         }
         html = Tool.header2(obj.params.jsFile) + '\
@@ -51,13 +50,12 @@ var fun =
         let str = '\
         <tr>\
             <th class="w70">优先级</th>\
-            <th style="padding-left:25px;position: relative;" class="w350">'+ this.b03() + '任务名称</th>\
-            <th>任务说明</th>\
+            <th class="w70">状态</th>\
+            <th style="padding-left:25px;position: relative;" class="left">'+ this.b03() + '任务名称</th>\
             <th>执行者用户名</th>\
-            <th>执行周期</th>\
-            <th>运行时时间</th>\
-            <th>下次运行时间</th>\
-            <th>状态</th>\
+            <th class="w120">执行周期</th>\
+            <th class="w170">运行时时间</th>\
+            <th class="w170">下次运行时间</th>\
         </tr>'
         return str
     },
@@ -92,7 +90,7 @@ var fun =
             data = [{
                 action: DEFAULT_DB,
                 database: "shopee/任务/定时任务",
-                sql: "select " + Tool.fieldAs("id,taskname,remark,runuser,runtime,nexttime,runcycle,isenable,priority") + " FROM @.table" + Tool.limit(size, obj.params.page, this.obj.DEFAULT_DB),//order by @.isenable desc,@.priority asc
+                sql: "select " + Tool.fieldAs("id,taskname,runuser,runtime,nexttime,runcycle,isenable,priority") + " FROM @.table" + Tool.limit(size, obj.params.page, this.obj.DEFAULT_DB),//order by @.isenable desc,@.priority asc
             }]
             if (obj.params.page == 1) {
                 data.push({
@@ -107,7 +105,7 @@ var fun =
     b05: function (size, DEFAULT_DB, ExclusiveStartKey) {
         let TableName = Tool.getChinaAscii('shopee_任务_定时任务_table')
         let params = {
-            ProjectionExpression: 'id,taskname,remark,runtime,nexttime,runcycle,isenable,priority', // 只获取这些字段
+            ProjectionExpression: 'id,taskname,runtime,nexttime,runcycle,isenable,priority', // 只获取这些字段
             Limit: size, // 每页项目数上限
             TableName: TableName,
         }
