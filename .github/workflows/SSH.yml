@@ -31,8 +31,8 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@v4
       with: 
           branch: main
-          folder: ./sqlite3/
-          target-folder: ./sqlite3/
+          folder: ./
+          target-folder: ./
           
     # - name: 自动发布固件到 Releases
     #   uses: softprops/action-gh-release@v2
