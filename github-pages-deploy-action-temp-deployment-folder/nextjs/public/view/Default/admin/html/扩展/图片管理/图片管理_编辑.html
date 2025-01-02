@@ -1,0 +1,215 @@
+<r:photo size=1 where=" where @.id=<.arr(3)/>"
+  <script type="text/javascript">
+  $(function(){
+    $('.tip').focus(function(){
+        let $tip=$('<div id="tip"><div class="t_box"><div><s><i></i></s><img width="300" src="/<.Config(sitePath)/>'+this.value+'" /></div></div></div>');
+        $('body').append($tip);
+        $('#tip').show('fast');
+     }).blur(function(){
+        $('#tip').remove();
+     }).focus(function(e){
+        $('#tip').css({"top":(e.pageY-60)+"px","left":(e.pageX+30)+"px"})
+     })
+    $("#addphotopic").html(editbig()+addphotopicSkin({area:num}))
+  })
+  function editbig(){
+    return '\
+    <r: tag=[photo:pic]}\
+      <r: tag=[area:name] pre="[area:i]"}\
+	  {if [area:i]==1}\
+      <div id="bigpic[area-1list:i]">\
+      <input type="hidden" name="picid" value="[area-1list:i]"/>\
+      <input type="text" size="6" name="bgcolor" <if "[area:name tag=2]"=="">style="border-left:20px #666666 solid;border-right:1px #666666 solid; border-bottom:1px #666666 solid; border-top:1px #666666 solid;"<else/>style="border-left:20px #[area:name tag=2] solid;border-right:1px #[area:name tag=2] solid; border-bottom:1px #[area:name tag=2] solid; border-top:1px #[area:name tag=2] solid;"</if> value="[area:name tag=2]">\
+      <input type="text" class="tip" size="40" name="pic[area-1list:i]" id="pic[photo:id]_[area:i]_1" value="[area:name tag=1]">\
+      <iframe src="fckeditor/rendie_upload.htm?pic[area:i]_1" scrolling="no" topmargin="0" width="200" height="30" marginwidth="0" marginheight="0" frameborder="0" align="center"></iframe>\
+      <input type="text"size="2" name="W[area-1list:i]" id="W[area-1list:i]_1" value="[area:name tag=3]"/>x\
+      <input type="text"size="2" name="H[area-1list:i]" id="H[area-1list:i]_1" value="[area:name tag=4]"/>\
+      <input type="button" value="生成" size="2" class="pn" onclick="GenerateImages($(\'#pic[photo:id]_[area-1list:i]_1\').val(),\'pic[photo:id]_[area-1list:i]_1\',$(\'#W[area-1list:i]_1\').val(),$(\'#H[area-1list:i]_1\').val(),\'photo/\');"/>\
+      <img onclick="$(\'#bigpic[area-1list:i]\').remove();" src="/<.Path/>admin/img/btn_dec.gif" class="pointer" alt="删除第[area-1list:i]组的所有图片" align="absmiddle"/>(第[area-1list:i]组的第1个图)\
+	  <else/>\
+      <div id="smallpic[area-1list:i]-[area:i]">\
+        &nbsp;&nbsp;├<input type="text" size="2" name="W[area-1list:i]" id="W[area-1list:i]_[area:i]" value="[area:name tag=3]"/>x\
+        <input type="text"size="2" name="H[area-1list:i]" id="H[area-1list:i]_[area:i]"value="[area:name tag=4]"/>\
+        <input type="button" value="生成" size="2" class="pn" onclick="GenerateImages($(\'#pic[photo:id]_[area-1list:i]_1\').val(),\'pic[photo:id]_[area-1list:i]_[area:i]\',$(\'#W[area-1list:i]_[area:i]\').val(),$(\'#H[area-1list:i]_[area:i]\').val(),\'photo/\');" />\
+        <input type="text" size="30" class="tip" name="pic[area-1list:i]" id="pic[photo:id]_[area-1list:i]_[area:i]" value="[area:name tag=1]">\
+        <iframe src="fckeditor/rendie_upload.htm?pic[area-1list:i]-[area:i]" scrolling="no" topmargin="0" width="200" height="30" marginwidth="0" marginheight="0" frameborder="0" align="center"></iframe>\
+        <img onclick="$(\'#smallpic[area-1list:i]-[area:i]\').remove();" src="/<.Path/>admin/img/btn_dec.gif" class="pointer" alt="删除第[area-1list:i]组的[area:i]个图片" align="absmiddle"/>(第[area-1list:i]组的第[area:i]个图)\
+      </div>\
+	  </if>\
+      </r:>\
+    '+addsmallSkin([area:i],{area:[area:i]num})+'</div>\
+    </r:>\
+    '
+  }
+  function addbig(j){
+    return '\
+    <div id="bigpic'+j+'">\
+      <input type="hidden" name="picid" value="'+j+'"/>\
+      <input type="text" size="6" name="bgcolor" style="border-left:20px #666666 solid;border-right:1px #666666 solid; border-bottom:1px #666666 solid; border-top:1px #666666 solid;">\
+      <input type="text" class="tip" size="40" name="pic'+j+'" id="pic[photo:id]_'+j+'_1">\
+      <iframe src="fckeditor/rendie_upload.htm?pic'+j+'_1" scrolling="no" topmargin="0" width="200" height="30" marginwidth="0" marginheight="0" frameborder="0" align="center"></iframe>\
+      <input type="text"size="2"name="W'+j+'"id="W'+j+'_1"/>x\
+      <input type="text"size="2"name="H'+j+'"id="H'+j+'_1"/>\
+      <input type="button" value="生成" size="2" class="pn" onclick="GenerateImages($(\'#pic[photo:id]_'+j+'_1\').val(),\'pic[photo:id]_'+j+'_1\',$(\'#W'+j+'_1\').val(),$(\'#H'+j+'_1\').val(),\'photo/\');"/>\
+      <img onclick="$(\'#bigpic'+j+'\').remove();" src="/<.Path/>admin/img/btn_dec.gif" class="pointer" alt="删除第'+j+'组的所有图片" align="absmiddle"/>(第'+j+'组的第1个图)'+addsmallSkin(j,1)+'\
+    </div>'
+  }
+  function addbigend(j){
+    $("#addphotopicSkin-"+j).before(addbig(j+1)+addphotopicSkin(j+1));	
+    $("#addphotopicSkin-"+j).remove()
+  }
+  function addphotopicSkin(j){
+    return '<div id="addphotopicSkin-'+j+'">\
+               <img src="/<.Path/>admin/img/btn_add.gif" style="cursor:pointer" onclick="addbigend('+j+')"/>&nbsp;&nbsp;\
+               <font color="red">您可以单击前面的按钮添加一组图片</font> 【<a href="javascript:" onClick="$(\'.attention\').toggle()"><strong>批量添加图片</strong></a>】\
+			   <div class="attention" style="display:none">将目录：<input type="text" size="50" id="OPath" value="CLC汽车用品联合会交流会/">&nbsp;的图片生成为：\
+	 		   <input type="text" size="3" id="Ow" value="750">\
+			   x&nbsp;<input size="3" id="Oh" value="">\
+			   <input type="button" class="pn" value="开始添加图片" onClick="BatchAddImages()">\
+             </div></div>'
+  }
+  function addsmallSkin(j,i){
+    return '<div id="addsmallSkin'+j+'-'+i+'">\
+              &nbsp;&nbsp;└<img src="/<.Path/>admin/img/btn_add.gif" style="cursor:pointer" onclick="addsmallend('+j+','+i+');"/>&nbsp;&nbsp;\
+              <font color="red">您可以单击前面的按钮添加一个"子图片"，也可以按大小生成"子图片"或上传"子图片"</font>\
+            </div>'
+  }
+function addsmall(j,i)
+{
+	return '<div id="smallpic'+j+'-'+i+'">\
+				&nbsp;&nbsp;├<input type="text" size="2" name="W'+j+'" id="W'+j+'_'+i+'"/>x\
+				<input type="text"size="2" name="H'+j+'" id="H'+j+'_'+i+'"/>\
+				<input type="button" value="生成" size="2" class="pn" onclick="GenerateImages($(\'#pic[photo:id]_'+j+'_1\').val(),\'pic[photo:id]_'+j+'_'+i+'\',$(\'#W'+j+'_'+i+'\').val(),$(\'#H'+j+'_'+i+'\').val(),\'product/\');" />\
+				<input type="text" size="30" class="tip" name="pic'+j+'" id="pic[photo:id]_'+j+'_'+i+'">\
+				<iframe src="fckeditor/rendie_upload.htm?pic'+j+'-'+i+'" scrolling="no" topmargin="0" width="200" height="30" marginwidth="0" marginheight="0" frameborder="0" align="center"></iframe>\
+				<img onclick="$(\'#smallpic'+j+'-'+i+'\').remove();" src="'+imagesPath+'img/btn_dec.gif" class="pointer" alt="删除第'+j+'组的'+i+'个图片" align="absmiddle"/>(第'+j+'组的'+i+'个图片)\
+			  </div>'
+}
+  function addsmallend(j,i){
+    $("#addsmallSkin"+j+"-"+i).before(addsmall(j,i+1)+addsmallSkin(j,i+1));	
+    $("#addsmallSkin"+j+"-"+i).remove()
+  }
+  function BatchAddImages(){
+	let Opath=$("#OPath").val()
+    Opath=escape(Opath.replace("/","*"))
+	location.href="ajax/admin_content.aspx?BatchAdd/"+Opath+"/"+$("#Ow").val()+"/"+$("#Oh").val()+"/<.arr(3)/>.html"
+  }
+  </script>
+<form action="ajax/admin_content.aspx?PhotoSave/edit.html" method="post" name="editform" id="editform">
+<input type="hidden" id="pre_commend" name="pre_commend" value="[photo:commend]">
+<input type="hidden" name="pre_id" value="[photo:id]">
+<table class="tb">
+<tr class="thead"><th colspan="2">修改图片(<font color='red'>＊</font>为必填,其它选填)</th></tr>
+	<tr>
+	  <td align="right" height="22">标 题：</td>
+		<td><span style="float:left"><input type="text" size="50" id="pre_name" name="pre_name" autocomplete="off" value="[photo:name]"/><input type="text" size="50" id="pre_enname" name="pre_enname" value="[photo:enname]" style="display:none" onchange="this.value=this.value.replace(/[^\w]+/ig,'')">&nbsp;<font color='red'>＊</font>颜色：
+		<select name="pre_color" >
+		<option value="" <if "[photo:color]"=="" }selected="selected"{/if}>无色</option> 
+		<option style="background-color:#FF0000;color: #FF0000" value="#FF0000"<if "[photo:color]"=="FF0000" }selected="selected"{/if}>红色</option> 
+		<option style="background-color:#FF33CC;color: #FF33CC" value="#FF33CC"<if "[photo:color]"=="FF33CC" }selected="selected"{/if}>粉红</option>  
+		<option style="background-color:#00FF00;color: #00FF00" value="#00FF00"<if "[photo:color]"=="00FF00" }selected="selected"{/if}>绿色</option>
+		<option style="background-color:#0000CC;color: #0000CC" value="#0000CC"<if "[photo:color]"=="0000CC" }selected="selected"{/if}>深蓝</option>
+		<option style="background-color:#FFFF00;color: #FFFF00" value="#FFFF00"<if "[photo:color]"=="FFFF00" }selected="selected"{/if}>黄色</option>
+		<option style="background-color:#660099;color: #660099" value="#660099"<if "[photo:color]"=="660099" }selected="selected"{/if}>紫色</option>
+		</select>
+类 型：<select name="pre_type" id="pre_type">
+<option value="">请选择数据分类</option>
+<r:type  where=" where @.from='photo' and @.upid='0' order by @.sort asc" size=200>
+<option value='<:id/>'{if <:id/>==[photo:type]} selected="selected"{/if}><:name/></option>
+  <r:type  where=" where @.from='photo' and @.upid='<:id/>' order by @.sort asc" size=200>
+  <option value='<:id/>'{if <:id/>==[photo:type]} selected="selected"{/if}>|—<:name/></option>
+    <r:type  where=" where @.from='photo' and @.upid='<:id/>' order by @.sort asc" size=200>
+    <option value='<:id/>'{if <:id/>==[photo:type]} selected="selected"{/if}>|—|—<:name/></option>
+      <r:type  where=" where @.from='photo' and @.upid='<:id/>' order by @.sort asc" size=200>
+      <option value='<:id/>'{if <:id/>==[photo:type]} selected="selected"{/if}>|—|—|—<:name/></option>
+        <r:type  where=" where @.from='photo' and @.upid='<:id/>' order by @.sort asc" size=200>
+        <option value='<:id/>'{if <:id/>==[photo:type]} selected="selected"{/if}>|—|—|—|—<:name/></option>
+        </r:type>
+      </r:type>
+    </r:type>
+  </r:type>
+</r:type>
+</select>&nbsp;&nbsp;<font color='red'>＊</font>&nbsp;</span><input type="checkbox" name="isuppingyin" value="1" class="checkbox" onclick="if(this.checked){view('pre_enname');hide('pre_name')}else{view('pre_name');hide('pre_enname')}" id="isuppingyin-1"/><label for="isuppingyin-1">更改拼音</label></td>
+	</tr>
+	<tr> 
+		<td height="22" align="right">图片地址：</td>
+		<td id="addphotopic"></td>
+  </tr>
+	<tr>
+	 <td align="right" height="22">点击率:</td>
+	 <td><input type="text" size="10" name="pre_hit" id="pre_hit" maxlength="9" value="[photo:hit]">
+	 &nbsp;来源：<input type="text" size="10" name="pre_from" value="[photo:from]">
+	 &nbsp;日期/时间:<input size="10" name="pre_addtime" id="pre_addtime" value="[photo:addtime]">
+	 &nbsp;星级：<span id="star0" style="width:250px;display:inline-block"><script>//starView([photo:commend],0)</script></span>
+	 </td>
+	</tr>
+	<tr>
+      <td align="right" height="22">图片属性:</td>
+      <td>
+      <input type="checkbox" class="checkbox" name="pre_note" value="1" id="pre_note-1">
+      <label for="pre_note-1">[推荐]&nbsp;</label>	  
+      <input type="checkbox" name="pre_note" class="checkbox" value="2" id="pre_note-2">
+      <label for="pre_note-2">[滚动]&nbsp;</label>
+      <input type="checkbox" class="checkbox" name="pre_note" value="3" id="pre_note-3">
+      <label for="pre_note-3">[头条]&nbsp;</label>
+      <input type="checkbox" class="checkbox" name="pre_note" value="4" id="pre_note-4">
+      <label for="pre_note-4">[热门]&nbsp;</label>
+      <input type="checkbox" class="checkbox" name="pre_note" value="5" id="pre_note-5">
+      <label for="pre_note-5">[固顶]&nbsp;</label>
+      <input type="checkbox" class="checkbox" name="pre_note" value="6" id="pre_note-6">
+      <label for="pre_note-6">[允许评论]&nbsp;</label>
+      <input type="checkbox" class="checkbox" name="pre_note" value="7" id="pre_note-7">
+      <label for="pre_note-7">[幻灯]&nbsp;</label>
+      </td>
+	</tr>
+	<tr>
+		<td align="right" height="22">关键词:</td>
+	    <td>
+          <input type="text" name="keyword" size="30" value="[photo:keyword]">
+          &nbsp;作者:<input type="text" size="30" name="pre_author" value="[photo:author]">
+	  </td>
+	</tr>
+	<tr>
+	  <td align="right" height="22">来源网址：</td>
+	  <td><input type="text" size="104" name="pre_fromUrl" value="[photo:fromurl]"></td>
+	</tr>
+	<tr>
+      <td align="right" height="22">内&nbsp;&nbsp;容：</td>
+      <td>
+      <input type="hidden" id="pre_content" name="pre_content" value="[photo:des code=en]" style="display:none" />
+      <input type="hidden" id="pre_content___Config" value="" style="display:none" />
+      <iframe id="pre_content___Frame" src="fckeditor/editor/fckeditor.html?InstanceName=pre_content&amp;Toolbar=rendie" width="640" height="250" frameborder="0" scrolling="no"></iframe>
+      </td>
+	</tr>
+	<tr>
+      <td></td>
+      <td class="forumRow">
+      <input type="submit" name="submit" class="pn" value="确认保存">
+      &nbsp;
+      <input type="submit" class="pn" value="确认添加" onClick="$('#editform').attr('action','ajax/admin_content.aspx?PhotoSave/add.html')">
+      &nbsp;
+      <input type="button" class="pn" value="返　回" onClick="javascript:history.go(-1);">
+      </td>
+    </tr>
+</table>
+</form>
+</r:photo>
+<link rel="stylesheet" href="/<.Path/>admin/css/datepicker.css" type="text/css" />
+<script type="text/javascript" src="/<.Path/>admin/js/datepicker.js"></script>
+<script type="text/javascript">
+$(function(){
+  $('#pre_addtime').DatePicker({
+	  format:'Y/m/d',
+	  date: $('#pre_addtime').val(),
+	  current: $('#pre_addtime').val(),
+	  starts: 1,
+	  onBeforeShow: function(){
+		  $('#pre_addtime').DatePickerSetDate($('#pre_addtime').val(), true);
+	  },
+	  onChange: function(formated,dates){
+		  $('#pre_addtime').val(formated);
+	  }
+  });
+  
+})
+</script>

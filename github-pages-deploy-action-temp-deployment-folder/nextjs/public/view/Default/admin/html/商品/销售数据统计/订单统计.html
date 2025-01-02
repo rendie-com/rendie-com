@@ -1,0 +1,104 @@
+
+	<script src="/<.Path/>admin/js/flotr2.min.js"></script>
+<r:type where=" where @.from='rendie' and @.upid='Fun(arr(3))' order by @.sort asc" size=15>
+<:id Fun="Fun(AddAttr(type$i,$1))"/>
+<:name Fun="Fun(AddAttr(name$i,$1))"/>
+</r:type>
+<load admin/html/头部.html/>
+<table class="tb">
+<tr class="thead"><th colspan="2">按月份统计</th></tr>	
+<tr><td colspan="2"><div id="container" style="margin:0 auto;width:90%;height:400px"></div></td></tr>
+<tr>
+<td align="right"><a href="<.arr(1)/>/list/{rr:attr(type1)/>.html">所有账户</a></td>
+<td>
+	<table class="tb">
+	<tr align="center">
+		<td>编号</td>
+		<td title="以支付时间为标准">月份</td>
+		<td title="当前月所有订单">订单数</td>
+		<td title="【交易成功】和【交易关闭】的所有数据">已收款金额</td>
+		<td title="订单退款大于零">订单退款金额</td>
+		<td>订单退款数量</td>
+		<td title="【买家已付款，等待平台确认】【等待您发货】【买家退款中，等待协商结果】【退款协议已达成】【退款协议已达成】【部分退款后，等待发货】【买家取消退款申请】【已部分发货】【等待买家确认收货】【退款/退货协商中，等待协议达成】【买家投诉到平台】【协议已达成，执行中】【已确认收货】【超过预定期限，自动确认收货】的所有数据">未收款金额</td>
+		<td title="当前月所有实收金额【包括退款金额】">实收金额</td>
+		<td>采购金额</td>
+		<td title="采购退款大于零">采购退款金额</td>
+		<td title="=实收金额-订单退款金额-采购金额+采购退款金额">当月利润</td>
+		<td title="=利润/实收金额">利润率</td>
+		<td title="=按【提成时间】且【可以提成】区分月份。【实收金额】减【订单退款金额】">可提现金额</td>
+	</tr>
+	</table>
+</td>
+</tr>
+<tr>
+<td align="right">按用户名</td>
+<td>
+	<table class="tb">
+<tr align="center">
+	<td>编号</td>
+	<td>账户</td>
+	<td>订单数</td>
+	<td>实收金额</td>
+	<td>已收款</td>
+	<td>未收款</td>
+	<td>采购金额</td>
+	<td>销售退款</td>
+	<td>采购退款</td>
+	<td>当月利润</td>
+	<td>利润率</td>
+</tr>
+<r:order size=50 where=" where not :PayTime is null group by :userid"}
+<tr align="center">
+	<td>[order:i]</td>
+	<td>
+  <r:user where=" where @.id=[order::userid]"}
+  [user:name]
+  </r:user>
+  </td>
+	<td>[order:count(1)]</td>
+	<td>[order:sum(@.MoneyTotal) Fun="Fun(run(MoneyTotal($1)))"]</td>
+	<td>
+
+	[order:sum(@.MoneyTotal)]
+	</td>
+		<td>
+		
+		[order:sum(@.MoneyTotal)]
+		
+		</td>
+	<td>[order:sum(@.PurchaseCost)]</td>
+	<td>[order:sum(@.orderRefund)]</td>
+	<td>[order:sum(@.PurchaseRefund)]</td>
+	<td>[order:sum(@.MoneyTotal)-sum(@.PurchaseCost)-sum(@.orderRefund)+sum(:PurchaseRefund) Fun="Fun(run(Profit($1)))"]</td>
+	<td>[order:count(1) Fun="Fun(run(ProfitMargin($1)))"]</td>
+</tr>
+</r:order>
+</table>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+ (function basic(container) {
+  let d1 = [
+			<r:order size=20 where=" where not :PayTime is null group by year(:PayTime),month(:PayTime)"}
+			[[order:i],[order:count(*)]],
+			</r:order>
+		],graph,d2;
+  graph = Flotr.draw(container,[{data:d1,label:'订单走势',lines:{show:true,fill:true},points:{show:true}}],{
+    xaxis: {
+      minorTickFreq: 3,
+      ticks:[
+			<r:order size=20 where=" where not :PayTime is null group by year(:PayTime),month(:PayTime)"}
+			[[order:i],"[order:year(:PayTime)]年[order:month(:PayTime)]月"],
+			</r:order>
+			], // 自定义X轴
+      minorTicks: null
+    }, 
+    grid:{minorVerticalLines:true},
+    mouse : {track:true},
+    yaxis : {min : 0,autoscaleMargin:1}
+  });
+})(document.getElementById("container"));
+</script>
+
+		

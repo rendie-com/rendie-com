@@ -1,0 +1,100 @@
+<table class="tb">
+  <tr class="thead"><TD colspan="2">用户续点券</TD></tr>
+  <rendie:user where=" where @.id=Fun(arr(4))">
+  <TR> 
+    <TD align="right">用户名：</TD>
+    <TD><if "[user:name]"=="">[user:email]<input id="UserName" type="hidden" value="[user:email]"><else/>[user:name]<input id="UserName" type="hidden" value="[user:name]"></if></TD>
+  </TR>
+  <TR> 
+    <TD align="right">用户组：</TD>
+    <TD>
+      	<if "[user:GroupID]"=="0">
+        无用户组
+        <else/>
+      	<rendie:usergroup size=50>
+        {if <:id/>==[user:GroupID]}<:name/></if>
+        </rendie:usergroup>
+        </if>
+    </TD>
+  </TR>
+  <TR>
+    <TD align="right">计费方式：</TD>
+    <TD>
+      <if "[user:ChargeType]"=="0">
+      不计费
+      <elseif "[user:ChargeType]"=="1">
+      扣点数
+      <elseif "[user:ChargeType]"=="2"}
+      有效期
+      <elseif "[user:ChargeType]"=="3"}
+      无限期
+      <else/>
+      其它([user:ChargeType])
+      </if>
+    </TD>
+  </TR>
+  <TR> 
+    <TD align="right">可用资金：</TD>
+    <TD>[user:money f=2] 元人民币<input type="hidden" id="CurrMoney" value="[user:money f=2]"></TD>
+  </TR>
+  <TR>
+    <TD align="right">目前的用户点券：</TD>
+    <TD>[user:point] 个<input type="hidden" id="CurrPoint" value="[user:point]"></TD>
+  </TR>
+  <TR>
+    <TD align="right">追加点券：</TD>
+    <TD><input type="text" id="Point" value="500" size="10" maxlength="10" >个</TD>
+  </TR>
+  <tr>
+    <td align="right">同时减去：<br></td>
+    <td>
+    <input type="text" id="Money" value="10" size="10" maxlength="10" > 元
+    人民币，不想扣除资金，请输入0
+    </td>
+  </tr>
+  <TR>
+    <TD align="right">请输入原因：</TD>
+    <TD><input name="Reason" type="text" id="Reason" value="续点券操作" size="55" ></TD>
+  </TR>
+  </rendie:user>
+  <TR> 
+    <TD></TD>
+    <TD>
+    <input class="pn"  type="button" id="PointInOrOut" value="保存续点券结果" >
+    <input type="button" value="返回" class="pn" onClick="javascript:history.go(-1)" />
+    </TD>
+  </TR>
+</TABLE>
+<script type="text/javascript">
+$(function(){
+	$('#PointInOrOut').click(function(){
+		let obj=Object(),sql,str
+		obj.name=$("#UserName").val()
+		obj.Point=$("#Point").val()
+		obj.Reason=$("#Reason").val()
+		obj.Money=parseFloat($("#Money").val())//同时减去
+		obj.CurrMoney=parseFloat($("#CurrMoney").val())
+		if(obj.CurrMoney<obj.Money)
+		{alert("当前资金不够本次续点券操作！")}
+		else
+		{
+			obj.CurrMoney=parseFloat($("#CurrMoney").val())-parseFloat(obj.Money)
+			obj.CurrPoint=parseFloat($("#CurrPoint").val())+parseFloat(obj.Point)
+			obj.time="Fun(Config(databaseType))"=="sql"?"getdate()":"now()"
+			sql="Insert into @.LogPoint(:InOrOutFlag,:Point,:Des,:Addtime,:IP,:CurrPoint,:userid)values(1,"+obj.Point+",'"+obj.Reason+"',"+obj.time+",'Fun(getIp)',"+obj.CurrPoint+",<.arr(4)/>)"
+			str='{ren'+'die:area tag="sql">'+sql+'{/ren'+'die:area}续点券成功！'
+			sql="update @.User set @.Point=:Point+"+obj.Point+" where @.id=<.arr(4)/>"
+			str+='{ren'+'die:area tag="sql">'+sql+'{/ren'+'die:area}'
+			if(obj.Money!=0)
+			{
+				sql="Insert into @.LogMoney(:MoneyType,:UserName,:Money,:IncomeOrPayOut,:Remark,:Inputer,:IP,:CurrMoney,:userid)values(4,'"+obj.name+"',"+obj.Money+",2,'续点券扣除资金','Fun(adminID)','Fun(getIp)',"+obj.CurrMoney+",<.userID/>)"
+				str+='{ren'+'die:area tag="sql">'+sql+'<1/>update @.User set @.Money='+obj.CurrMoney+' where @.id=<.arr(4)/>{/ren'+'die:area/>'
+			}
+			str=$.ajax({type:"POST",url:"exe.html?"+Math.random(),data:{data:encodeURIComponent(str)},async:false}).responseText;
+			alert(str)
+			window.location.reload();
+		}
+	})
+})
+</script>
+

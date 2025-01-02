@@ -1,0 +1,37 @@
+<load admin/html/头部.html/>
+<div class="tb">
+<ul class="makeHtmlTab">
+    <li onclick="" class="hover">【敦煌网】运费模板</li>
+    <li onclick="">【速卖通】运费模板</li>
+</ul>
+<table class="tb">
+  <tr align="center"> 
+    <td width="50">ID</td>
+    <td>物流公司名称</td>
+    <td>物流公司代码</td>
+    <td>APIkey</td>
+    <td style="width:10%">来源</td>
+    <td style="width:5%">排序</td>
+    <td style="width:5%">是否默认</td>
+    <td align="left">管理操作</td>
+  </tr>
+  <r:Deliverytype size=200 where=" order by @.from asc,:sort asc">
+  <tr align="center"> 
+    <td align="left">
+      <input type="checkbox" name="pre_id" value="[Deliverytype:id]" id="check-[Deliverytype:id]"/>
+      <label for="check-[Deliverytype:id]">[Deliverytype:id]</label>
+    </td>
+    <td>[Deliverytype:name]</td>
+    <td>[Deliverytype:APIopen]</td>
+    <td>[Deliverytype:APIkey]</td>
+    <td>[Deliverytype:from]</td>
+    <td>[Deliverytype:sort]</td>
+    <td>[Deliverytype:isDefault]</td>
+    <td align="left">
+      <a href="/{r.Config(admin)}/ajax/admin_shop.aspx/DeliveryType/del/[Deliverytype:id].html">删除</a>
+    </td>
+  </tr>
+  </r:Deliverytype>
+</table>
+</div>
+

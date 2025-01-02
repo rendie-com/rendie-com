@@ -1,0 +1,36 @@
+{
+  "common":<load product/html/self/ajax_common.js/>,
+  <r:pro db="sqlite.aliexpress" size=1 where=" where @.id=<.Arr(3)/>">
+    "pro":
+    {
+      "SaleNum":<:SaleNum/>,
+      "Review":<:Review/>,
+      "Discount":<:Discount/>,
+      "pic1":"<:pic1/>",
+      "name":"<:name tag=js/>",
+      "keywords":"<:keywords tag=js/>",
+      "description":"<:description tag=js/>",
+      "minprice":<:minprice f=2/>,
+      "maxprice":<:maxprice f=2/>,
+      <r:prodes db="sqlite.aliexpress_prodes/<:proid Fun=ProidNum($1,50)/>" size=1 where=" where @.proid='<:proid/>'">
+				"pic":"<:pic/>",
+				"des":<:des tag=json/>,
+				"aeopAeProductPropertys":<:aeopAeProductPropertys/>,
+				"aeopAeProductSKUs":<:aeopAeProductSKUs/>,
+			</r:prodes>
+      "id":<:id/>
+    },
+    "RelatedProducts":
+    [0
+      <r:pro db="sqlite.aliexpress" size=6 where=" where @.type=<:type/> order by @.Review desc">,
+      <load product/html/self/ajax_pro_obj.html/>
+      </r:pro>
+    ],
+    "UpsellProducts":
+    [0
+      <r:pro db="sqlite.aliexpress" size=6 where=" where @.type=<:type/> order by @.SaleNum desc">,
+      <load product/html/self/ajax_pro_obj.html/>
+      </r:pro>
+    ]
+  </r:pro>
+}

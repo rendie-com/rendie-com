@@ -1,0 +1,60 @@
+<r:user where=" where @.id=Fun(arr(4))">
+<ul class="m-2 shadow p-2 bg-white rounded">
+  <li class="thead">修改注册用户信息</li>
+	<ul class="Tul tr">
+		<li class="w100 right">用户名称：</li>
+		<li class="w250 txtli" ondblclick="input_text($(this),'name','[user:name]')">[user:name]</li>
+		<li class="w100 right">用户邮箱：</li>
+		<li class="w250 txtli" ondblclick="input_text($(this),'Email','[user:Email]')">[user:Email]</li>
+	</ul>
+	<ul class="Tul tr">
+		<li class="w100 right">用户密码：</li>
+		<li class="w250 txtli" ondblclick="input_text($(this),'pwd','')"></li>
+		<li class="w100 right">手机号码：</li>
+		<li class="w250 txtli" ondblclick="input_text($(this),'mobile','[user:mobile]')">[user:mobile]</li>
+	</ul>
+	<ul class="Tul tr">
+		<li class="w100 right">密码问题：</li>
+		<li class="w250 txtli" ondblclick="input_text($(this),'question','[user:question]')">[user:question]</li>
+		<li class="w100 right">问题答案：</li>
+		<li class="w250 txtli" ondblclick="input_text($(this),'answer','[user:answer]')">[user:answer]</li>
+	</ul>
+	<ul class="Tul tr">
+		<li class="w100 right">用户姓名：</li>
+		<li class="w250 txtli"><Input id="FirstName" type="text" size=10 Value="[user:FirstName]" >（性）<Input id="LastName" type="text" size=10 Value="[user:LastName]" >（名）</li>
+		<li class="w100 right">用户状态：</li>
+		<li class="w250 txtli"><input type="radio" name="locked" value="0" id="locked-0" {if "[user:locked]"=="0"} checked="checked"{/if}/>
+    <label for="locked-0">正常</label>
+    <input type="radio" name="locked" value="1" id="locked-1" {if "[user:locked]"=="1"} checked="checked"{/if}/>
+    <label for="locked-1">锁定</label>
+    <input type="radio" name="locked" value="2"  id="locked-2" {if "[user:locked]"=="2"} checked="checked"{/if}/>
+    <label for="locked-2">待审核</label>
+    <input type="radio" name="locked" value="3"  id="locked-3" {if "[user:locked]"=="3"} checked="checked"{/if}/>
+    <label for="locked-3">待激活</label></li>
+	</ul>
+	<ul class="Tul tr">
+		<li class="w100 right">用户组：</li>
+		<li class="w500 txtli">
+		<select id="GroupID" ><option value="0">请选择用户组</option></select>&nbsp;&nbsp;论坛头衔&nbsp;
+    <select id="clubgradeid" ><option value="0">请选择论坛头衔</option></select>&nbsp;&nbsp;问答头衔&nbsp;
+		<select id="gradeid"><option value="0">请选择问答头衔</option></select>
+		</li>
+	</ul>
+	<ul class="Tul tr">
+		<li class="w100 right">有效期限：</li>
+		<li class="w250 txtli">开始日期&nbsp;[user:BeginDate]&nbsp;有效期 [user:EDays]&nbsp;天。</li>
+		<li class="w100 right">用户积分：</li>
+		<li class="w250 txtli">[user:score] 分</li>
+	</ul>
+	<ul class="Tul tr">
+		<li class="w100 right">用户点券：</li>
+		<li class="w250 txtli">[user:point] 点券</li>
+		<li class="w100 right">用户资金：</li>
+		<li class="w250 txtli">[user:money f=2] 元</li>
+	</ul>
+</ul>
+</r:user>
+
+<script type="text/javascript">obj={arr4:"<.arr(4)/>"</script>
+<script type="text/javascript" src="/<.Path/>admin/js/md5.js"></script>
+<script type="text/javascript" src="/<.Path/>admin/js/用户/用户管理/修改.js"></script>

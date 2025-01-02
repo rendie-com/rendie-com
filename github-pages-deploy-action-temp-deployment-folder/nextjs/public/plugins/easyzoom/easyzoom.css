@@ -1,0 +1,51 @@
+/** * EasyZoom core styles */
+.easyzoom {
+  position: relative;
+  display: inline-block; }
+
+.easyzoom img {
+  vertical-align: bottom;
+  max-width: none; }
+
+.easyzoom.is-loading img {
+  cursor: progress; }
+
+.easyzoom.is-ready img {
+  cursor: crosshair; }
+
+.easyzoom.is-error img {
+  cursor: not-allowed; }
+
+.easyzoom-notice {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 150;
+  width: 10em;
+  margin: -10px 0 0 -50px;
+  line-height: 20px;
+  text-align: center;
+  background: #FFF;
+  box-shadow: 0 0 10px #888; }
+
+.easyzoom-flyout {
+  position: absolute;
+  z-index: 100;
+  overflow: hidden;
+  background: #FFF; }
+
+/** * EasyZoom layout variations */
+.easyzoom--overlay .easyzoom-flyout {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+
+.easyzoom--adjacent .easyzoom-flyout {
+  top: 0;
+  left: 100%;
+  width: 100%;
+  height: 100%;
+  margin-left: 20px; }
+
+/* end css jquery */

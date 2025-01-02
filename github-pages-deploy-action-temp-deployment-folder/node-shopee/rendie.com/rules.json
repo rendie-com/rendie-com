@@ -1,0 +1,39 @@
+[
+  {
+    "id": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "sec-ch-ua",
+          "operation": "set",
+          "value": "\"Chromium\";v=\"128\", \"Not;A=Brand\";v=\"24\", \"Google Chrome\";v=\"128\""
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "*"
+    }
+  },
+  {
+    "id": 2,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "Content-Type",
+          "operation": "set",
+          "value": "application/json+protobuf"
+        },
+        {
+          "header": "X-Goog-Api-Key",
+          "operation": "set",
+          "value": "AIzaSyATBXajvzQLTDHEQbcpq0Ihe0vWDHmO520"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "||translate-pa.googleapis.com/v1/translateHtml"
+    }
+  }
+]
