@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   # 定时器
   schedule:
-    - cron: "*/60 * * * *"
+    - cron: "*/30 * * * *"
 env:  
   TZ: Asia/Shanghai
 
