@@ -84,9 +84,3 @@ jobs:
       #     name: 重新发布，当出错丢数据时，这个发布数据还能用
       #     tag_name: 2
       #     files: ./releases/* 
-          
-      - name: 删除运行记录
-        uses: Mattraks/delete-workflow-runs@v2
-        with:
-          retain_days: 0
-          keep_minimum_runs: 3
