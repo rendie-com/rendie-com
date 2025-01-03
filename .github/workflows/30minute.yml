@@ -66,13 +66,6 @@ jobs:
             branch: main
             folder: sqlite3/
             target-folder: sqlite3/
-
-      - name: 部署nextjs
-        uses: JamesIves/github-pages-deploy-action@v4
-        with: 
-            branch: main
-            folder: nextjs/public/
-            target-folder: nextjs/public/
             
       # - name: 发布固件到 Releases
       #   uses: softprops/action-gh-release@v2
