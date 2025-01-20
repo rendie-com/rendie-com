@@ -33,10 +33,13 @@ jobs:
         id: date
         run: |
           sudo timedatectl set-timezone "$TZ"
+      - name: 下载nextjs        
+        run: |        
+          git clone https://github.com/rendie-com/xxxxxx -b master nextjs01
           
       - name: 运行nextjs     
         run: | 
-          cd ./nextjs/
+          cd ./nextjs01/
           pnpm i                
           pnpm run dev &
         env:
