@@ -41,9 +41,9 @@ jobs:
           NEXTJS_CONFIG_SQLITE: ${{ secrets.NEXTJS_CONFIG_SQLITE }} 
 
     - name: 运行 cpolar       
-      run: |      
-        cd ./cpolar/ 
-        chmod a+rwx ./cpolar
+      run: |     
+        curl -sL https://git.io/cpolar | sudo bash
+        # chmod a+rwx ./cpolar
         ./cpolar authtoken ${{ secrets.CPOLAR_AUTHTOKEN }}  
         echo "已授权"
         ./cpolar http 3000 &
