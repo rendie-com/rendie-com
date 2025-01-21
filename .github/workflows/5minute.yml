@@ -50,12 +50,11 @@ jobs:
           
       - name: 运行node       
         run: |
+          mkdir ./sqlite3/error/
           mkdir ./releases/
           cd ./node-shopee/
           pnpm i  
           node ./5minute.js   
-          
-          mkdir ./sqlite3/error/
         env:
           NODE_SHOPEE_ACCESS_TOKEN: ${{ secrets.NODE_SHOPEE_ACCESS_TOKEN }}  
           NODE_SHOPEE_REFRESH_TOKEN: ${{ secrets.NODE_SHOPEE_REFRESH_TOKEN }}
