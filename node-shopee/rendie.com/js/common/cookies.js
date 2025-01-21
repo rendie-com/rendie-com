@@ -28,7 +28,7 @@ export const common_cookies = {
     //设置所有cookie信息
     setAllCookies: function (cookiesArr, next) {
         let This = this;
-        chrome.cookies.set(cookiesArr[0],function () {
+        chrome.cookies.set(cookiesArr[0], function () {
             cookiesArr.shift();
             if (cookiesArr.length == 0) {
                 next("设置成功！");
@@ -58,6 +58,14 @@ export const common_cookies = {
             }
         );
     },
+    delCookies: function (url, name, next)//删除一个cookie信息
+    {
+        chrome.cookies.remove({ url: url, name: name },
+            function (cookies) {
+                next(cookies);
+            }
+        );
+    },
 }
 ////////////////////////////////////////////////////////////////////////
 //getCookies: function (request)//获取一个cookie信息
@@ -76,11 +84,4 @@ export const common_cookies = {
 //        }
 //    );
 //},
-//delCookies: function (request)//删除一个cookie信息
-//{
-//    chrome.cookies.remove({ url: request.url, name: request.name },
-//        function (cookies) {
-//            request.next(cookies);
-//        }
-//    );
-//},
+

@@ -2,11 +2,12 @@
 export const common_uploadFile = {
     uploadFile:
     {
-        a01: function (url, headers, data, next) {
+        a01: function (url, type, headers, data, next) {
             let oo = {
                 fileArr: [],//图片数组
                 blobArr: [],//blob数组
                 url: url,
+                type: type,
                 headers: headers,
                 data: data,
                 next: next
@@ -46,7 +47,7 @@ export const common_uploadFile = {
                 // 处理Blob对象
                 This.a05(blob, oo);
             }).catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
+                console.log('There has been a problem with your fetch operation:', error);
             });
         },
         a05: function (blob, oo) {
@@ -86,9 +87,20 @@ export const common_uploadFile = {
                 method: 'POST',
                 body: formData
             })
-                .then(response => response.json())
-                .then(data => oo.next(data))
-                .catch(error => console.error('Error:', error));
+                .then(response => {
+                    if (oo.type == "json") {
+                        return response.json();
+                    }
+                    else {
+                        return response.text();
+                    }
+                })
+                .then(data => { oo.next(data) })
+                .catch(error => {
+                    oo.next({
+                        error: error
+                    })
+                });
         },
     }
 }

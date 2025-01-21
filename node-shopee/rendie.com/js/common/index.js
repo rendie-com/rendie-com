@@ -87,6 +87,9 @@ export const common = {
                 if (injectionResults && injectionResults[0] && injectionResults[0].result) {
                     this.a04(injectionResults[0].result, oo);
                 }
+                else {
+                    common.Time("name", 100, this.a02, this, oo);
+                }
             });
         },
         a04: function (t, oo) {
@@ -116,26 +119,27 @@ export const common = {
     notTab: function (index) {
         console.log("没有【第" + index + "个选项卡】")
     },
+    // 高亮tab
+    highlightTab: {
+        a01: function (index, windowId, next) {
+            let oo = {
+                index: index,
+                windowId: windowId,
+                next: next
+            }
+            common.ifTabs(index, windowId, this.a02, this, common.notTab, oo)
+        },
+        // 高亮tab
+        a02: function (id, oo) {
+            chrome.tabs.highlight({ tabs: oo.index - 1, windowId: oo.windowId }, function (t) {
+                oo.next(t);
+            });
+        },
+    },
 }
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
-// // 高亮tab
-// highlightTab: {
-//     a01: function (index, windowId, next) {
-//         let oo = {
-//             index: index,
-//             windowId: windowId,
-//             next: next
-//         }
-//         Tool.ifTabs(index, windowId, this.a02, this, Tool.notTab, oo)
-//     },
-//     // 高亮tab
-//     a02: function (id, oo) {
-//         chrome.tabs.highlight({ tabs: oo.index - 1, windowId: oo.windowId }, function (t) {
-//             oo.next(t);
-//         });
-//     },
-// },
+
 // //////////////////////////////////////////
 // // 显示桌面通知
 // notifications: function (title, message, iconUrl, next) {

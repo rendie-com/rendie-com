@@ -1,4 +1,5 @@
 'use strict';
+import { common } from './common/index.js';
 import { common_fetch } from './common/fetch.js';
 import { common_cookies } from './common/cookies.js';
 import { common_executeScript } from './common/executeScript.js';
@@ -14,8 +15,8 @@ export const index =
                 switch (request.id) {
                     case "load_screenshot": next(This.screenshot); break;
                     case "close_screenshot_window": This.c01(); break;
-                    default:This.d01(request, next);break;
-                }                
+                    default: This.d01(request, next); break;
+                }
             }
             return true;//注：不写这个会出错，内容为【Unchecked runtime.lastError: The message port closed before a response was received.】
         });
@@ -69,7 +70,7 @@ export const index =
             case "tabs_executeScript_indexOf"://执行js代码后再找内容(返回网页内容)
                 common_executeScript.tabs_executeScript_indexOf.a01(request.index, request.windowId, request.fileArr, request.code, request.htmlArr, request.isHighlightTab, next);
                 break;
-            // case "tabs_executeScript": //执行js代码(立马返回值取到的内容) 
+            //case "tabs_executeScript": //执行js代码(立马返回值取到的内容) 
             //     Tool.tabs_executeScript.a01(request.index, request.windowId, request.fileArr, request.code, request.isHighlightTab, next);
             //     break;
             ///////////common_executeScript.js 结束/////////////////////////////////////////////
@@ -80,15 +81,15 @@ export const index =
             case "getAllCookies": common_cookies.getAllCookies(request.urlArr, [], next); break;//获取所有cookie信息
             // //case "getCookies": Tool.getCookies(request); break;//获取单个cookie信息
             // //case "setCookies": Tool.setCookies(request); break;//设置单个cookie信息
-            // //case "delCookies": Tool.delCookies(request); break;//删除单个cookie信息
+            case "delCookies": common_cookies.delCookies(request.url, request.name, next); break;//删除单个cookie信息
             // //////////common_cookies.js  结束//////////////////////////////////////////////////////////
             // ////////////////////////////////////////////////////////
             case "getFetch": common_fetch.getFetch(request.url, request.type, next); break;//获取URL内容
             case "postFetch": common_fetch.postFetch(request.url, request.data, next); break;//普通提交（返回的内容不一定是json格式
             // case "typeHtml": Tool.typeHtml(request.url, request.type, request.data, next); break;//指定类型提交
             // case "download": Tool.download(request.url, request.filename, next); break; //下载文件---------已验证
-            case "uploadFile": common_uploadFile.uploadFile.a01(request.url, request.headers, request.data, next); break;//上传文件------已验证
-            // case "highlightTab": Tool.highlightTab.a01(request.index, request.windowId, next); break;//高亮tab------已验证
+            case "uploadFile": common_uploadFile.uploadFile.a01(request.url, request.type, request.headers, request.data, next); break;//上传文件------已验证
+            case "highlightTab": common.highlightTab.a01(request.index, request.windowId, next); break;//高亮tab------已验证
             // case "setHeaders_getHtml"://设置Headers信息get请求返回html（要给Headers参数，可以修改Origin参数）-----已验证
             //     common_fetch.setHeaders_getHtml.a01(request.url, request.headers, next);
             //     break;

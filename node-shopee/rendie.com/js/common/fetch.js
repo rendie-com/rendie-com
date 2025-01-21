@@ -6,10 +6,21 @@ export const common_fetch = {
             if(type=="json"){
                 return response.json();
             }
+            else if(type=="gbk"){
+                return response.arrayBuffer()                
+            }
             else{
                 return response.text();
             }
-        }).then(str => next(str))
+        }).then(str => {
+            if(type=="gbk"){
+                const decoder = new TextDecoder("gbk");
+                next(decoder.decode(str))
+            }
+            else{
+                next(str)
+            }
+        })
     },   
     postFetch: function (url, data, next) {
         const headers = new Headers();
@@ -19,9 +30,9 @@ export const common_fetch = {
             headers: headers,
             body: data
         }).then(response => response.json())
-            .then(data => {
-                next(data)
-            }).catch(error => console.error('Error:', error));
+        .then(data => {
+            next(data)
+        }).catch(error => next({error: error}));
     },    
 }
 

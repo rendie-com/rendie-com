@@ -90,7 +90,7 @@ export const common_executeScript = {
             common.ifTabs(index, windowId, this.a02, this, common.notTab, oo)
         },
         a02: function (id, oo) {
-            if (oo.fileArr.length != 0) {
+            if (oo.fileArr) {
                 let This = this;
                 fetch(chrome.runtime.getURL("inject/jquery.js")).then(response => { return response.text(); }).then(str => {
                     // 处理返回的数据
