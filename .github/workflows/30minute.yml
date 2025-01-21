@@ -51,7 +51,7 @@ jobs:
           
       - name: 运行node       
         run: |
-          mkdir ./sqlite3/error/
+          mkdir -p ./sqlite3/error/
           mkdir ./releases/
           cd ./node-shopee/
           pnpm i  
