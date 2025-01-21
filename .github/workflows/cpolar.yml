@@ -44,8 +44,7 @@ jobs:
       run: |     
         echo "正在下载cpolar"
         wget https://www.cpolar.com/static/downloads/releases/3.3.18/cpolar-stable-linux-amd64.zip
-        unzip cpolar-stable-linux-amd64.zip
-        cd cpolar-stable-linux-amd64
+        unzip cpolar-stable-linux-amd64.zip       
         chmod a+rwx ./cpolar
         ./cpolar authtoken ${{ secrets.CPOLAR_AUTHTOKEN }}  
         echo "已授权"
