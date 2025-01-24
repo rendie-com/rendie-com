@@ -22,6 +22,35 @@ export const common_fetch = {
             }
         })
     },   
+    getHeadersFetch: function (url,headersObj, type, next) {
+        const headers = new Headers();
+        for(let k in headersObj){
+            headers.append(k,headersObj[k])
+        }
+        ////////////////////////////////
+        fetch(url,{ 
+            headers: headers
+        }).then(response => {
+            if(type=="json"){
+                return response.json();
+            }
+            else if(type=="gbk"){
+                return response.arrayBuffer()                
+            }
+            else{
+                return response.text();
+            }
+        }).then(str => {
+            if(type=="gbk"){
+                const decoder = new TextDecoder("gbk");
+                next(decoder.decode(str))
+            }
+            else{
+                next(str)
+            }
+        })
+
+    },   
     postFetch: function (url, data, next) {
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');

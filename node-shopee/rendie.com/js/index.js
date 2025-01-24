@@ -85,6 +85,7 @@ export const index =
             // //////////common_cookies.js  结束//////////////////////////////////////////////////////////
             // ////////////////////////////////////////////////////////
             case "getFetch": common_fetch.getFetch(request.url, request.type, next); break;//获取URL内容
+            case "getHeadersFetch": common_fetch.getHeadersFetch(request.url, request.headersObj, request.type, next); break;//获取URL内容
             case "postFetch": common_fetch.postFetch(request.url, request.data, next); break;//普通提交（返回的内容不一定是json格式
             // case "typeHtml": Tool.typeHtml(request.url, request.type, request.data, next); break;//指定类型提交
             // case "download": Tool.download(request.url, request.filename, next); break; //下载文件---------已验证
