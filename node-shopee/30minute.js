@@ -82,6 +82,7 @@ import path from 'path';
   }
   await page.close()
   await browser.close()
+  await timeout(1000);//1秒
   console.log('已完成所有任务。');
 
 })();
